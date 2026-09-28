@@ -1,0 +1,39 @@
+apiVersion: terrasentinel.dev/v1
+kind: AgentManifest
+
+metadata:
+  name: terra-sentinel
+  displayName: "TERRA-SENTINEL"
+  description: "Autonomous Multi-Agent Environmental & Climate Risk Intelligence Platform for Bharat"
+
+runtime:
+  type: docker
+  image: "python:3.12-slim"
+
+resources:
+  cpu: 0.25
+  memoryMb: 512
+  timeoutSeconds: 120
+
+inputs:
+  - name: location
+    label: "Target Hotspot or City (e.g., Mumbai, Bengaluru, Assam, Chennai)"
+    type: text
+    required: true
+    default: "Mumbai"
+  - name: simulated_rain_mm
+    label: "What-If Cloudburst Simulation (+mm rain)"
+    type: number
+    required: false
+    default: 85
+
+output:
+  format: markdown
+
+security:
+  networkEgress: allowlist
+  egressAllowlist:
+    - "api.open-meteo.com"
+    - "open-meteo.com"
+    - "api.groq.com"
+    - "api.sarvam.ai"
