@@ -1,0 +1,116 @@
+"""
+TERRA-SENTINEL FastAPI Main Entrypoint
+Autonomous Multi-Agent Environmental Intelligence Platform
+"""
+import logging
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+
+from backend.app.config import settings
+from backend.app.websocket import manager
+from backend.app.routes import health, analyze, geo, documents, hotspots, blockchain
+
+# Resilient MCP Hub import — backend must never crash due to agent engine import failures
+try:
+    from mcp_hub.hub import router as mcp_router
+    HAS_MCP_HUB = True
+except Exception as _mcp_import_err:
+    mcp_router = None
+    HAS_MCP_HUB = False
+    logging.getLogger("terra_sentinel.main").warning(f"MCP Hub import deferred (non-fatal): {_mcp_import_err}")
+
+# Configure Logging
+logging.basicConfig(
+    level=logging.INFO if settings.DEBUG else logging.WARNING,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+logger = logging.getLogger("terra_sentinel.main")
+
+app = FastAPI(
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION,
+    description="Autonomous Multi-Agent Environmental & Climate Risk Intelligence Platform for Bharat",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
+
+# CORS Configuration (Full interoperability with Vercel, Railway, and localhost)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc: Exception):
+    logger.error(f"Global caught exception on {request.url.path}: {exc}")
+    from fastapi.responses import JSONResponse
+    return JSONResponse(
+        status_code=500,
+        content={
+            "status": "error",
+            "message": "TERRA-SENTINEL resilient recovery active. Error handled safely.",
+            "error": str(exc),
+            "path": str(request.url.path)
+        }
+    )
+
+
+# Mount API Routers
+app.include_router(health.router, prefix="/api/v1")
+app.include_router(analyze.router, prefix="/api/v1")
+app.include_router(geo.router, prefix="/api/v1")
+app.include_router(documents.router, prefix="/api/v1")
+app.include_router(hotspots.router, prefix="/api/v1")
+
+# Mount TERRA-CHAIN v2.0 Blockchain Gateway
+app.include_router(blockchain.router, prefix="/api/v2")
+
+if HAS_MCP_HUB and mcp_router:
+    app.include_router(mcp_router)  # Model Context Protocol Gateway (/mcp/health, /mcp/tools, /mcp/invoke)
+
+
+@app.get("/")
+async def root():
+    return {
+        "platform": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "status": "online",
+        "edition": "Enterprise Climate Intelligence",
+        "docs": "/docs",
+        "api_v1": "/api/v1"
+    }
+
+
+@app.get("/health")
+async def health_alias():
+    return {
+        "status": "operational",
+        "version": settings.APP_VERSION,
+        "platform": settings.APP_NAME
+    }
+
+
+@app.websocket("/ws/events")
+async def websocket_endpoint(websocket: WebSocket):
+    """Real-time WebSocket stream for agent thought trace, tool invocations, and live alerts."""
+    await manager.connect(websocket)
+    try:
+        while True:
+            # Keep connection alive & handle incoming pings
+            data = await websocket.receive_text()
+            if data == "ping":
+                await websocket.send_text("pong")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
+        manager.disconnect(websocket)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.app.main:app", host=settings.HOST, port=settings.PORT, reload=settings.DEBUG)
