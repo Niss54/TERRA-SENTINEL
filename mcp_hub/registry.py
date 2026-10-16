@@ -49,6 +49,21 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
         },
         "target_agent": "agent-2-chronic"
     },
+    "analyze_satellite_imagery": {
+        "name": "analyze_satellite_imagery",
+        "description": "Multimodal satellite Earth observation pipeline ingesting Copernicus Sentinel-2 MSI (NDWI/NDVI), ISRO Bhuvan NRSC geology, and Google Earth Engine DEM rasters to run Gemini 2.0 Flash spatial reasoning.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "lat": {"type": "number", "description": "Target latitude"},
+                "lon": {"type": "number", "description": "Target longitude"},
+                "location_name": {"type": "string", "default": "Target Corridor"},
+                "depth_cm": {"type": "number", "default": 85}
+            },
+            "required": ["lat", "lon"]
+        },
+        "target_agent": "agent-2-chronic"
+    },
     "query_policy_rag": {
         "name": "query_policy_rag",
         "description": "Vector cosine similarity query against ChromaDB climate policy corpus (SEBI BRSR, Carbon Tax, NDMA) to quantify corporate Value-at-Risk.",

@@ -188,6 +188,20 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
                 "simulated": True
             }
 
+    elif tool_name == "analyze_satellite_imagery":
+        from backend.app.satellite import earth_observation_engine
+        lat = float(params.get("lat", 19.0728))
+        lon = float(params.get("lon", 72.8797))
+        loc_name = params.get("location_name", "Target Corridor")
+        depth = int(params.get("depth_cm", 85))
+        return earth_observation_engine.analyze_satellite_multimodal(
+            lat=lat,
+            lon=lon,
+            location_name=loc_name,
+            depth_cm=depth,
+            weather_summary=f"Severe storm event, {depth}cm depth"
+        )
+
     elif tool_name == "query_policy_rag":
         try:
             target_fin = financial_risk_engine
