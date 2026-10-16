@@ -202,6 +202,25 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             weather_summary=f"Severe storm event, {depth}cm depth"
         )
 
+    elif tool_name == "compute_hydraulic_flow_accumulation":
+        from backend.app.hydraulic import hydraulic_controller
+        p_rain = float(params.get("precipitation_mm_hr", 85.0))
+        soil_sat = float(params.get("soil_saturation_pct", 80.0))
+        drain_cap = float(params.get("drainage_capacity_mm_hr", 35.0))
+        slope = float(params.get("slope_gradient", 0.02))
+        lat = float(params.get("lat", 19.0760))
+        lon = float(params.get("lon", 72.8777))
+        depth = hydraulic_controller.calculate_waterlogging_depth(p_rain, soil_sat, drain_cap, slope)
+        conduits = hydraulic_controller.simulate_conduit_network(lat, lon, p_rain, drain_cap)
+        chokes = sum(1 for c in conduits if c.choke_status in ("SURCHARGED", "CRITICAL_BLOCKED"))
+        return {
+            "tool": "compute_hydraulic_flow_accumulation",
+            "waterlogging_depth_cm": depth,
+            "chokepoints_detected": chokes,
+            "conduit_count": len(conduits),
+            "conduits": [c.model_dump() for c in conduits]
+        }
+
     elif tool_name == "query_policy_rag":
         try:
             target_fin = financial_risk_engine

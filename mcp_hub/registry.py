@@ -64,6 +64,23 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
         },
         "target_agent": "agent-2-chronic"
     },
+    "compute_hydraulic_flow_accumulation": {
+        "name": "compute_hydraulic_flow_accumulation",
+        "description": "Simulates municipal stormwater drainage network throughput, hydraulic flow accumulation, and chokepoints using Saint-Venant depth curves: D_water = max(0, (P_eff - C_drain)/10) * (1 + 1/(1+Slope)).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "precipitation_mm_hr": {"type": "number", "description": "Rainfall intensity in mm/hr"},
+                "drainage_capacity_mm_hr": {"type": "number", "default": 35.0},
+                "soil_saturation_pct": {"type": "number", "default": 80.0},
+                "slope_gradient": {"type": "number", "default": 0.02},
+                "lat": {"type": "number", "default": 19.0760},
+                "lon": {"type": "number", "default": 72.8777}
+            },
+            "required": ["precipitation_mm_hr"]
+        },
+        "target_agent": "agent-2-chronic"
+    },
     "query_policy_rag": {
         "name": "query_policy_rag",
         "description": "Vector cosine similarity query against ChromaDB climate policy corpus (SEBI BRSR, Carbon Tax, NDMA) to quantify corporate Value-at-Risk.",
