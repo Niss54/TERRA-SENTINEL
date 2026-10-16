@@ -211,5 +211,19 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["station_id", "payload", "signature", "timestamp_epoch", "nonce"]
         },
         "target_agent": "security-layer"
+    },
+    "sync_offline_mutations": {
+        "name": "sync_offline_mutations",
+        "description": "Multi-tier bi-directional offline synchronization tool reconciling queued client mutations with cloud L1/L2 data stores.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "device_id": {"type": "string"},
+                "client_state": {"type": "object"},
+                "records": {"type": "array", "items": {"type": "object"}}
+            },
+            "required": ["device_id", "records"]
+        },
+        "target_agent": "storage-layer"
     }
 }

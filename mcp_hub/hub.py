@@ -361,6 +361,13 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             "integrity_status": "VERIFIED_TAMPER_FREE" if is_valid else "INTEGRITY_VIOLATION_DETECTED"
         }
 
+    elif tool_name == "sync_offline_mutations":
+        from backend.app.storage_sync import storage_sync_controller
+        device_id = str(params.get("device_id", "DEV-MCP-01"))
+        client_state = params.get("client_state", {})
+        records = params.get("records", [])
+        return storage_sync_controller.reconcile(device_id, client_state, records)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

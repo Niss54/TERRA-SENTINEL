@@ -8,6 +8,8 @@ from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, HTTPException
 
+from backend.app.storage_sync import storage_sync_controller, OfflineSyncModel
+
 logger = logging.getLogger("terra_sentinel.sync")
 
 router = APIRouter(prefix="/sync", tags=["Multi-Tier Storage & Offline Sync"])
@@ -119,3 +121,32 @@ async def get_sync_status():
         "total_records_synchronized": len(SYNCHRONIZED_STORE),
         "supported_entities": ["sensor_telemetry", "incident_report", "civic_alert", "gis_contour"]
     }
+
+
+@router.post("/reconcile")
+async def reconcile_offline_state(payload: Dict[str, Any]):
+    """
+    Executes bi-directional state reconciliation satisfying:
+    State_Client ⊕ Delta_Offline ≡ State_Cloud
+    """
+    try:
+        device_id = str(payload.get("device_id", "DEV-UNKNOWN"))
+        client_state = payload.get("client_state", {})
+        delta = payload.get("records") or payload.get("delta") or []
+        return storage_sync_controller.reconcile(device_id, client_state, delta)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/pipeline", response_model=OfflineSyncModel)
+async def execute_phase12_pipeline(payload: Dict[str, Any]):
+    """
+    Executes standard PRD Phase 12 Multi-Tier Storage Sync pipeline returning OfflineSyncModel.
+    """
+    try:
+        return await storage_sync_controller.execute_phase_pipeline(payload)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
