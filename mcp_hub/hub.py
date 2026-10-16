@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 import httpx
 
 from mcp_hub.registry import TOOLS_REGISTRY
+from mcp_hub.controller import mcp_gateway_controller, MCPToolModel
 
 logger = logging.getLogger("terra_sentinel.mcp_hub")
 
@@ -349,6 +350,11 @@ async def invoke_tool(rpc: JsonRpcRequest):
     method = rpc.method
     params = rpc.params
 
+    # Validate JSON-RPC 2.0 Envelope
+    valid, rpc_err = mcp_gateway_controller.validate_rpc_envelope(rpc.model_dump())
+    if not valid:
+        return JsonRpcResponse(id=rpc.id, error=rpc_err)
+
     # 1. MCP Protocol Handshake: initialize
     if method == "initialize":
         return JsonRpcResponse(
@@ -424,6 +430,15 @@ async def invoke_tool(rpc: JsonRpcRequest):
         id=rpc.id,
         error={"code": -32601, "message": f"Method '{method}' not found in MCP Tool Registry"}
     )
+
+
+@router.post("/mcp/pipeline", response_model=MCPToolModel)
+async def execute_mcp_pipeline(payload: Dict[str, Any]):
+    """
+    Phase 9 Model Context Protocol pipeline execution endpoint.
+    Returns compliant MCPToolModel with telemetry metadata and registered tools catalog.
+    """
+    return await mcp_gateway_controller.execute_phase_pipeline(payload)
 
 
 # Attach router to standalone app
