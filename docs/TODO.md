@@ -139,3 +139,8 @@ Phase 7: Web3 & Production Packaging ██████████ 100% ✅
 - [x] **5-Tier Hierarchical Resilience:** Tier 1 (Vertex AI Gemini 2.0 Flash) $\to$ Tier 2 (Groq Llama 3.3 70B) $\to$ Tier 3 (Claude 3.5 Sonnet) $\to$ Tier 4 (OpenAI GPT-4o) $\to$ Tier 5 (Local Deterministic Heuristic Engine guaranteeing 100% operational uptime)
 - [x] **Bilingual Civil Alerts & MCP Dynamic Tool:** Native English & Devanagari Hindi civil alerts with `route_llm_resilient_prompt` registered in MCP Tool Registry
 - [x] **Phase 10 Full Verification Suite:** `tests/test_phase10_llm_resilience.py` (13 passed, 138 total repository test suite passing 100%)
+- [x] **Phase 11: Zero-Trust Verifiable Telemetry & Cryptographic HMAC Sealing:** Cryptographic non-repudiation & replay defense (`backend/app/security.py`, `backend/app/routes/telemetry.py`, `mcp_hub/registry.py`)
+- [x] **Governing Mathematical Invariant:** $\text{Sig} = \text{HMAC-SHA256}(K_{\text{sensor}}, \text{Payload} \parallel \text{Timestamp} \parallel \text{Nonce})$ with deterministic JSON canonicalization
+- [x] **Zero-Trust Security Guarantees:** 1-byte tamper detection, sliding stateful nonce cache, $\pm 300\text{s}$ clock drift bounds enforcement, and constant-time HMAC comparison
+- [x] **Full API & MCP Integration:** REST endpoints (`/telemetry/seal`, `/telemetry/verify`, `/telemetry/pipeline`, `/telemetry/security-spec`) + `verify_telemetry_seal` tool in MCP Hub
+- [x] **Phase 11 Full Verification Suite:** `tests/test_phase11_telemetry_integrity.py` (11 passed, 149 total repository test suite passing 100%)

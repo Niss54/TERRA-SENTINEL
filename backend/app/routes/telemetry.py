@@ -8,6 +8,7 @@ from fastapi import APIRouter, HTTPException
 
 from backend.app.security import (
     telemetry_security_controller,
+    VerifiableTelemetryModel,
     TelemetrySealRequest,
     TelemetrySealResponse,
     TelemetryVerifyRequest,
@@ -85,3 +86,17 @@ async def get_security_specification():
         "max_allowable_clock_drift_sec": telemetry_security_controller.max_drift_seconds,
         "standard_adherence": ["NIST SP 800-107", "FIPS 198-1", "ISO/IEC 9797-2"]
     }
+
+
+@router.post("/pipeline", response_model=VerifiableTelemetryModel)
+async def execute_phase11_pipeline(payload: Dict[str, Any]):
+    """
+    Executes standard PRD Phase 11 Zero-Trust Verifiable Telemetry pipeline returning VerifiableTelemetryModel.
+    """
+    try:
+        return await telemetry_security_controller.execute_phase_pipeline(payload)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+

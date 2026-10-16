@@ -195,5 +195,21 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["prompt"]
         },
         "target_agent": "resilience-orchestrator"
+    },
+    "verify_telemetry_seal": {
+        "name": "verify_telemetry_seal",
+        "description": "Zero-Trust cryptographic HMAC-SHA256 signature verifier and anti-replay validator for IoT environmental telemetry packets.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "station_id": {"type": "string"},
+                "payload": {"type": "object"},
+                "signature": {"type": "string"},
+                "timestamp_epoch": {"type": "number"},
+                "nonce": {"type": "string"}
+            },
+            "required": ["station_id", "payload", "signature", "timestamp_epoch", "nonce"]
+        },
+        "target_agent": "security-layer"
     }
 }

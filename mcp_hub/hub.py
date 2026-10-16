@@ -339,6 +339,28 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         preferred_tier = int(params.get("preferred_tier", 1))
         return llm_circuit_controller.route_prompt(prompt, preferred_tier=preferred_tier)
 
+    elif tool_name == "verify_telemetry_seal":
+        import time as _t
+        from backend.app.security import telemetry_security_controller
+        station_id = str(params.get("station_id", ""))
+        payload = params.get("payload", {})
+        signature = str(params.get("signature", ""))
+        ts = float(params.get("timestamp_epoch", _t.time()))
+        nonce = str(params.get("nonce", ""))
+        is_valid, reason, drift = telemetry_security_controller.verify_seal(
+            station_id=station_id,
+            payload=payload,
+            signature=signature,
+            timestamp=ts,
+            nonce=nonce
+        )
+        return {
+            "is_valid": is_valid,
+            "rejection_reason": reason,
+            "drift_seconds": round(drift, 2),
+            "integrity_status": "VERIFIED_TAMPER_FREE" if is_valid else "INTEGRITY_VIOLATION_DETECTED"
+        }
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
