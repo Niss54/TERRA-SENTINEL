@@ -81,6 +81,20 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
         },
         "target_agent": "agent-2-chronic"
     },
+    "run_monte_carlo_financial_var": {
+        "name": "run_monte_carlo_financial_var",
+        "description": "Executes Monte Carlo stochastic simulation over N >= 1000 iterations to compute enterprise Value-at-Risk percentiles (VaR 95, VaR 99, Expected Shortfall CVaR) and RBI LTV haircuts: VaR_95 = Percentile_95(sum V_asset * (1 - e^{-lambda * D})).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "waterlogging_depth_cm": {"type": "number", "description": "Inundation depth in cm"},
+                "risk_score": {"type": "number", "description": "Physical hazard score [0.0 - 1.0]"},
+                "num_simulations": {"type": "integer", "default": 1000}
+            },
+            "required": ["waterlogging_depth_cm", "risk_score"]
+        },
+        "target_agent": "agent-3-financial"
+    },
     "query_policy_rag": {
         "name": "query_policy_rag",
         "description": "Vector cosine similarity query against ChromaDB climate policy corpus (SEBI BRSR, Carbon Tax, NDMA) to quantify corporate Value-at-Risk.",

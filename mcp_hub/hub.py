@@ -221,6 +221,27 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             "conduits": [c.model_dump() for c in conduits]
         }
 
+    elif tool_name == "run_monte_carlo_financial_var":
+        from backend.app.financial import macro_financial_controller
+        depth = float(params.get("waterlogging_depth_cm", 85.0))
+        risk = float(params.get("risk_score", 0.78))
+        n_sim = int(params.get("num_simulations", 1000))
+        var_res = macro_financial_controller.run_monte_carlo_var(
+            base_depth_cm=depth,
+            risk_score=risk,
+            num_simulations=n_sim
+        )
+        return {
+            "tool": "run_monte_carlo_financial_var",
+            "var_95_inr": var_res.var_95_inr,
+            "var_99_inr": var_res.var_99_inr,
+            "cvar_95_inr": var_res.cvar_95_expected_shortfall_inr,
+            "var_95_usd": var_res.var_95_usd,
+            "stranded_asset_tier": var_res.stranded_asset_tier,
+            "rbi_ltv_haircut_pct": var_res.rbi_ltv_haircut_pct,
+            "simulation_iterations": var_res.simulation_iterations
+        }
+
     elif tool_name == "query_policy_rag":
         try:
             target_fin = financial_risk_engine
