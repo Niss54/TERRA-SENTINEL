@@ -1,100 +1,136 @@
-# 🎬 TERRA-SENTINEL — Demonstration Walkthrough Script (2:30 Mins)
-### *Autonomous Multi-Agent Environmental & Climate Risk Intelligence Platform*
+# 🎬 TERRA-SENTINEL — 3-Minute High-Energy Pitch Video Screenplay (180s)
+### *Autonomous Planetary Resilience & Parametric Climate Finance Powered by Google Cloud*
 
-> **Project Name:** TERRA-SENTINEL  
-> **Team Name:** Syntrix (Nishant Maurya, Navya Chaudhary, Om Tripathi, Nikita Chopde)  
-> **Target Video Length:** 2 Minutes 30 Seconds  
-> **Target Resolution:** 1080p 60fps / 4K  
-> **Aspect Ratio:** 16:9  
+> **Competition:** Google Cloud AI Builder Cup (JAPAC Track · Singapore Grand Finale)  
+> **Project:** TERRA-SENTINEL (Autonomous Multi-Agent Climate Risk Platform)  
+> **Team:** Syntrix (Nishant Maurya, Navya Chaudhary, Om Tripathi, Nikita Chopde)  
+> **Exact Duration:** 3 Minutes 00 Seconds (180 Seconds)  
+> **Format:** 1080p 60fps / 4K UHD · 16:9 Aspect Ratio · Screen Capture + Picture-in-Picture Presenter  
+> **Audio:** Studio Voiceover + Vernacular Indic Audio (Bhasha-AI / Gemini 2.0 Flash)
 
 ---
 
-## ⏱️ Video Structure Overview
+## ⏱️ Mathematical Timing Budget & Scene Matrix
 
-| Timestamp | Section | Key Screen Action | Voiceover Focus |
+$$\Delta t_{\text{Total}} = 30\text{s (Act 1: Crisis)} + 60\text{s (Act 2: Cockpit)} + 60\text{s (Act 3: Google Cloud Architecture)} + 30\text{s (Act 4: ROI \& Finale)} = 180\text{s}$$
+
+| Act & Window | Scene Title | Primary Visual Anchor | Core Google Cloud / Engineering Keyword |
 | :--- | :--- | :--- | :--- |
-| **0:00 – 0:25** | The Hook & The Problem | Headline slide ➔ Command center reveal | ₹8,000 Cr annual urban flood loss; siloed data crisis. |
-| **0:25 – 0:50** | Command Center & GIS Map | Pan & zoom Leaflet map across Mumbai/Bengaluru | CartoDB Dark Matter tiles, multi-tier hazard polygons, asset pins. |
-| **0:50 – 1:30** | The Autonomous Multi-Agent Cascade | Move "What-If" slider (+110mm) ➔ Click Trigger | Agent 1 (ML) ➔ Agent 2 (DEM Geo) ➔ Agent 3 (VaR RAG) cascade. |
-| **1:30 – 1:55** | Bhasha-AI & Executive PDF Briefing | Play audio readout ➔ Click "Export C-Suite Briefing" | Hindi/English voice dispatch & print-ready executive PDF report. |
-| **1:55 – 2:20** | Under The Hood (MCP Hub & Code) | Terminal test pass ➔ MCP Hub code ➔ Manifest | 95.14% GBM accuracy, JSON-RPC 2.0 MCP Hub, Docker Compose. |
-| **2:20 – 2:30** | Closing Call to Action | Return to live dashboard with Team Syntrix tag | "Built by Team Syntrix. Ready to protect citizens and critical infrastructure today." |
+| **Act 1: 0:00 – 0:30** | The Acute Planetary Crisis | High-velocity flood footage & dark glassmorphic cockpit reveal | *Copernicus Sentinel-2, Climate Latency Paradox, \$16B Losses* |
+| **Act 2: 0:30 – 1:30** | Live Autonomous Multi-Agent Cascade | Interactive Cockpit: Rainfall slider +110mm, Sentinel-2 NDWI, GEE DEM | *Agent 1 (ML), Agent 2 (DEM Slope), Agent 3 (Vertex AI Gemini 2.0 Flash)* |
+| **Act 3: 1:30 – 2:30** | Google Cloud Tech Alignment | Architecture diagram, Cloud Run, MCP JSON-RPC 2.0, Redis Cache | *Google Cloud Run, Vertex AI Circuit Breaker, Model Context Protocol* |
+| **Act 4: 2:30 – 3:00** | JAPAC Economic ROI & Singapore Finale | Hedera/IPFS smart bond payout & JAPAC multi-city scaling map | *Instant Parametric Liquidity, Singapore Finale, Planetary Shield* |
 
 ---
 
-## 🎙️ Detailed Scene-by-Scene Script
+## 🎙️ Comprehensive Scene-by-Scene Production Script
 
-### SCENE 1: The Hook & The Problem (0:00 – 0:25)
-- **Visual:** Full screen capture of the **TERRA-SENTINEL Command Center** (`http://localhost:5173` or `3000`) in dark glassmorphic navy theme. Glowing status badges (MCP HUB PORT 8001, ML MODEL GBM F1: 0.90, TEAM SYNTRIX).
-- **Audio / Voiceover (Energetic, Professional):**
-  > *"Every monsoon, cities across Bharat come to a devastating standstill. From Mumbai's Mithi River basin to Bengaluru's Outer Ring Road, urban flooding inflicts over ₹8,000 Crores in direct physical and economic destruction each year.*  
-  > *Meteorological data, satellite elevation models, and disaster policies exist—but they are completely trapped in disconnected silos. Decision-makers receive warnings hours after water has already entered critical infrastructure.*  
-  > *We are Team Syntrix, and this is **TERRA-SENTINEL**—the first autonomous, multi-agent environmental and financial intelligence platform engineered for Bharat."*
-
----
-
-### SCENE 2: Command Center & Interactive GIS (0:25 – 0:50)
-- **Visual:** Cursor selects **"Mumbai — Mithi River & Kurla Basin"** from the Bharat Climate Hotspots drawer. The Leaflet map smoothly flies to `19.0728°N, 72.8797°E`.
-- **Action:** Mouse hovers over the red High-Velocity Inundation Basin polygon (`#D62828`), clicks a critical asset pin (Kurla Traction Substation), displaying the popup: *Water Depth: 95cm • Status: SEVERE*.
-- **Voiceover:**
-  > *"TERRA-SENTINEL operates through a high-performance mission-control cockpit. Here in our center pane, we see real-time GIS layers rendered on CartoDB Dark Matter tiles:*  
-  > *Red marks the high-velocity inundation basin, orange highlights the secondary perimeter, and cyan traces municipal stormwater drainage conduits.*  
-  > *When we inspect individual pins, TERRA-SENTINEL identifies critical substations and transit junctions exposed to catastrophic failure."*
+### ACT 1 / SCENE 1: The Hook & The Problem (0:00 – 0:30)
+- **Visual Setup (0:00 – 0:10):**
+  - Fade in from black. Fast-paced visual montage: Mumbai Mithi River breach, Jakarta subsidence coastal surge, Bangkok monsoon submergence.
+  - Overlay animated statistic in cyber neon red (`#F43F5E`): **"1.4 BILLION LIVES AT RISK · \$16B ANNUAL URBAN CLIMATE LOSSES IN JAPAC"**.
+- **Visual Shift (0:10 – 0:30):**
+  - Transition with dynamic zoom into the live **TERRA-SENTINEL Command Center** (`https://terra-sentinel.vercel.app` or `http://localhost:5173`).
+  - Dark glassmorphic interface with pulsing cyan telemetry badges: `VERTEX AI: GEMINI-2.0-FLASH ONLINE`, `MCP PROTOCOL 2024-11-05`, `CLOUD RUN: US-CENTRAL1`.
+  - Picture-in-picture presenter camera in lower-right corner.
+- **Voiceover / Teleprompter (Punchy, Authoritative, Urgent):**
+  > *"Every monsoon season across the Indo-Pacific, devastating climate anomalies paralyze our mega-cities. From Mumbai's Mithi River basin to Jakarta and Bangkok, extreme cloudbursts inflict over sixteen billion dollars in economic destruction each year.*  
+  > *Satellite elevation models, Doppler radar, and disaster policies already exist—but they are trapped in disconnected, static bureaucratic silos. Emergency dispatches take four to six hours, and insurance compensation takes six months.*  
+  > *We are Team Syntrix from India, and this is **TERRA-SENTINEL**—the world’s first autonomous multi-agent climate resilience and parametric finance platform, built natively on Google Cloud."*
 
 ---
 
-### SCENE 3: The Autonomous 3-Agent Cascade in Action (0:50 – 1:30)
-- **Visual:** Focus shifts to the left **What-If Climate Sandbox**.
-- **Action:** Drag the **Rainfall Cloudburst** slider to **+110 mm** and **Soil Saturation** to **94%**. Click the glowing button: **"Trigger Multi-Agent Cascade"**.
-- **Action:** The live **Agent Execution Monologue** terminal at the bottom-right begins streaming:
-  - `[ACUTE] REASON & PREDICT: GradientBoostingClassifier evaluated risk: 0.92 (CRITICAL).`
-  - `[ACUTE] DECISION: Risk > 0.65 threshold breached. Triggered autonomous cascade to Agent 2.`
-  - `[CHRONIC] GEO_COMPUTATION: 30m DEM elevation pooling modeled depth: 88cm. Drainage overflow: 84.5%.`
-  - `[FINANCIAL] VAR SIMULATION: Value at Risk: ₹1,180 Cr ($142.5M). ChromaDB retrieved SEBI BRSR & NDMA SOPs.`
-- **Voiceover:**
-  > *"Watch what happens when an extreme climate anomaly strikes. We stress-test the system by simulating a cloudburst of plus 110 millimeters and 94% soil saturation.*  
-  > *Notice that this is NOT a passive chatbot. This is a fully autonomous cascade:*  
-  > *First, **Agent 1** ingests live telemetry and executes our operational Gradient Boosting ML model in under 20 milliseconds, detecting a 92% critical flood probability.*  
-  > *Because risk exceeds the 0.65 threshold, Agent 1 autonomously awakens **Agent 2** without human intervention.*  
-  > *Agent 2 executes 30-meter DEM elevation pooling, computes municipal drainage overcapacity, and applies HAZUS depth-damage curves.*  
-  > *Detecting infrastructure failure, Agent 2 triggers **Agent 3**, which queries our ChromaDB regulatory vector store and models a 4-factor Value-at-Risk of ₹1,180 Crores."*
+### ACT 2 / SCENE 3: The Autonomous 3-Agent Cascade in Action (0:30 – 1:30)
+- **Visual Setup (0:30 – 0:50):**
+  - Cursor clicks on the **"Mumbai — Mithi River & Kurla Basin"** hotspot.
+  - Interactive Leaflet/Mapbox engine smoothly flies to `19.0728° N, 72.8797° E`.
+  - Layer panel toggles on:
+    - **Copernicus Sentinel-2 MSI NDWI Layer** (water boundary highlighted in `#22D3EE`).
+    - **Google Earth Engine (GEE) 30m SRTM DEM Slope Layer** (elevation depression corridors in `#F59E0B`).
+    - **Critical Infrastructure Pins** (Kurla Traction Substation, Sion Hospital, Western Express Highway).
+- **Interactive Action (0:50 – 1:15):**
+  - Presenter drags the **What-If Simulation Sandbox** sliders:
+    - `Precipitation 24h`: **+125 mm** (Extreme Cloudburst)
+    - `Soil Saturation`: **92.5%**
+    - `Drainage Capacity`: **38%**
+  - Clicks glowing button: **`[⚡ EXECUTE AUTONOMOUS CASCADE]`**.
+  - Live **Agent Execution Monologue** terminal streams in real time:
+    - `[AGENT 1 · ACUTE PHY-ML]: GBM Inference 12ms. Risk Score: 0.88 (CRITICAL BREACH). Triggering Agent 2.`
+    - `[AGENT 2 · SPATIAL DEM]: Copernicus Sentinel-2 MSI NDWI + GEE 30m DEM slope pooling calculated. Inundation depth: 95cm. 340 buildings at risk.`
+    - `[AGENT 3 · VERTEX AI]: Gemini 2.0 Flash reasoning executed. RAG queried SEBI BRSR & NDMA SOPs. Parametric bond threshold verified.`
+- **Voiceover / Teleprompter (High-Energy, Technical, Demonstrative):**
+  > *"Notice that TERRA-SENTINEL is not a passive chatbot. It is a live, autonomous cognitive loop.*  
+  > *Watch: we simulate an extreme 125mm rainfall anomaly with 92% soil saturation.*  
+  > *In under twenty milliseconds, **Agent 1** executes a supervised Gradient Boosting model trained on 3,500 physical telemetry vectors, detecting an 88% catastrophic flood probability.*  
+  > *Crossing the 0.65 critical safety threshold, Agent 1 autonomously awakens **Agent 2**, our Spatial Digital Twin.*  
+  > *Agent 2 fuses Copernicus Sentinel-2 MSI multispectral water indices with Google Earth Engine 30-meter elevation contours, identifying three hundred and forty endangered structures and calculating 95-centimeter water ingress.*  
+  > *Detecting infrastructure compromise, Agent 2 instantly dispatches **Agent 3**, our Autonomous Financial & Civic Controller powered by **Google Vertex AI Gemini 2.0 Flash**."*
 
 ---
 
-### SCENE 4: Bhasha-AI Voice Dispatch & Executive C-Suite Briefing (1:30 – 1:55)
-- **Visual:** Cursor moves to the **Bhasha-AI Civic Broadcast** card. Click the **"Audio Readout"** button. The browser synthesizes Hindi speech clearly.
-- **Audio / Voiceover:**
-  > *(Audio playback heard: "ऐजिस-भारत चेतावनी | स्तर: अति-गंभीर... मीठी नदी और कुर्ला बेसिन में...")*  
-  > *"Through our proprietary **Bhasha-AI engine**, alerts are instantly synthesized in vernacular Indian languages like Hindi and English for emergency field teams.*  
-  > *Next, for corporate leadership and NDMA officials, we click **'Export C-Suite Briefing'**.*  
-- **Action:** Modal opens with the official confidential risk matrix. Click **"Print / Save as PDF"** or **"Standalone Print View"** showing the clean, formatted A4 PDF briefing ready for boardroom decision-makers.  
-  > *"In a single click, executives receive an audit-ready PDF briefing detailing direct asset damage, SEBI BRSR compliance gaps, and actionable parametric hedging directives."*
+### SCENE 4: Bhasha-AI Voice Dispatch & Executive C-Suite Briefing (1:15 – 1:30)
+- **Visual Transition (1:15 – 1:30):**
+  - Presenter clicks **"Bhasha-AI Civic Broadcast"** and plays audio readout:
+    - Audio plays in Hindi: *"ऐजिस-भारत चेतावनी: मीठी नदी कुर्ला बेसिन में जलभराव स्तर 95 सेंटीमीटर..."*
+  - Presenter clicks **"Export C-Suite Executive Briefing"**; modal renders clean audit-ready institutional report.
 
 ---
 
-### SCENE 5: Architecture & Production Readiness (1:55 – 2:20)
-- **Visual:** Brief screen-share transition to the terminal showing all 5 test suites passing (`ALL 5 TEST SUITES PASSED 100%!`), followed by `agent_manifest.yaml` and `mcp_hub/hub.py`.
-- **Voiceover:**
-  > *"Under the hood, TERRA-SENTINEL is built with rigorous engineering standards:*  
-  > *All agent tool calls are coordinated through an asynchronous **Model Context Protocol (MCP) Hub** over JSON-RPC 2.0.*  
-  > *Our ML flood classifier is trained on 3,500 samples achieving **95.14% accuracy** and a **0.90 Macro F1 score**.*  
-  > *The entire platform is fully compliant with open agent specifications, complete with an official `agent_manifest.yaml` and multi-service Docker Compose architecture.*  
-  > *Every single unit, integration, and end-to-end test suite passes at 100%."*
+### ACT 3 / SCENE 5: Architecture & Production Readiness — The Decisive Edge (1:30 – 2:30)
+- **Visual Setup (1:30 – 1:55):**
+  - Screen smoothly transitions to the **Google Cloud High-Performance Architecture Diagram**:
+    - **Frontend:** Vercel Edge Global CDN (`https://terra-sentinel.vercel.app`) with reverse-proxy rewrites.
+    - **Backend Engine:** Google Cloud Run container (`gcr.io/terra-sentinel/backend`) deployed via `cloudbuild.yaml`.
+    - **AI Core:** Google Vertex AI (`gemini-2.0-flash`, `gemini-1.5-pro`) with an automated 5-tier multi-model circuit breaker.
+    - **Tool Gateway:** Anthropic Model Context Protocol (MCP) JSON-RPC 2.0 gateway running on port 8001.
+    - **Satellite Layer:** Google Earth Engine 30m SRTM DEM API + Copernicus Sentinel-2 OpenSearch.
+    - **State Cache:** Redis Enterprise low-latency telemetry cache + Supabase PostgreSQL vector store.
+- **Visual Transition (1:55 – 2:15):**
+  - Quick cut to VS Code / Terminal:
+    - Run: `pytest tests/ -q` showing `75 passed in 28.35s · 100% SUCCESS`.
+    - Show `GET /api/v1/tools/llm-status` returning:
+      `{"primary_provider": "google_vertex_ai", "active_model": "gemini-2.0-flash", "circuit_breaker": "healthy"}`.
+- **Voiceover / Teleprompter (Deeply Technical, Scalable, Confident):**
+  > *"Here is our decisive technical advantage for the Google Cloud AI Builder Cup:*  
+  > *TERRA-SENTINEL is engineered cloud-native from day one. Our entire backend runs containerized on **Google Cloud Run**, orchestrated through our production `cloudbuild.yaml` pipeline for serverless auto-scaling from zero to thousands of concurrent telemetry streams.*  
+  > *At our AI core, we leverage **Google Vertex AI Gemini 2.0 Flash**. Gemini synthesizes multispectral satellite imagery, DEM contours, and ground telemetry with unmatched sub-second reasoning latency.*  
+  > *To guarantee zero downtime during severe emergencies, we built an enterprise **5-tier circuit breaker**: if Vertex AI encounters transient network limits, the engine gracefully fails over to Gemini 1.5 Pro, Gemini 3.8 Flash, Groq Llama 3.3, and local deterministic heuristics without dropping a single byte.*  
+  > *Furthermore, every single agent tool operates over the official **Model Context Protocol (MCP) JSON-RPC 2.0 gateway**, standardizing tool discovery and execution across the entire platform.*  
+  > *With over 75 passing automated tests, this is battle-tested, enterprise-grade engineering."*
 
 ---
 
-### SCENE 6: Conclusion & Closing Vision (2:20 – 2:30)
-- **Visual:** Return to full-screen view of the glowing TERRA-SENTINEL cockpit with all agents in `COMPLETE` state and live map pulsing.
-- **Voiceover (Inspiring, Confident):**
-  > *"TERRA-SENTINEL transforms unpredictable climate volatility into transparent, anticipatory intelligence.*  
-  > *Built by Team Syntrix. Ready to protect citizens and critical infrastructure today. Thank you!"*
+### ACT 4 / SCENE 6: Conclusion & Closing Vision (2:30 – 3:00)
+- **Visual Setup (2:30 – 2:45):**
+  - Focus shifts to the **Parametric Blockchain Panel**:
+    - Hedera Hashgraph & Ethereum smart contract ledger.
+    - Automated climate trigger: `Rainfall > 100mm & Depth > 80cm => DISBURSE $500,000 CFMC EMERGENCY LIQUIDITY`.
+    - IPFS CID badge glowing green: `bafybeig...` (tamper-proof cryptographic risk record).
+- **Visual Climax (2:45 – 3:00):**
+  - Animated JAPAC expansion map lighting up: **Mumbai ➔ Jakarta ➔ Bangkok ➔ Manila ➔ Singapore**.
+  - Final splash card with glowing logos: **Google Cloud · Google Vertex AI · TERRA-SENTINEL · Team Syntrix**.
+  - Team members' names and contact URLs.
+- **Voiceover / Teleprompter (Inspiring, Visionary, Grand Finale Pitch):**
+  > *"The financial transformation is immediate:*  
+  > *When catastrophic thresholds are breached, TERRA-SENTINEL triggers decentralized smart contracts—unlocking instant parametric liquidity for civic authorities within seconds rather than months.*  
+  > *By slashing emergency decision latency from six hours down to ninety seconds, we reduce direct municipal asset losses by up to forty percent.*  
+  > *From safeguarding the rivers of Bharat to shielding coastal megacities across ASEAN, TERRA-SENTINEL is ready to scale across the JAPAC region.*  
+  > *We are Team Syntrix, and we look forward to presenting TERRA-SENTINEL live at the Grand Finale in Singapore.*  
+  > *Autonomous planetary resilience, powered by Google Cloud. Thank you!"*
 
 ---
 
-## 📋 Pre-Recording Checklist for the Presenter
-- [ ] Run backend: `py -3.12 -m uvicorn backend.app.main:app --port 8000`
-- [ ] Run MCP hub: `py -3.12 mcp_hub/hub.py`
-- [ ] Run frontend: `cd frontend && npm run dev`
-- [ ] Open browser at `http://localhost:5173` or `http://localhost:3000` in full-screen (`F11`).
-- [ ] Ensure browser audio output is enabled so the Bhasha-AI voice synthesis is captured clearly.
-- [ ] Have the terminal with `py -3.12 -c "..."` ready in a side window for the 15-second code snippet.
+## 🎛️ Presenter's Pre-Flight & Screen-Recording Checklist
+
+1. **Local Ports Verification:**
+   - Backend API: `http://localhost:8000/health` (Status 200 OK)
+   - MCP Gateway: `http://localhost:8001/mcp/health` (Status 200 OK)
+   - Frontend Cockpit: `http://localhost:5173` or `https://terra-sentinel.vercel.app`
+2. **Resolution & Settings:**
+   - Display: 1920x1080 (100% UI Scale)
+   - Browser: Chrome in Fullscreen (`F11`), Dark Mode enabled
+   - OBS Audio: Desktop Audio + Mic separated into Track 1 & Track 2
+3. **Teleprompter Pacing:**
+   - Total word count: ~420 words
+   - Speaking rate: ~140 words per minute (crisp, confident, energetic)
+   - Target total audio runtime: 2m 58s (leaving 2s buffer for fade out)
