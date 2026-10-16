@@ -124,3 +124,8 @@ Phase 7: Web3 & Production Packaging ██████████ 100% ✅
 - [x] **Hybrid Statutory RAG Retrieval:** ChromaDB semantic corpus integration (SEBI BRSR Principle 6, MoF Carbon Surcharge, NDMA Urban Flood SOP)
 - [x] **MCP Hub Tool Registry Integration:** `run_monte_carlo_financial_var` registered in `mcp_hub/registry.py` & `mcp_hub/hub.py`
 - [x] **Phase 7 Full Verification Suite:** `tests/test_phase7_financial_var.py` (7 passed, 104 total repository test suite passing 100%)
+- [x] **Phase 8: Hybrid RAG System: Dense Vector + BM25 Sparse + Reciprocal Rank Fusion:** Dual-retriever statutory legal RAG (`backend/app/hybrid_rag.py`, `backend/app/routes/documents.py`)
+- [x] **Governing Mathematical Invariant:** $\text{RRF}(d) = \frac{0.55}{60 + r_{\text{dense}}(d)} + \frac{0.45}{60 + r_{\text{sparse}}(d)}$ with Okapi BM25 ($k_1=1.5, b=0.75$)
+- [x] **Expanded Bharat Climate Policy Corpus:** Integrated 7 statutory articles across SEBI BRSR, MoF Carbon Surcharge 2026, NDMA Lifeline SOP Section 14, RBI Climate LTV Haircuts, and CPCB Effluent Standards
+- [x] **MCP Hub Tool Registry Integration:** `query_hybrid_rag_fusion` tool registered in `mcp_hub/registry.py` & `mcp_hub/hub.py`
+- [x] **Phase 8 Full Verification Suite:** `tests/test_phase8_hybrid_rag.py` (7 passed, 111 total repository test suite passing 100%)

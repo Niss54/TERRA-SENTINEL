@@ -95,6 +95,19 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
         },
         "target_agent": "agent-3-financial"
     },
+    "query_hybrid_rag_fusion": {
+        "name": "query_hybrid_rag_fusion",
+        "description": "Executes Dual-Retriever Hybrid RAG fusing dense semantic vectors and BM25 Okapi sparse keyword frequencies via Reciprocal Rank Fusion (RRF k=60): RRF(d) = 0.55/(60 + r_dense) + 0.45/(60 + r_sparse).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Natural language statutory or regulatory question"},
+                "top_k": {"type": "integer", "default": 3}
+            },
+            "required": ["query"]
+        },
+        "target_agent": "agent-3-financial"
+    },
     "query_policy_rag": {
         "name": "query_policy_rag",
         "description": "Vector cosine similarity query against ChromaDB climate policy corpus (SEBI BRSR, Carbon Tax, NDMA) to quantify corporate Value-at-Risk.",

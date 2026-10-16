@@ -242,6 +242,18 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             "simulation_iterations": var_res.simulation_iterations
         }
 
+    elif tool_name == "query_hybrid_rag_fusion":
+        from backend.app.hybrid_rag import statutory_rag_controller
+        q = str(params.get("query", "SEBI BRSR Principle 6 flood risk disclosure penalties"))
+        k = int(params.get("top_k", 3))
+        results = statutory_rag_controller.execute_hybrid_search(query=q, top_k=k)
+        return {
+            "tool": "query_hybrid_rag_fusion",
+            "query": q,
+            "fused_count": len(results),
+            "results": [r.model_dump() for r in results]
+        }
+
     elif tool_name == "query_policy_rag":
         try:
             target_fin = financial_risk_engine
