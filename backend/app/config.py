@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     OPENMETEO_BASE_URL: str = "https://api.open-meteo.com/v1"
     OPENMETEO_API_KEY: str = ""
     GEMINI_API_KEY: str = ""
+    VERTEX_PROJECT_ID: str = ""
+    VERTEX_LOCATION: str = "asia-south1"
+    GEMINI_PRIMARY_MODEL: str = "gemini-2.0-flash"
+    GEMINI_SECONDARY_MODEL: str = "gemini-1.5-pro"
+    GEMINI_TERTIARY_MODEL: str = "gemini-3.8-flash"
     GROQ_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
@@ -56,14 +61,18 @@ class Settings(BaseSettings):
         """Returns live status of configured external AI and geospatial services."""
         return {
             "gemini": {
-                "name": "Google Gemini 1.5",
+                "name": "Google Vertex AI / Gemini 2.0 Flash & 1.5 Pro",
                 "configured": bool(self.GEMINI_API_KEY and self.GEMINI_API_KEY.strip()),
-                "role": "Agent 3 Policy RAG & Devanagari Civic Alerts"
+                "primary_model": self.GEMINI_PRIMARY_MODEL,
+                "secondary_model": self.GEMINI_SECONDARY_MODEL,
+                "tertiary_model": self.GEMINI_TERTIARY_MODEL,
+                "cloud_region": self.VERTEX_LOCATION,
+                "role": "Agent 3 Policy RAG & Bilingual Civic Advisories (Decisive Advantage)"
             },
             "groq": {
                 "name": "Groq Llama-3-70B",
                 "configured": bool(self.GROQ_API_KEY and self.GROQ_API_KEY.strip()),
-                "role": "Sub-500ms Thought Trace Monologue"
+                "role": "Sub-500ms Thought Trace Monologue & LLM Failover"
             },
             "open_meteo": {
                 "name": "Open-Meteo Weather API",

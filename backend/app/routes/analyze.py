@@ -144,6 +144,16 @@ async def get_model_info():
     }
 
 
+@router.get("/tools/llm-status")
+async def get_llm_status():
+    """Returns real-time Google Cloud Vertex AI alignment status, model hierarchy, and failover metrics."""
+    return {
+        "status": "success",
+        "tool": "get_llm_status",
+        **financial_risk_engine.get_llm_status()
+    }
+
+
 @router.post("/bhasha/tts")
 async def bhasha_tts(payload: Dict[str, Any]):
     """
