@@ -134,3 +134,8 @@ Phase 7: Web3 & Production Packaging ██████████ 100% ✅
 - [x] **Contract Validation & Resilient State Machine:** Pydantic V2 `MCPToolModel` and `MCPGatewayController` with 3-failure circuit breaker, 30s cooldown, HALF-OPEN recovery probe, and automated failover
 - [x] **Dual Protocol Transports:** HTTP JSON-RPC 2.0 Gateway (`POST /mcp/invoke`, `POST /mcp/pipeline`, `GET /mcp/tools`, `GET /mcp/health`) + Stdio Transport (`mcp_hub.stdio_server`) for Claude Desktop, Cursor, and autonomous external agents
 - [x] **Phase 9 Full Verification Suite:** `tests/test_phase9_mcp_gateway.py` (14 passed, 125 total repository test suite passing 100%)
+- [x] **Phase 10: Multi-Model LLM Resilience & Automated Circuit Breaker Failover:** 5-Tier hierarchical LLM resilience router (`backend/app/llm_circuit.py`, `backend/app/routes/llm.py`, `mcp_hub/registry.py`)
+- [x] **Governing Mathematical Invariant:** $\text{State}(t) = \text{OPEN if } \text{Failures}_{60s} \ge 3 \text{ else CLOSED}$ with rolling 60s window, 30s probe cooldown, and HALF-OPEN canary recovery
+- [x] **5-Tier Hierarchical Resilience:** Tier 1 (Vertex AI Gemini 2.0 Flash) $\to$ Tier 2 (Groq Llama 3.3 70B) $\to$ Tier 3 (Claude 3.5 Sonnet) $\to$ Tier 4 (OpenAI GPT-4o) $\to$ Tier 5 (Local Deterministic Heuristic Engine guaranteeing 100% operational uptime)
+- [x] **Bilingual Civil Alerts & MCP Dynamic Tool:** Native English & Devanagari Hindi civil alerts with `route_llm_resilient_prompt` registered in MCP Tool Registry
+- [x] **Phase 10 Full Verification Suite:** `tests/test_phase10_llm_resilience.py` (13 passed, 138 total repository test suite passing 100%)

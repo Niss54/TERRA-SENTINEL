@@ -182,5 +182,18 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["lat", "lon", "risk_score", "dem_depth_cm", "beneficiary", "assessment_id"]
         },
         "target_agent": "blockchain-layer"
+    },
+    "route_llm_resilient_prompt": {
+        "name": "route_llm_resilient_prompt",
+        "description": "5-Tier hierarchical LLM circuit breaker router executing prompts across Vertex AI Gemini, Groq, Claude, OpenAI, and local deterministic heuristics.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {"type": "string", "description": "Prompt to evaluate"},
+                "preferred_tier": {"type": "integer", "description": "Preferred starting tier (1 to 5)", "default": 1}
+            },
+            "required": ["prompt"]
+        },
+        "target_agent": "resilience-orchestrator"
     }
 }

@@ -388,6 +388,12 @@ class FinancialRiskEngine:
 
     def get_llm_status(self) -> Dict[str, Any]:
         """Returns the real-time operational status of the multi-model LLM tier for Google Cloud alignment."""
+        try:
+            from backend.app.llm_circuit import llm_circuit_controller
+            circuit_info = llm_circuit_controller.get_circuit_status()
+        except Exception:
+            circuit_info = {}
+
         return {
             "primary_provider": "Google Vertex AI / Gemini",
             "primary_model": settings.GEMINI_PRIMARY_MODEL,
@@ -398,7 +404,8 @@ class FinancialRiskEngine:
             "cloud_region": settings.VERTEX_LOCATION,
             "google_cloud_alignment_score": "100%",
             "failover_count": len(self.model_failover_history),
-            "recent_failovers": self.model_failover_history[-5:]
+            "recent_failovers": self.model_failover_history[-5:],
+            "circuit_breaker": circuit_info
         }
 
     def synthesize_sarvam_speech(self, text: str, speaker: str = "priya") -> Optional[str]:

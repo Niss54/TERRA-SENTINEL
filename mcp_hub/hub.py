@@ -333,6 +333,12 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             "symbol": "CFMC"
         }
 
+    elif tool_name == "route_llm_resilient_prompt":
+        from backend.app.llm_circuit import llm_circuit_controller
+        prompt = params.get("prompt", "")
+        preferred_tier = int(params.get("preferred_tier", 1))
+        return llm_circuit_controller.route_prompt(prompt, preferred_tier=preferred_tier)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
