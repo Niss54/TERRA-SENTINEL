@@ -37,10 +37,15 @@ const getBackendBase = (): string => {
     if (host === "127.0.0.1" || host === "localhost") {
       return `http://${host}:8000`;
     }
+    const envUrl = (import.meta as any).env?.VITE_BACKEND_URL;
+    if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/$/, "");
+    if (window.location.origin) {
+      return window.location.origin;
+    }
   }
   const envUrl = (import.meta as any).env?.VITE_BACKEND_URL;
   if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/$/, "");
-  return "http://127.0.0.1:8000";
+  return "https://terra-sentinel-api-543789452410.asia-south1.run.app";
 };
 
 const API_BASE = `${getBackendBase()}/api/v1`;
