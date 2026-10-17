@@ -651,6 +651,42 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "vercel-edge-controller"
+    },
+    "evaluate_test_quality_gate": {
+        "name": "evaluate_test_quality_gate",
+        "description": "Evaluates automated test suite pass rate against Phase 23 governing invariant: Passed >= 52 / 52 (100% Pass Rate), Failed = 0.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "passed_count": {"type": "integer", "description": "Total passed test assertions", "default": 62},
+                "failed_count": {"type": "integer", "description": "Total failed test assertions", "default": 0},
+                "skipped_count": {"type": "integer", "description": "Total skipped test assertions", "default": 0}
+            },
+            "required": ["passed_count"]
+        },
+        "target_agent": "quality-gate-controller"
+    },
+    "discover_test_suites_audit": {
+        "name": "discover_test_suites_audit",
+        "description": "Statically discovers and catalogs all test files, test functions, and phase coverage mapping across the repository.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "dir_path": {"type": "string", "description": "Optional custom tests directory path", "default": ""}
+            },
+            "required": []
+        },
+        "target_agent": "quality-gate-controller"
+    },
+    "get_quality_assurance_metrics": {
+        "name": "get_quality_assurance_metrics",
+        "description": "Returns operational quality assurance status, discovered test volume, and circuit breaker health.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "target_agent": "quality-gate-controller"
     }
 }
 

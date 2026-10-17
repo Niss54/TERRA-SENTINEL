@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.app.config import settings
 from backend.app.websocket import manager
-from backend.app.routes import health, analyze, geo, documents, hotspots, blockchain, satellite, demo, executive, telemetry, sync, financial, llm, cache, civic, cockpit, edge, container, ci, vercel
+from backend.app.routes import health, analyze, geo, documents, hotspots, blockchain, satellite, demo, executive, telemetry, sync, financial, llm, cache, civic, cockpit, edge, container, ci, vercel, quality
 
 # Resilient MCP Hub import — backend must never crash due to agent engine import failures
 try:
@@ -84,6 +84,8 @@ app.include_router(ci.router, prefix="/api/v1")
 app.include_router(ci.router)
 app.include_router(vercel.router, prefix="/api/v1")
 app.include_router(vercel.router)
+app.include_router(quality.router, prefix="/api/v1")
+app.include_router(quality.router)
 app.include_router(demo.router)
 app.include_router(executive.router)
 

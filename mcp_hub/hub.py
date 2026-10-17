@@ -665,6 +665,22 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         from backend.app.vercel_edge import get_edge_cdn_routing_spec
         return get_edge_cdn_routing_spec()
 
+    elif tool_name == "evaluate_test_quality_gate":
+        from backend.app.quality_gate import evaluate_quality_gate
+        p = int(params.get("passed_count", 62))
+        f = int(params.get("failed_count", 0))
+        s = int(params.get("skipped_count", 0))
+        return evaluate_quality_gate(passed_count=p, failed_count=f, skipped_count=s).model_dump()
+
+    elif tool_name == "discover_test_suites_audit":
+        from backend.app.quality_gate import discover_and_audit_test_suites
+        d_path = params.get("dir_path") or None
+        return discover_and_audit_test_suites(tests_dir=d_path)
+
+    elif tool_name == "get_quality_assurance_metrics":
+        from backend.app.quality_gate import quality_gate_controller
+        return quality_gate_controller.get_quality_diagnostics()
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
