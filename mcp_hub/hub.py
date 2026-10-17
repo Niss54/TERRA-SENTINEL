@@ -448,7 +448,63 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         assessment_id = str(params.get("assessment_id", ""))
         return contract_ledger_controller.verify_assessment(assessment_id)
 
+    elif tool_name == "evaluate_parametric_trigger":
+        from backend.app.parametric_insurance import evaluate_parametric_trigger_sync
+        depth_cm = float(params.get("depth_cm", 42.0))
+        threshold_cm = float(params.get("threshold_cm", 50.0))
+        risk_bps = int(params.get("risk_score_bps", 7000))
+        threshold_bps = int(params.get("threshold_risk_bps", 6500))
+        principal = float(params.get("principal_usd", 100000.0))
+        coverage = float(params.get("coverage_limit_usd", 250000.0))
+        return evaluate_parametric_trigger_sync(
+            depth_cm=depth_cm,
+            threshold_cm=threshold_cm,
+            risk_score_bps=risk_bps,
+            threshold_risk_bps=threshold_bps,
+            principal_usd=principal,
+            coverage_limit_usd=coverage
+        )
+
+    elif tool_name == "settle_parametric_bond":
+        from backend.app.parametric_insurance import settle_parametric_bond_sync
+        bond_id = str(params.get("bond_id", "BOND-001"))
+        assessment_id = str(params.get("assessment_id", "ASSESS-001"))
+        depth_cm = float(params.get("depth_cm", 55.0))
+        risk_score_bps = int(params.get("risk_score_bps", 7500))
+        beneficiary = str(params.get("beneficiary", "0x71C2E696688b14AE0D78278fCeB78C2651F87bF9"))
+        payout_usd = params.get("payout_amount_usd")
+        if payout_usd is not None:
+            payout_usd = float(payout_usd)
+        force_fallback = bool(params.get("force_fallback", False))
+        return settle_parametric_bond_sync(
+            bond_id=bond_id,
+            assessment_id=assessment_id,
+            depth_cm=depth_cm,
+            risk_score_bps=risk_score_bps,
+            beneficiary=beneficiary,
+            payout_amount_usd=payout_usd,
+            force_fallback=force_fallback
+        )
+
+    elif tool_name == "evaluate_cfmc_mitigation_reward":
+        from backend.app.parametric_insurance import evaluate_cfmc_mitigation_reward_sync
+        beneficiary = str(params.get("beneficiary", "0x71C2E696688b14AE0D78278fCeB78C2651F87bF9"))
+        assessment_id = str(params.get("assessment_id", "ASSESS-001"))
+        risk_score_bps = int(params.get("risk_score_bps", 7000))
+        dem_depth_cm = float(params.get("dem_depth_cm", 15.0))
+        lat = float(params.get("lat", 19.0728))
+        lon = float(params.get("lon", 72.8797))
+        return evaluate_cfmc_mitigation_reward_sync(
+            beneficiary=beneficiary,
+            assessment_id=assessment_id,
+            risk_score_bps=risk_score_bps,
+            dem_depth_cm=dem_depth_cm,
+            lat=lat,
+            lon=lon
+        )
+
     return {"status": "executed", "tool": tool_name, "params": params}
+
 
 
 @router.post("/mcp/invoke", response_model=JsonRpcResponse)

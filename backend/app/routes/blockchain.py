@@ -11,6 +11,14 @@ from backend.app.blockchain.cfmc_manager import cfmc_manager
 from backend.app.blockchain.evidence_verifier import evidence_verifier
 from backend.app.ipfs.storage import ipfs_client
 from backend.app.contract_ledger import contract_ledger_controller, BlockchainAnchorModel
+from backend.app.parametric_insurance import (
+    parametric_bond_controller,
+    DisasterBondModel,
+    TriggerEvaluationRequest,
+    BondSettlementRequest,
+    CFMCMitigationRewardRequest,
+    evaluate_parametric_trigger
+)
 
 router = APIRouter(tags=["TERRA-CHAIN Blockchain & Evidence Gateway"])
 
@@ -299,6 +307,74 @@ async def execute_phase14_pipeline(payload: Dict[str, Any]):
     """
     try:
         return await contract_ledger_controller.execute_phase_pipeline(payload)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+# ─── PHASE 15 PARAMETRIC DISASTER INSURANCE & SMART BOND SETTLEMENT ─────────
+
+@router.post("/blockchain/parametric/evaluate")
+async def evaluate_parametric_bond_trigger(req: TriggerEvaluationRequest):
+    """
+    Evaluates Phase 15 mathematical governing invariant:
+    Trigger(D) = I_{D >= D_threshold} => Payout(Beneficiary)
+    """
+    return evaluate_parametric_trigger(
+        depth_cm=req.waterlogging_depth_cm,
+        threshold_cm=req.threshold_depth_cm,
+        risk_score_bps=req.risk_score_bps,
+        threshold_risk_bps=req.threshold_risk_bps,
+        principal_usd=req.notional_principal_usd,
+        coverage_limit_usd=req.coverage_limit_usd
+    )
+
+
+@router.post("/blockchain/parametric/settle")
+async def settle_parametric_disaster_bond(req: BondSettlementRequest):
+    """
+    Executes automated parametric smart bond settlement with circuit breaker failover.
+    """
+    return await parametric_bond_controller.settle_parametric_bond(
+        bond_id=req.bond_id,
+        assessment_id=req.assessment_id,
+        depth_cm=req.waterlogging_depth_cm,
+        risk_score_bps=req.risk_score_bps,
+        beneficiary=req.beneficiary,
+        payout_amount_usd=req.payout_amount_usd,
+        force_fallback=req.force_fallback
+    )
+
+
+@router.post("/blockchain/parametric/cfmc/evaluate")
+async def evaluate_cfmc_reward(req: CFMCMitigationRewardRequest):
+    """
+    Evaluates and issues Carbon Flood Mitigation Credit (CFMC) rewards.
+    """
+    return await parametric_bond_controller.evaluate_cfmc_mitigation_reward(
+        beneficiary=req.beneficiary,
+        assessment_id=req.assessment_id,
+        risk_score_bps=req.risk_score_bps,
+        dem_depth_cm=req.dem_depth_cm,
+        lat=req.lat,
+        lon=req.lon
+    )
+
+
+@router.get("/blockchain/phase15/health")
+async def get_parametric_insurance_health():
+    """
+    Returns Phase 15 Parametric Insurance & Smart Bond health and circuit breaker status.
+    """
+    return parametric_bond_controller.get_health()
+
+
+@router.post("/blockchain/phase15/pipeline", response_model=DisasterBondModel)
+async def execute_phase15_pipeline(payload: Dict[str, Any]):
+    """
+    Executes PRD Phase 15 Operational Pipeline and returns DisasterBondModel.
+    """
+    try:
+        return await parametric_bond_controller.execute_phase_pipeline(payload)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

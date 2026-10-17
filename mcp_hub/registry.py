@@ -322,7 +322,60 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["assessment_id"]
         },
         "target_agent": "blockchain-audit-layer"
+    },
+    "evaluate_parametric_trigger": {
+        "name": "evaluate_parametric_trigger",
+        "description": "Evaluates parametric disaster insurance condition Trigger(D) = I_{D >= D_threshold} => Payout(Beneficiary) based on waterlogging depth and risk score.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "depth_cm": {"type": "number", "description": "Waterlogging / flood depth in cm"},
+                "threshold_cm": {"type": "number", "description": "Trigger threshold depth in cm", "default": 50.0},
+                "risk_score_bps": {"type": "integer", "description": "Risk score in BPS (0-10000)", "default": 7000},
+                "threshold_risk_bps": {"type": "integer", "description": "Critical risk threshold in BPS", "default": 6500},
+                "principal_usd": {"type": "number", "description": "Bond notional principal USD", "default": 100000.0},
+                "coverage_limit_usd": {"type": "number", "description": "Maximum contractual coverage payout USD", "default": 250000.0}
+            },
+            "required": ["depth_cm"]
+        },
+        "target_agent": "parametric-insurance-layer"
+    },
+    "settle_parametric_bond": {
+        "name": "settle_parametric_bond",
+        "description": "Executes automated parametric smart bond settlement on Polygon Amoy or Tier 2 local fallback.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "bond_id": {"type": "string", "description": "Unique bond identifier"},
+                "assessment_id": {"type": "string", "description": "Assessment event ID"},
+                "depth_cm": {"type": "number", "description": "Flood depth in cm"},
+                "risk_score_bps": {"type": "integer", "description": "Risk score in BPS"},
+                "beneficiary": {"type": "string", "description": "Payout recipient address"},
+                "payout_amount_usd": {"type": "number", "description": "Optional payout override USD"},
+                "force_fallback": {"type": "boolean", "description": "Force Tier 2 circuit fallback", "default": False}
+            },
+            "required": ["bond_id", "assessment_id", "depth_cm", "risk_score_bps", "beneficiary"]
+        },
+        "target_agent": "parametric-insurance-layer"
+    },
+    "evaluate_cfmc_mitigation_reward": {
+        "name": "evaluate_cfmc_mitigation_reward",
+        "description": "Evaluates and issues Carbon Flood Mitigation Credits (CFMC) when acute physical risk >= 0.65 (CRITICAL) but local DEM flood depth < 20cm.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "beneficiary": {"type": "string", "description": "Mitigation sponsor address"},
+                "assessment_id": {"type": "string", "description": "Assessment event ID"},
+                "risk_score_bps": {"type": "integer", "description": "Risk score in BPS (0-10000)"},
+                "dem_depth_cm": {"type": "number", "description": "DEM water depth in cm"},
+                "lat": {"type": "number", "description": "Latitude coordinate", "default": 19.0728},
+                "lon": {"type": "number", "description": "Longitude coordinate", "default": 72.8797}
+            },
+            "required": ["beneficiary", "assessment_id", "risk_score_bps", "dem_depth_cm"]
+        },
+        "target_agent": "carbon-credit-layer"
     }
 }
+
 
 
