@@ -584,6 +584,22 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             "bounds_metadata": meta
         }
 
+    elif tool_name == "evaluate_cockpit_frame_budget":
+        from backend.app.web_cockpit import evaluate_frame_budget
+        r_ms = float(params.get("render_time_ms", 12.5))
+        v_count = int(params.get("vertex_count", 450))
+        return evaluate_frame_budget(render_time_ms=r_ms, vertex_count=v_count).model_dump()
+
+    elif tool_name == "get_mission_control_cockpit_state":
+        from backend.app.web_cockpit import web_cockpit_controller
+        return web_cockpit_controller.get_cockpit_state()
+
+    elif tool_name == "optimize_gis_contour_vectors":
+        from backend.app.web_cockpit import optimize_gis_contour_vectors
+        geojson_data = params.get("geojson_data", {"type": "FeatureCollection", "features": []})
+        max_vertices = int(params.get("max_vertices", 3000))
+        return optimize_gis_contour_vectors(geojson_data=geojson_data, max_vertices=max_vertices)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

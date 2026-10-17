@@ -465,6 +465,42 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "civic-advisory-generator"
+    },
+    "evaluate_cockpit_frame_budget": {
+        "name": "evaluate_cockpit_frame_budget",
+        "description": "Evaluates GIS cockpit render time against the 60fps frame budget invariant (FrameBudget <= 16.67ms ==> FPS >= 60).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "render_time_ms": {"type": "number", "description": "Measured frame render duration in ms", "default": 12.5},
+                "vertex_count": {"type": "integer", "description": "Total vertices in active GIS layers", "default": 450}
+            },
+            "required": ["render_time_ms"]
+        },
+        "target_agent": "mission-control-cockpit"
+    },
+    "get_mission_control_cockpit_state": {
+        "name": "get_mission_control_cockpit_state",
+        "description": "Returns real-time mission-control cockpit GIS configuration, active overlays, tileset status, and frame targets.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "target_agent": "mission-control-cockpit"
+    },
+    "optimize_gis_contour_vectors": {
+        "name": "optimize_gis_contour_vectors",
+        "description": "Downsamples and decimates high-density GeoJSON contours to prevent 60fps frame budget violations.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "geojson_data": {"type": "object", "description": "GeoJSON FeatureCollection"},
+                "max_vertices": {"type": "integer", "description": "Maximum vertex budget", "default": 3000}
+            },
+            "required": ["geojson_data"]
+        },
+        "target_agent": "mission-control-cockpit"
     }
 }
 
