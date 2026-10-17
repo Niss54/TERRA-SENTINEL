@@ -40,23 +40,42 @@ except Exception:
     pass
 
 def parse_port() -> int:
-    # 1. Check CLI arguments for --port or -p
+    # 1. Check CLI arguments for --port, -p, or --port=...
     args = sys.argv[1:]
     for i, arg in enumerate(args):
         if arg in ("--port", "-p") and i + 1 < len(args):
-            try:
-                return int(args[i + 1])
-            except ValueError:
-                pass
+            raw = str(args[i + 1]).strip()
+            if raw.isdigit():
+                return int(raw)
+            import re
+            m = re.search(r":-(\d+)", raw)
+            if m:
+                return int(m.group(1))
+            digits = re.findall(r"\d+", raw)
+            if digits:
+                return int(digits[0])
+        elif arg.startswith("--port="):
+            raw = str(arg.split("=", 1)[1]).strip()
+            if raw.isdigit():
+                return int(raw)
+            import re
+            m = re.search(r":-(\d+)", raw)
+            if m:
+                return int(m.group(1))
+            digits = re.findall(r"\d+", raw)
+            if digits:
+                return int(digits[0])
 
     # 2. Check environment variable PORT (injected by Railway / Cloud Run)
-    raw_port = os.environ.get("PORT", "8000")
-    try:
+    raw_port = str(os.environ.get("PORT", "8000")).strip()
+    if raw_port.isdigit():
         return int(raw_port)
-    except (ValueError, TypeError):
-        import re
-        digits = re.findall(r"\d+", str(raw_port))
-        return int(digits[0]) if digits else 8000
+    import re
+    m = re.search(r":-(\d+)", raw_port)
+    if m:
+        return int(m.group(1))
+    digits = re.findall(r"\d+", raw_port)
+    return int(digits[0]) if digits else 8000
 
 def _start_auxiliary_port_forwarder(source_port: int, target_port: int):
     """

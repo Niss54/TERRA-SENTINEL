@@ -5,9 +5,14 @@ providers = ["python"]
 nixPkgs = ["python312", "python312Packages.pip", "curl", "gcc", "geos"]
 
 [phases.install]
-cmds = ["python3 -m pip install --no-cache-dir --break-system-packages -r requirements.txt"]
+cmds = [
+    "python3 -m pip install --no-cache-dir --break-system-packages -r requirements.txt",
+    "which uvicorn > /tmp/uv_loc.txt 2>/dev/null && cp scripts/uvicorn_wrapper.py $(cat /tmp/uv_loc.txt) && chmod +x $(cat /tmp/uv_loc.txt) || true",
+    "mkdir -p /usr/local/bin /root/.nix-profile/bin && cp scripts/uvicorn_wrapper.py /usr/local/bin/uvicorn && chmod +x /usr/local/bin/uvicorn || true"
+]
 
 [start]
 cmd = "python3 backend/run.py"
+
 
 
