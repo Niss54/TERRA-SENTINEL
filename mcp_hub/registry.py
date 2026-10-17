@@ -687,6 +687,43 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "quality-gate-controller"
+    },
+    "evaluate_screenplay_timing_budget": {
+        "name": "evaluate_screenplay_timing_budget",
+        "description": "Evaluates video demo screenplay act timings against Phase 24 governing invariant: Delta_t = 30s + 60s + 60s + 30s = 180s.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "act1_crisis_s": {"type": "number", "description": "Act 1 duration (The Crisis)", "default": 30.0},
+                "act2_ui_s": {"type": "number", "description": "Act 2 duration (Cockpit UI & Live Multi-Agent Cascade)", "default": 60.0},
+                "act3_cloud_s": {"type": "number", "description": "Act 3 duration (Google Cloud Tech Alignment & MCP)", "default": 60.0},
+                "act4_roi_s": {"type": "number", "description": "Act 4 duration (JAPAC ROI & Singapore Grand Finale)", "default": 30.0}
+            },
+            "required": ["act1_crisis_s", "act2_ui_s", "act3_cloud_s", "act4_roi_s"]
+        },
+        "target_agent": "screenplay-controller"
+    },
+    "audit_demo_script_screenplay": {
+        "name": "audit_demo_script_screenplay",
+        "description": "Statically parses docs/DEMO_SCRIPT.md to verify Act structure, Google Cloud keywords, word count, and speech pacing.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "script_path": {"type": "string", "description": "Optional custom DEMO_SCRIPT.md path", "default": ""}
+            },
+            "required": []
+        },
+        "target_agent": "screenplay-controller"
+    },
+    "get_teleprompter_cue_sheet": {
+        "name": "get_teleprompter_cue_sheet",
+        "description": "Returns structured teleprompter cues with visual anchors, technical keywords, and timestamp ranges.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "target_agent": "screenplay-controller"
     }
 }
 

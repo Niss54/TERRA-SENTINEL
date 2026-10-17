@@ -681,6 +681,23 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         from backend.app.quality_gate import quality_gate_controller
         return quality_gate_controller.get_quality_diagnostics()
 
+    elif tool_name == "evaluate_screenplay_timing_budget":
+        from backend.app.screenplay import evaluate_screenplay_timing_budget
+        a1 = float(params.get("act1_crisis_s", 30.0))
+        a2 = float(params.get("act2_ui_s", 60.0))
+        a3 = float(params.get("act3_cloud_s", 60.0))
+        a4 = float(params.get("act4_roi_s", 30.0))
+        return evaluate_screenplay_timing_budget(act1_crisis_s=a1, act2_ui_s=a2, act3_cloud_s=a3, act4_roi_s=a4).model_dump()
+
+    elif tool_name == "audit_demo_script_screenplay":
+        from backend.app.screenplay import parse_and_validate_demo_script
+        s_path = params.get("script_path") or None
+        return parse_and_validate_demo_script(script_path=s_path)
+
+    elif tool_name == "get_teleprompter_cue_sheet":
+        from backend.app.screenplay import generate_teleprompter_cue_sheet
+        return generate_teleprompter_cue_sheet()
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
