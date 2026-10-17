@@ -59,9 +59,11 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: Dockerfile
     container_name: terra-sentinel-backend
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "8000:8000"
     environment:

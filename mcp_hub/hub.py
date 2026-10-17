@@ -616,6 +616,22 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         mutations = params.get("mutations", [])
         return reconcile_offline_queue(mutations=mutations)
 
+    elif tool_name == "evaluate_container_image_budget":
+        from backend.app.docker_package import evaluate_container_image_budget
+        img_size = float(params.get("image_size_mb", 215.0))
+        vulns = int(params.get("vulnerability_count", 0))
+        non_root = bool(params.get("non_root_user", True))
+        return evaluate_container_image_budget(image_size_mb=img_size, vulnerability_count=vulns, non_root_user=non_root).model_dump()
+
+    elif tool_name == "get_cloud_run_deployment_spec":
+        from backend.app.docker_package import get_cloud_run_spec
+        return get_cloud_run_spec()
+
+    elif tool_name == "inspect_dockerfile_security_layers":
+        from backend.app.docker_package import inspect_dockerfile_security
+        dockerfile_path = params.get("dockerfile_path") or None
+        return inspect_dockerfile_security(dockerfile_path=dockerfile_path)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

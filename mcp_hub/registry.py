@@ -537,6 +537,42 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "edge-network-resilience"
+    },
+    "evaluate_container_image_budget": {
+        "name": "evaluate_container_image_budget",
+        "description": "Evaluates container image size and zero-vulnerability security gate against mathematical invariant: ImageSize <= 250MB, Vulnerabilities = 0.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "image_size_mb": {"type": "number", "description": "Image size in megabytes", "default": 215.0},
+                "vulnerability_count": {"type": "integer", "description": "Known CVE vulnerability count", "default": 0},
+                "non_root_user": {"type": "boolean", "description": "Whether non-root user UID 10001 is active", "default": True}
+            },
+            "required": ["image_size_mb"]
+        },
+        "target_agent": "container-packaging-controller"
+    },
+    "get_cloud_run_deployment_spec": {
+        "name": "get_cloud_run_deployment_spec",
+        "description": "Returns production Google Cloud Run serverless deployment specification and resource limits.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "target_agent": "container-packaging-controller"
+    },
+    "inspect_dockerfile_security_layers": {
+        "name": "inspect_dockerfile_security_layers",
+        "description": "Statically analyzes Dockerfile to verify multi-stage architecture, unprivileged non-root user (UID 10001), healthcheck, and no-cache flags.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "dockerfile_path": {"type": "string", "description": "Optional custom Dockerfile path", "default": ""}
+            },
+            "required": []
+        },
+        "target_agent": "container-packaging-controller"
     }
 }
 
