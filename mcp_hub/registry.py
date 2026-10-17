@@ -279,6 +279,50 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["channel", "message"]
         },
         "target_agent": "pubsub-bus"
+    },
+    "compute_onchain_keccak_hash": {
+        "name": "compute_onchain_keccak_hash",
+        "description": "Calculates deterministic on-chain hash satisfying Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "hotspot": {"type": "string", "description": "Hotspot location name"},
+                "var_amount": {"type": "number", "description": "Value-at-Risk financial exposure in INR lakhs"},
+                "ipfs_cid": {"type": "string", "description": "IPFS content identifier"}
+            },
+            "required": ["hotspot", "var_amount", "ipfs_cid"]
+        },
+        "target_agent": "blockchain-audit-layer"
+    },
+    "anchor_assessment_to_ledger": {
+        "name": "anchor_assessment_to_ledger",
+        "description": "Anchors verified environmental risk assessment to Polygon Amoy smart contract ledger with Keccak256 hash and IPFS CID.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "hotspot": {"type": "string", "description": "Location name"},
+                "var_amount": {"type": "number", "description": "VaR financial exposure"},
+                "ipfs_cid": {"type": "string", "description": "IPFS CIDv1 string"},
+                "risk_score": {"type": "number", "description": "Aggregate acute risk score (0.0 to 1.0)"},
+                "lat": {"type": "number", "description": "Latitude coordinate"},
+                "lon": {"type": "number", "description": "Longitude coordinate"}
+            },
+            "required": ["hotspot", "var_amount", "ipfs_cid", "risk_score", "lat", "lon"]
+        },
+        "target_agent": "blockchain-audit-layer"
+    },
+    "verify_onchain_anchor": {
+        "name": "verify_onchain_anchor",
+        "description": "Verifies cryptographic proof and existence of an on-chain disaster risk assessment in the ledger.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "assessment_id": {"type": "string", "description": "On-chain assessment ID or Keccak256 hash"}
+            },
+            "required": ["assessment_id"]
+        },
+        "target_agent": "blockchain-audit-layer"
     }
 }
+
 

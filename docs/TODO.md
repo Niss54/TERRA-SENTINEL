@@ -23,6 +23,7 @@ Phase 10: 5-Tier LLM Circuit Breaker ██████████ 100% ✅
 Phase 11: Zero-Trust Telemetry HMAC  ██████████ 100% ✅
 Phase 12: Multi-Tier Offline Sync    ██████████ 100% ✅
 Phase 13: Redis Cache & Rate Limit   ██████████ 100% ✅
+Phase 14: Polygon Amoy & IPFS Ledger ██████████ 100% ✅
 ```
 
 ---
@@ -160,3 +161,8 @@ Phase 13: Redis Cache & Rate Limit   ██████████ 100% ✅
 - [x] **Resilience & 3-Tier Circuit Breaker:** 3 consecutive failures trigger transition to OPEN $\to$ 30s cooldown probe to HALF-OPEN $\to$ reset to CLOSED, with zero-downtime local in-memory Tier 2 fallback cache
 - [x] **Full API, Client & MCP Integration:** REST endpoints (`/cache/health`, `/cache/set`, `/cache/get/{key}`, `/cache/delete/{key}`, `/cache/publish`, `/cache/rate-limit/check`, `/cache/pipeline`, `/cache/stats`, `/cache/guarded-demo`), TypeScript client `cacheManager.ts`, and 4 MCP Hub tools (`check_token_bucket_rate_limit`, `get_distributed_cache_value`, `set_distributed_cache_value`, `publish_pubsub_event`)
 - [x] **Phase 13 Full Verification Suite:** `tests/test_phase13_redis_ratelimit.py` (9 passed, 168 total repository test suite passing 100%)
+- [x] **Phase 14: Smart Contract Infrastructure: Polygon Amoy Ledger & IPFS Pinning:** Immutable audit trails, decentralized assessment persistence, and on-chain risk commitment (`backend/app/contract_ledger.py`, `blockchain/scripts/deploy.js`, `backend/app/routes/blockchain.py`, `frontend/src/utils/contractLedgerClient.ts`)
+- [x] **Governing Mathematical Invariant:** $\text{Hash}_{\text{onchain}} = \text{keccak256}(\text{Hotspot} \parallel \text{VaR} \parallel \text{IPFS\_CID})$ guaranteeing collision-resistant cryptographic linkage between spatial hotspots, financial VaR, and IPFS pin metadata
+- [x] **Resilience & 3-Tier Circuit Breaker:** 3 consecutive Web3 RPC failures trigger transition to OPEN $\to$ 30s cooldown probe to HALF-OPEN $\to$ reset to CLOSED, with zero-downtime local Tier 2 fallback audit ledger
+- [x] **Full API, Client & MCP Integration:** REST endpoints (`/blockchain/hash/compute`, `/blockchain/phase14/health`, `/blockchain/phase14/pipeline`), TypeScript client `contractLedgerClient.ts`, and 3 MCP Hub tools (`compute_onchain_keccak_hash`, `anchor_assessment_to_ledger`, `verify_onchain_anchor`)
+- [x] **Phase 14 Full Verification Suite:** `tests/test_phase14_contract_ledger.py` (6 passed, 174 total repository test suite passing 100%)

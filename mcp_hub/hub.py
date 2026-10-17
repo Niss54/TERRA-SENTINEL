@@ -412,6 +412,42 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             "status": "PUBLISHED"
         }
 
+    elif tool_name == "compute_onchain_keccak_hash":
+        from backend.app.contract_ledger import contract_ledger_controller
+        hotspot = str(params.get("hotspot", ""))
+        var_amount = float(params.get("var_amount", 0.0))
+        ipfs_cid = str(params.get("ipfs_cid", ""))
+        onchain_hash = contract_ledger_controller.compute_onchain_hash(hotspot, var_amount, ipfs_cid)
+        return {
+            "governing_equation": "Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)",
+            "hotspot": hotspot,
+            "var_amount": var_amount,
+            "ipfs_cid": ipfs_cid,
+            "onchain_hash": onchain_hash
+        }
+
+    elif tool_name == "anchor_assessment_to_ledger":
+        from backend.app.contract_ledger import contract_ledger_controller
+        hotspot = str(params.get("hotspot", ""))
+        var_amount = float(params.get("var_amount", 0.0))
+        ipfs_cid = str(params.get("ipfs_cid", ""))
+        risk_score = float(params.get("risk_score", 0.0))
+        lat = float(params.get("lat", 0.0))
+        lon = float(params.get("lon", 0.0))
+        return contract_ledger_controller.anchor_risk_assessment_sync(
+            hotspot=hotspot,
+            var_amount=var_amount,
+            ipfs_cid=ipfs_cid,
+            risk_score=risk_score,
+            lat=lat,
+            lon=lon
+        )
+
+    elif tool_name == "verify_onchain_anchor":
+        from backend.app.contract_ledger import contract_ledger_controller
+        assessment_id = str(params.get("assessment_id", ""))
+        return contract_ledger_controller.verify_assessment(assessment_id)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

@@ -10,6 +10,7 @@ from backend.app.blockchain.bond_manager import bond_manager
 from backend.app.blockchain.cfmc_manager import cfmc_manager
 from backend.app.blockchain.evidence_verifier import evidence_verifier
 from backend.app.ipfs.storage import ipfs_client
+from backend.app.contract_ledger import contract_ledger_controller, BlockchainAnchorModel
 
 router = APIRouter(tags=["TERRA-CHAIN Blockchain & Evidence Gateway"])
 
@@ -253,4 +254,52 @@ async def analyze_v2(req: AnalyzeRequest):
             "cfmc_status": cfmc_status,
         }
     }
+
+
+# ─── PHASE 14 SMART CONTRACT INFRASTRUCTURE & INVARIANT PIPELINE ─────────────
+
+class KeccakHashRequest(BaseModel):
+    hotspot: str = Field(..., example="Mumbai Mithi River Basin")
+    var_amount: float = Field(..., example=250.0)
+    ipfs_cid: str = Field(..., example="bafybeigterra_sentinel_phase14_mock_cid_v1")
+
+
+@router.post("/blockchain/hash/compute")
+async def compute_keccak_invariant(req: KeccakHashRequest):
+    """
+    Computes mathematical governing invariant:
+    Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)
+    """
+    onchain_hash = contract_ledger_controller.compute_onchain_hash(
+        hotspot=req.hotspot,
+        var_amount=req.var_amount,
+        ipfs_cid=req.ipfs_cid
+    )
+    return {
+        "governing_equation": "Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)",
+        "hotspot": req.hotspot,
+        "var_amount": req.var_amount,
+        "ipfs_cid": req.ipfs_cid,
+        "onchain_hash": onchain_hash
+    }
+
+
+@router.get("/blockchain/phase14/health")
+async def get_contract_ledger_health():
+    """
+    Returns Phase 14 Smart Contract & IPFS Pinning health and circuit breaker state.
+    """
+    return contract_ledger_controller.get_health()
+
+
+@router.post("/blockchain/phase14/pipeline", response_model=BlockchainAnchorModel)
+async def execute_phase14_pipeline(payload: Dict[str, Any]):
+    """
+    Executes PRD Phase 14 Operational Pipeline and returns BlockchainAnchorModel.
+    """
+    try:
+        return await contract_ledger_controller.execute_phase_pipeline(payload)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
 
