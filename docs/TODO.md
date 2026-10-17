@@ -17,6 +17,12 @@ Phase 4: Agent 3 - Regulatory RAG    ██████████ 100% ✅
 Phase 5: React / Vite Command Center ██████████ 100% ✅
 Phase 6: Winning Edge & Polish       ██████████ 100% ✅
 Phase 7: Web3 & Production Packaging ██████████ 100% ✅
+Phase 8: Hybrid RAG & Policy Corpus  ██████████ 100% ✅
+Phase 9: MCP Hub RFC JSON-RPC 2.0    ██████████ 100% ✅
+Phase 10: 5-Tier LLM Circuit Breaker ██████████ 100% ✅
+Phase 11: Zero-Trust Telemetry HMAC  ██████████ 100% ✅
+Phase 12: Multi-Tier Offline Sync    ██████████ 100% ✅
+Phase 13: Redis Cache & Rate Limit   ██████████ 100% ✅
 ```
 
 ---
@@ -149,3 +155,8 @@ Phase 7: Web3 & Production Packaging ██████████ 100% ✅
 - [x] **Multi-Tier Orchestration:** L1 fast cache (Redis tier) + L2 datastore (AlloyDB tier) + L3 client browser IndexedDB mutation queue
 - [x] **Full API, Client & MCP Integration:** REST endpoints (`/sync/offline-batch`, `/sync/reconcile`, `/sync/pipeline`, `/sync/status`), TypeScript client `offlineSync.ts`, and `sync_offline_mutations` tool in MCP Hub
 - [x] **Phase 12 Full Verification Suite:** `tests/test_phase12_storage_sync.py` (10 passed, 159 total repository test suite passing 100%)
+- [x] **Phase 13: Redis Distributed Caching, Pub/Sub Bus & Token Bucket Rate Limiting:** High-throughput sub-millisecond memory caching, WebSocket real-time pub/sub distribution, and API abuse prevention (`backend/app/cache.py`, `backend/app/rate_limiter.py`, `backend/app/routes/cache.py`, `frontend/src/utils/cacheManager.ts`)
+- [x] **Governing Mathematical Invariant:** $\text{Tokens}(t) = \min(C, \text{Tokens}(t_0) + r \cdot (t - t_0))$ with deterministic replenishment bounds and RFC 6585 HTTP 429 Retry-After calculations
+- [x] **Resilience & 3-Tier Circuit Breaker:** 3 consecutive failures trigger transition to OPEN $\to$ 30s cooldown probe to HALF-OPEN $\to$ reset to CLOSED, with zero-downtime local in-memory Tier 2 fallback cache
+- [x] **Full API, Client & MCP Integration:** REST endpoints (`/cache/health`, `/cache/set`, `/cache/get/{key}`, `/cache/delete/{key}`, `/cache/publish`, `/cache/rate-limit/check`, `/cache/pipeline`, `/cache/stats`, `/cache/guarded-demo`), TypeScript client `cacheManager.ts`, and 4 MCP Hub tools (`check_token_bucket_rate_limit`, `get_distributed_cache_value`, `set_distributed_cache_value`, `publish_pubsub_event`)
+- [x] **Phase 13 Full Verification Suite:** `tests/test_phase13_redis_ratelimit.py` (9 passed, 168 total repository test suite passing 100%)

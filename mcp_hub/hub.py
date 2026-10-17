@@ -368,6 +368,50 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         records = params.get("records", [])
         return storage_sync_controller.reconcile(device_id, client_state, records)
 
+    elif tool_name == "check_token_bucket_rate_limit":
+        from backend.app.rate_limiter import token_bucket_limiter
+        identifier = str(params.get("identifier", "default_client"))
+        cost = float(params.get("cost", 1.0))
+        capacity = float(params["capacity"]) if "capacity" in params and params["capacity"] is not None else None
+        refill_rate = float(params["refill_rate"]) if "refill_rate" in params and params["refill_rate"] is not None else None
+        res = token_bucket_limiter.consume(identifier, cost=cost, capacity=capacity, refill_rate=refill_rate)
+        return res.model_dump()
+
+    elif tool_name == "get_distributed_cache_value":
+        from backend.app.cache import redis_bus_controller
+        key = str(params.get("key", ""))
+        val = redis_bus_controller.get(key)
+        return {
+            "key": key,
+            "hit": val is not None,
+            "value": val,
+            "tier": redis_bus_controller.get_health()["active_tier"]
+        }
+
+    elif tool_name == "set_distributed_cache_value":
+        from backend.app.cache import redis_bus_controller
+        key = str(params.get("key", ""))
+        value = params.get("value")
+        ttl_seconds = int(params.get("ttl_seconds", 300))
+        success = redis_bus_controller.set(key, value, ttl_seconds=ttl_seconds)
+        return {
+            "key": key,
+            "stored": success,
+            "ttl_seconds": ttl_seconds,
+            "tier": redis_bus_controller.get_health()["active_tier"]
+        }
+
+    elif tool_name == "publish_pubsub_event":
+        from backend.app.cache import redis_bus_controller
+        channel = str(params.get("channel", "terra_sentinel:events"))
+        message = params.get("message", {})
+        notified = redis_bus_controller.publish(channel, message)
+        return {
+            "channel": channel,
+            "subscribers_notified": notified,
+            "status": "PUBLISHED"
+        }
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

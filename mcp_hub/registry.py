@@ -225,5 +225,60 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["device_id", "records"]
         },
         "target_agent": "storage-layer"
+    },
+    "check_token_bucket_rate_limit": {
+        "name": "check_token_bucket_rate_limit",
+        "description": "Enforces deterministic token bucket rate limit adhering to Tokens(t) = min(C, Tokens(t_0) + r * (t - t_0)) with Redis/memory state.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "identifier": {"type": "string", "description": "Client, IP, or station identifier"},
+                "cost": {"type": "number", "description": "Token cost for operation", "default": 1.0},
+                "capacity": {"type": "number", "description": "Burst capacity limit override"},
+                "refill_rate": {"type": "number", "description": "Refill rate override (tokens/sec)"}
+            },
+            "required": ["identifier"]
+        },
+        "target_agent": "rate-limiting-gateway"
+    },
+    "get_distributed_cache_value": {
+        "name": "get_distributed_cache_value",
+        "description": "Retrieves cached risk assessments, weather vectors, or telemetry from Redis distributed memory cache.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "key": {"type": "string", "description": "Cache key to look up"}
+            },
+            "required": ["key"]
+        },
+        "target_agent": "caching-layer"
+    },
+    "set_distributed_cache_value": {
+        "name": "set_distributed_cache_value",
+        "description": "Sets a key-value pair in the distributed Redis cache with TTL seconds.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "key": {"type": "string", "description": "Cache key"},
+                "value": {"description": "Value to store"},
+                "ttl_seconds": {"type": "integer", "description": "TTL in seconds", "default": 300}
+            },
+            "required": ["key", "value"]
+        },
+        "target_agent": "caching-layer"
+    },
+    "publish_pubsub_event": {
+        "name": "publish_pubsub_event",
+        "description": "Publishes a real-time event across the distributed Redis Pub/Sub cluster.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "channel": {"type": "string", "description": "Pub/sub channel name"},
+                "message": {"type": "object", "description": "JSON message payload"}
+            },
+            "required": ["channel", "message"]
+        },
+        "target_agent": "pubsub-bus"
     }
 }
+
