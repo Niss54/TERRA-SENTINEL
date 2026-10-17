@@ -308,12 +308,10 @@ class FinancialRiskEngine:
         # 1. Primary & Secondary: Google Vertex AI / Gemini Ecosystem
         if settings.GEMINI_API_KEY and settings.GEMINI_API_KEY.strip():
             gemini_priority_chain = [
-                settings.GEMINI_PRIMARY_MODEL,    # "gemini-2.0-flash"
-                "gemini-2.0-flash-exp",
-                settings.GEMINI_SECONDARY_MODEL,  # "gemini-1.5-pro"
-                "gemini-1.5-pro-002",
-                settings.GEMINI_TERTIARY_MODEL,   # "gemini-3.8-flash"
-                "gemini-flash-latest"
+                settings.GEMINI_PRIMARY_MODEL,    # "gemini-3.5-flash"
+                settings.GEMINI_SECONDARY_MODEL,  # "gemini-3.8-flash"
+                settings.GEMINI_TERTIARY_MODEL,   # "gemini-flash-latest"
+                "gemini-pro-latest"
             ]
             for g_model in gemini_priority_chain:
                 try:
@@ -324,7 +322,7 @@ class FinancialRiskEngine:
                             "contents": [{"parts": [{"text": prompt}]}],
                             "generationConfig": {"temperature": 0.3, "maxOutputTokens": 250}
                         },
-                        timeout=3.5
+                        timeout=5.0
                     )
                     if resp.status_code == 200:
                         data = resp.json()
@@ -356,7 +354,7 @@ class FinancialRiskEngine:
 
         # 2. Tier 4: Groq Cloud Cross-Cloud Failover
         if settings.GROQ_API_KEY and settings.GROQ_API_KEY.strip():
-            groq_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "openai/gpt-oss-120b", "openai/gpt-oss-20b"]
+            groq_models = ["qwen/qwen3.8-27b", "openai/gpt-oss-120b", "openai/gpt-oss-20b"]
             for model_id in groq_models:
                 try:
                     url = "https://api.groq.com/openai/v1/chat/completions"

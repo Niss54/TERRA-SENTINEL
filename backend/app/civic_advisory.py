@@ -170,12 +170,13 @@ class CivicAdvisoryController:
             self.circuit_state = "OPEN"
             logger.error(f"{self.name}: Circuit Breaker tripped to OPEN. Fallback engaged.")
 
-    async def _call_gemini_llm(self, prompt: str, model_id: str = "gemini-2.0-flash") -> Optional[str]:
+    async def _call_gemini_llm(self, prompt: str, model_id: Optional[str] = None) -> Optional[str]:
         """Calls Google Vertex AI / Gemini REST endpoint with timeout protection."""
         if not (settings.GEMINI_API_KEY and settings.GEMINI_API_KEY.strip()):
             return None
 
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_id}:generateContent?key={settings.GEMINI_API_KEY.strip()}"
+        chosen_model = model_id or settings.GEMINI_PRIMARY_MODEL
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{chosen_model}:generateContent?key={settings.GEMINI_API_KEY.strip()}"
         async with httpx.AsyncClient(timeout=4.0) as client:
             resp = await client.post(
                 url,

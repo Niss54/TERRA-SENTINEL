@@ -237,7 +237,7 @@ class EarthObservationEngine:
 
         # Invoke Google Vertex AI Gemini 2.0 Flash
         if settings.GEMINI_API_KEY and settings.GEMINI_API_KEY.strip():
-            candidate_models = ["gemini-2.0-flash", "gemini-2.0-flash-exp", "gemini-1.5-pro"]
+            candidate_models = [settings.GEMINI_PRIMARY_MODEL, "gemini-3.8-flash", "gemini-flash-latest"]
             for model_id in candidate_models:
                 try:
                     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_id}:generateContent?key={settings.GEMINI_API_KEY}"
