@@ -514,6 +514,76 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             lon=lon
         )
 
+    elif tool_name == "compute_satellite_spectral_indices":
+        from backend.app.satellite import compute_spectral_indices
+        green = float(params.get("green", 0.35))
+        red = float(params.get("red", 0.15))
+        nir = float(params.get("nir", 0.45))
+        swir = params.get("swir")
+        swir_val = float(swir) if swir is not None else None
+        return compute_spectral_indices(green=green, red=red, nir=nir, swir=swir_val)
+
+    elif tool_name == "ingest_earth_observation_telemetry":
+        from backend.app.satellite import earth_observation_controller
+        lat = float(params.get("lat", 19.0728))
+        lon = float(params.get("lon", 72.8797))
+        elev = float(params.get("elevation_m", 12.0))
+        return earth_observation_controller.ingest_telemetry_sync(lat=lat, lon=lon, elevation_m=elev)
+
+    elif tool_name == "analyze_satellite_imagery":
+        from backend.app.satellite import earth_observation_controller
+        lat = float(params.get("lat", 19.0728))
+        lon = float(params.get("lon", 72.8797))
+        loc = str(params.get("location_name", "Target Corridor"))
+        depth = int(params.get("depth_cm", 85))
+        return earth_observation_controller.analyze_imagery_sync(lat=lat, lon=lon, location_name=loc, depth_cm=depth)
+
+    elif tool_name == "generate_bilingual_civic_advisory":
+        from backend.app.civic_advisory import synthesize_bilingual_advisory_sync
+        return synthesize_bilingual_advisory_sync(
+            location=str(params.get("location", "Mumbai Mithi River Basin")),
+            effective_precip_mm=float(params.get("effective_precip_mm", 95.0)),
+            waterlogging_depth_cm=int(params.get("waterlogging_depth_cm", 85)),
+            buildings_at_risk=int(params.get("buildings_at_risk", 340)),
+            var_inr=float(params.get("var_inr", 250000000.0)),
+            policy_context=params.get("policy_context"),
+            generate_speech=bool(params.get("generate_speech", False))
+        )
+
+    elif tool_name == "synthesize_civic_speech":
+        from backend.app.agent3_financial import financial_risk_engine
+        text = str(params.get("text", "Emergency Alert"))
+        lang = str(params.get("language", "hi")).lower()
+        spk = str(params.get("speaker", "priya"))
+        if lang in ("hi", "hindi"):
+            audio_b64 = financial_risk_engine.synthesize_sarvam_speech(text, speaker=spk)
+            provider = "Sarvam AI"
+        else:
+            audio_b64 = financial_risk_engine.synthesize_elevenlabs_speech(text)
+            provider = "ElevenLabs"
+        return {
+            "status": "success" if audio_b64 else "unavailable",
+            "provider": provider,
+            "language": lang,
+            "has_audio": audio_b64 is not None,
+            "audio_base64": audio_b64
+        }
+
+    elif tool_name == "validate_civic_advisory_bounds":
+        from backend.app.civic_advisory import validate_and_clamp_advisory_bounds
+        p_eff = float(params.get("effective_precip_mm", 95.0))
+        d_water = int(params.get("waterlogging_depth_cm", 85))
+        b_risk = int(params.get("buildings_at_risk", 340))
+        v_inr = float(params.get("var_inr", 250000000.0))
+        p_c, d_c, b_c, v_c, meta = validate_and_clamp_advisory_bounds(p_eff, d_water, b_risk, v_inr)
+        return {
+            "effective_precip_mm": p_c,
+            "waterlogging_depth_cm": d_c,
+            "buildings_at_risk": b_c,
+            "var_inr": v_c,
+            "bounds_metadata": meta
+        }
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

@@ -26,6 +26,7 @@ Phase 13: Redis Cache & Rate Limit   ██████████ 100% ✅
 Phase 14: Polygon Amoy & IPFS Ledger ██████████ 100% ✅
 Phase 15: Parametric Disaster Bonds  ██████████ 100% ✅
 Phase 16: Multimodal Earth Observation ██████████ 100% ✅
+Phase 17: Bilingual Civic Advisory     ██████████ 100% ✅
 ```
 
 ---
@@ -180,3 +181,11 @@ Phase 16: Multimodal Earth Observation ██████████ 100% ✅
 - [x] **Resilience & 3-Tier Circuit Breaker:** 3 consecutive telemetry or satellite feed failures trigger transition to OPEN $\to$ 30s cooldown probe to HALF-OPEN $\to$ reset to CLOSED, with zero-downtime local Tier 2 fallback synthetic observation generator.
 - [x] **Full API, Client & MCP Integration:** REST endpoints (`/satellite/indices/compute`, `/satellite/phase16/health`, `/satellite/phase16/pipeline`), TypeScript client `satelliteClient.ts`, and 3 MCP Hub tools (`compute_satellite_spectral_indices`, `ingest_earth_observation_telemetry`, `analyze_satellite_imagery`).
 - [x] **Phase 16 Full Verification Suite:** `tests/test_phase16_satellite_multimodal.py` (5 passed, 187 total repository test suite passing 100%)
+- [x] **Phase 17: Bilingual Civic Advisory Synthesis (English & Devanagari Hindi):** Automated emergency civic bulletin generation in English and Devanagari Hindi powered by Google Vertex AI Gemini 2.0 Flash (`backend/app/civic_advisory.py`, `backend/app/routes/civic.py`, `frontend/src/utils/civicClient.ts`)
+- [x] **Governing Mathematical Invariant:** 
+  $$\text{Advisory}_{\text{Devanagari}} = \text{Gemini2.0}(P_{\text{eff}}, D_{\text{water}}, \text{Lang}=\text{hi})$$
+  with strict physical operational bound clamping ($P_{\text{eff}} \in [0.0, 1000.0]$ mm, $D_{\text{water}} \in [0, 500]$ cm, $B_{\text{risk}} \in [0, 10000]$).
+- [x] **Resilience & 3-Tier Circuit Breaker:** 3 consecutive failures trigger transition to OPEN $\to$ 30s cooldown probe to HALF-OPEN $\to$ reset to CLOSED, with zero-downtime local Tier 5 fallback deterministic Bhasha-AI heuristic engine.
+- [x] **Full API, Client & MCP Integration:** REST endpoints (`/civic/advisory/generate`, `/civic/phase17/health`, `/civic/phase17/pipeline`, `/civic/speech/synthesize`), TypeScript client `civicClient.ts`, and 3 MCP Hub tools (`generate_bilingual_civic_advisory`, `synthesize_civic_speech`, `validate_civic_advisory_bounds`).
+- [x] **Phase 17 Full Verification Suite:** `tests/test_phase17_civic_advisory.py` (7 passed, 194 total repository test suite passing 100%)
+

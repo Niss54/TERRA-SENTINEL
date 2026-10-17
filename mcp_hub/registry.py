@@ -418,6 +418,53 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["lat", "lon"]
         },
         "target_agent": "earth-observation-pipeline"
+    },
+    "generate_bilingual_civic_advisory": {
+        "name": "generate_bilingual_civic_advisory",
+        "description": "Synthesizes emergency civic advisories in English and Devanagari Hindi using Google Vertex AI Gemini 2.0 Flash with hierarchical failover.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "location": {"type": "string", "description": "Hotspot location name", "default": "Mumbai Mithi River Basin"},
+                "effective_precip_mm": {"type": "number", "description": "Effective 24h precipitation in mm", "default": 95.0},
+                "waterlogging_depth_cm": {"type": "integer", "description": "Projected waterlogging depth in cm", "default": 85},
+                "buildings_at_risk": {"type": "integer", "description": "Number of critical structures exposed", "default": 340},
+                "var_inr": {"type": "number", "description": "Enterprise Value-at-Risk in INR", "default": 250000000.0},
+                "policy_context": {"type": "string", "description": "Retrieved statutory policy context", "default": ""},
+                "generate_speech": {"type": "boolean", "description": "Generate neural TTS audio", "default": False}
+            },
+            "required": ["location"]
+        },
+        "target_agent": "civic-advisory-generator"
+    },
+    "synthesize_civic_speech": {
+        "name": "synthesize_civic_speech",
+        "description": "Synthesizes neural voice audio for emergency broadcasts using Sarvam AI (Devanagari Hindi) or ElevenLabs (English).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "text": {"type": "string", "description": "Advisory text string to synthesize"},
+                "language": {"type": "string", "description": "Language code ('hi' or 'en')", "default": "hi"},
+                "speaker": {"type": "string", "description": "Voice speaker name", "default": "priya"}
+            },
+            "required": ["text"]
+        },
+        "target_agent": "civic-advisory-generator"
+    },
+    "validate_civic_advisory_bounds": {
+        "name": "validate_civic_advisory_bounds",
+        "description": "Validates and clamps civic telemetry inputs (precipitation, waterlogging depth, buildings at risk, VaR) against realistic physical operational bounds.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "effective_precip_mm": {"type": "number", "description": "Effective 24h precipitation in mm", "default": 95.0},
+                "waterlogging_depth_cm": {"type": "integer", "description": "Projected waterlogging depth in cm", "default": 85},
+                "buildings_at_risk": {"type": "integer", "description": "Number of critical structures exposed", "default": 340},
+                "var_inr": {"type": "number", "description": "Enterprise Value-at-Risk in INR", "default": 250000000.0}
+            },
+            "required": []
+        },
+        "target_agent": "civic-advisory-generator"
     }
 }
 
