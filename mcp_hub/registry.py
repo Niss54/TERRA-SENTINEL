@@ -615,6 +615,42 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "cloud-build-ci-controller"
+    },
+    "evaluate_edge_performance_budget": {
+        "name": "evaluate_edge_performance_budget",
+        "description": "Evaluates edge CDN latency and audit score against mathematical invariant: TTFB_global <= 80ms, LighthouseScore >= 98.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "ttfb_ms": {"type": "number", "description": "Time To First Byte latency in milliseconds", "default": 45.0},
+                "lighthouse_score": {"type": "integer", "description": "Google Lighthouse composite audit score", "default": 99},
+                "edge_region": {"type": "string", "description": "Vercel edge point-of-presence code", "default": "bom1"}
+            },
+            "required": ["ttfb_ms", "lighthouse_score"]
+        },
+        "target_agent": "vercel-edge-controller"
+    },
+    "inspect_vercel_edge_configuration": {
+        "name": "inspect_vercel_edge_configuration",
+        "description": "Statically inspects vercel.json for reverse proxy rewrites, immutable caching headers, and HSTS security.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "config_path": {"type": "string", "description": "Optional custom vercel.json path", "default": ""}
+            },
+            "required": []
+        },
+        "target_agent": "vercel-edge-controller"
+    },
+    "get_edge_cdn_routing_matrix": {
+        "name": "get_edge_cdn_routing_matrix",
+        "description": "Returns production Anycast Edge CDN point-of-presence topology, latency SLAs, and HTTP/3 QUIC protocol status.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "target_agent": "vercel-edge-controller"
     }
 }
 

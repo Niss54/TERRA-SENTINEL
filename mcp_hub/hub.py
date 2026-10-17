@@ -649,6 +649,22 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         commit_sha = str(params.get("commit_sha", "HEAD"))
         return simulate_ci_trigger(branch=branch, commit_sha=commit_sha)
 
+    elif tool_name == "evaluate_edge_performance_budget":
+        from backend.app.vercel_edge import evaluate_edge_performance_budget
+        t_ms = float(params.get("ttfb_ms", 45.0))
+        lh = int(params.get("lighthouse_score", 99))
+        reg = str(params.get("edge_region", "bom1"))
+        return evaluate_edge_performance_budget(ttfb_ms=t_ms, lighthouse_score=lh, edge_region=reg).model_dump()
+
+    elif tool_name == "inspect_vercel_edge_configuration":
+        from backend.app.vercel_edge import inspect_vercel_configuration
+        cfg_path = params.get("config_path") or None
+        return inspect_vercel_configuration(config_path=cfg_path)
+
+    elif tool_name == "get_edge_cdn_routing_matrix":
+        from backend.app.vercel_edge import get_edge_cdn_routing_spec
+        return get_edge_cdn_routing_spec()
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
