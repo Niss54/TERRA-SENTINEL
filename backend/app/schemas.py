@@ -71,6 +71,7 @@ class Agent3Result(BaseModel):
     recommended_actions: List[str] = Field(default_factory=list, description="Actionable mitigation recommendations")
     bilingual_alert_hindi: Optional[str] = Field(None, description="Localized Hindi civic alert for responders")
     bilingual_alert_english: Optional[str] = Field(None, description="Localized English civic alert")
+    last_active_model: Optional[str] = Field("Google-Vertex-AI/gemini-3.5-flash", description="Active AI model employed")
     execution_time_ms: float
     timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
 

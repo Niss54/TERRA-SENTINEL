@@ -488,6 +488,7 @@ async def analyze_location(req: AnalyzeRequest):
             recommended_actions=recommended_actions,
             bilingual_alert_hindi=hindi_alert,
             bilingual_alert_english=english_alert,
+            last_active_model=fin_result.get("last_active_model", "Google-Vertex-AI/gemini-3.5-flash"),
             execution_time_ms=fin_result["execution_time_ms"]
         )
 
