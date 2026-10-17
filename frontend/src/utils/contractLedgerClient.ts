@@ -28,10 +28,20 @@ export interface OnchainAnchorRecord {
 
 export interface KeccakComputeResponse {
   governing_equation: string;
+  solidity_canonical_abi?: string;
+  solidity_packed_abi?: string;
+  data_types?: {
+    hotspot: string;
+    var_scaled: string;
+    ipfs_cid: string;
+  };
   hotspot: string;
   var_amount: number;
+  var_scaled?: number;
+  precision_scale?: number;
   ipfs_cid: string;
   onchain_hash: string;
+  onchain_hash_packed?: string;
 }
 
 export class ContractLedgerClient {

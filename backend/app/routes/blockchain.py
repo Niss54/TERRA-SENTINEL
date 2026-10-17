@@ -277,19 +277,14 @@ async def compute_keccak_invariant(req: KeccakHashRequest):
     """
     Computes mathematical governing invariant:
     Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)
+    Returns full cryptographic commitment specifications and Solidity encoding schemes.
     """
-    onchain_hash = contract_ledger_controller.compute_onchain_hash(
+    return contract_ledger_controller.get_onchain_hash_details(
         hotspot=req.hotspot,
         var_amount=req.var_amount,
         ipfs_cid=req.ipfs_cid
     )
-    return {
-        "governing_equation": "Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)",
-        "hotspot": req.hotspot,
-        "var_amount": req.var_amount,
-        "ipfs_cid": req.ipfs_cid,
-        "onchain_hash": onchain_hash
-    }
+
 
 
 @router.get("/blockchain/phase14/health")

@@ -20,11 +20,11 @@ export type { IERC20Metadata } from "./@openzeppelin/contracts/token/ERC20/exten
 export { IERC20Metadata__factory } from "./factories/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata__factory";
 export type { IERC20 } from "./@openzeppelin/contracts/token/ERC20/IERC20";
 export { IERC20__factory } from "./factories/@openzeppelin/contracts/token/ERC20/IERC20__factory";
-export type { TerraSentinelRiskLedger } from "./contracts/TerraSentinelRiskLedger";
-export { TerraSentinelRiskLedger__factory } from "./factories/contracts/TerraSentinelRiskLedger__factory";
 export type { CarbonFloodCredit } from "./contracts/CarbonFloodCredit";
 export { CarbonFloodCredit__factory } from "./factories/contracts/CarbonFloodCredit__factory";
 export type { DisasterBond } from "./contracts/DisasterBond";
 export { DisasterBond__factory } from "./factories/contracts/DisasterBond__factory";
 export type { MockERC20 } from "./contracts/MockERC20";
 export { MockERC20__factory } from "./factories/contracts/MockERC20__factory";
+export type { TerraSentinelRiskLedger } from "./contracts/TerraSentinelRiskLedger";
+export { TerraSentinelRiskLedger__factory } from "./factories/contracts/TerraSentinelRiskLedger__factory";

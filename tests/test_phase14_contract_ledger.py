@@ -87,6 +87,30 @@ def test_keccak256_mathematical_governing_equation():
     assert hash_a != hash_cid_diff
 
 
+def test_keccak256_solidity_data_types_and_encoding():
+    """
+    Verifies precise Solidity EVM encoding and data types:
+    - Hotspot: string
+    - VaR: uint256 (scaled by 1e4, basis points precision)
+    - IPFS_CID: string
+    - Canonical abi.encode vs gas-optimized abi.encodePacked
+    """
+    hotspot = "Mumbai Mithi River Basin"
+    var_amount = 250.0
+    ipfs_cid = "bafybeigterra_sentinel_phase14_mock_cid_v1"
+
+    details = ContractLedgerController().get_onchain_hash_details(hotspot, var_amount, ipfs_cid)
+    assert details["var_scaled"] == 2500000  # 250.0 * 10000
+    assert details["precision_scale"] == 10000
+    assert details["data_types"]["hotspot"] == "string"
+    assert "uint256" in details["data_types"]["var_scaled"]
+    assert details["data_types"]["ipfs_cid"] == "string"
+    assert details["onchain_hash"].startswith("0x")
+    assert details["onchain_hash_packed"].startswith("0x")
+    assert len(details["onchain_hash"]) == 66
+    assert len(details["onchain_hash_packed"]) == 66
+
+
 # -----------------------------------------------------------------------------
 # 3. Circuit Breaker State Transitions & Recovery
 # -----------------------------------------------------------------------------

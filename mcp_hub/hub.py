@@ -417,14 +417,8 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         hotspot = str(params.get("hotspot", ""))
         var_amount = float(params.get("var_amount", 0.0))
         ipfs_cid = str(params.get("ipfs_cid", ""))
-        onchain_hash = contract_ledger_controller.compute_onchain_hash(hotspot, var_amount, ipfs_cid)
-        return {
-            "governing_equation": "Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)",
-            "hotspot": hotspot,
-            "var_amount": var_amount,
-            "ipfs_cid": ipfs_cid,
-            "onchain_hash": onchain_hash
-        }
+        return contract_ledger_controller.get_onchain_hash_details(hotspot, var_amount, ipfs_cid)
+
 
     elif tool_name == "anchor_assessment_to_ledger":
         from backend.app.contract_ledger import contract_ledger_controller

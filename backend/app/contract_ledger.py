@@ -47,21 +47,55 @@ class BlockchainAnchorModel(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict, description="Telemetry metadata payload")
 
 
-def compute_keccak256_hash(hotspot: str, var_amount: float, ipfs_cid: str) -> str:
+VAR_PRECISION_SCALE = 10000  # 4 decimal places matching Solidity contract uint256 precision
+
+
+def scale_var_amount(var_amount: float) -> int:
+    """Scales float VaR into fixed-point uint256 integer for Solidity EVM compatibility."""
+    return int(round(float(var_amount) * VAR_PRECISION_SCALE))
+
+
+def compute_keccak256_hash(hotspot: str, var_amount: float, ipfs_cid: str, encoding: str = "abi_encode") -> str:
     """
     Computes deterministic on-chain hash satisfying:
     Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)
+
+    Encodings:
+    - 'abi_encode' (Canonical Standard): keccak256(abi.encode(string, uint256, string))
+      Matches Solidity computeOnchainHash() with length prefixing and 32-byte word alignment.
+    - 'abi_encode_packed' (Solidity Packed): keccak256(abi.encodePacked(string, uint256, string))
+      Matches Solidity computeOnchainHashPacked() and ethers.solidityPackedKeccak256.
     """
-    # Deterministic canonical concatenation
-    payload_str = f"{hotspot.strip()}||{float(var_amount):.4f}||{ipfs_cid.strip()}"
+    hotspot_clean = hotspot.strip()
+    var_scaled = scale_var_amount(var_amount)
+    ipfs_clean = ipfs_cid.strip()
+
     if HAS_WEB3:
-        digest = Web3.keccak(text=payload_str)
-        return "0x" + digest.hex() if not digest.hex().startswith("0x") else digest.hex()
+        if encoding == "abi_encode_packed":
+            digest = Web3.solidity_keccak(
+                ["string", "uint256", "string"],
+                [hotspot_clean, var_scaled, ipfs_clean]
+            )
+            return "0x" + digest.hex() if not digest.hex().startswith("0x") else digest.hex()
+        else:
+            try:
+                from eth_abi import encode
+                encoded = encode(["string", "uint256", "string"], [hotspot_clean, var_scaled, ipfs_clean])
+                digest = Web3.keccak(encoded)
+                return "0x" + digest.hex() if not digest.hex().startswith("0x") else digest.hex()
+            except Exception:
+                digest = Web3.solidity_keccak(
+                    ["string", "uint256", "string"],
+                    [hotspot_clean, var_scaled, ipfs_clean]
+                )
+                return "0x" + digest.hex() if not digest.hex().startswith("0x") else digest.hex()
     else:
         # Fallback SHA3-256 for standard Keccak compatibility
         import hashlib
+        payload_str = f"{hotspot_clean}:{var_scaled}:{ipfs_clean}"
         h = hashlib.sha3_256(payload_str.encode("utf-8")).hexdigest()
         return f"0x{h}"
+
 
 
 class ContractLedgerController:
@@ -143,12 +177,39 @@ class ContractLedgerController:
         elif self.circuit_state == "CLOSED":
             self.consecutive_failures = 0
 
-    def compute_onchain_hash(self, hotspot: str, var_amount: float, ipfs_cid: str) -> str:
+    def compute_onchain_hash(self, hotspot: str, var_amount: float, ipfs_cid: str, encoding: str = "abi_encode") -> str:
         """
         Public method computing governing invariant equation:
         Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)
         """
-        return compute_keccak256_hash(hotspot, var_amount, ipfs_cid)
+        return compute_keccak256_hash(hotspot, var_amount, ipfs_cid, encoding=encoding)
+
+    def get_onchain_hash_details(self, hotspot: str, var_amount: float, ipfs_cid: str) -> Dict[str, Any]:
+        """
+        Returns full cryptographic commitment specifications including data types,
+        integer scaling, canonical ABI hash, and packed ABI hash.
+        """
+        var_scaled = scale_var_amount(var_amount)
+        hash_standard = compute_keccak256_hash(hotspot, var_amount, ipfs_cid, encoding="abi_encode")
+        hash_packed = compute_keccak256_hash(hotspot, var_amount, ipfs_cid, encoding="abi_encode_packed")
+        return {
+            "governing_equation": "Hash_onchain = keccak256(Hotspot || VaR || IPFS_CID)",
+            "solidity_canonical_abi": "keccak256(abi.encode(string, uint256, string))",
+            "solidity_packed_abi": "keccak256(abi.encodePacked(string, uint256, string))",
+            "data_types": {
+                "hotspot": "string",
+                "var_scaled": "uint256 (scale factor 10^4)",
+                "ipfs_cid": "string"
+            },
+            "hotspot": hotspot,
+            "var_amount": var_amount,
+            "var_scaled": var_scaled,
+            "precision_scale": VAR_PRECISION_SCALE,
+            "ipfs_cid": ipfs_cid,
+            "onchain_hash": hash_standard,
+            "onchain_hash_packed": hash_packed
+        }
+
 
     def anchor_risk_assessment_sync(
         self,

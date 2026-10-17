@@ -42,10 +42,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "TerraSentinelRiskLedger",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.TerraSentinelRiskLedger__factory>;
-    getContractFactory(
       name: "CarbonFloodCredit",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.CarbonFloodCredit__factory>;
@@ -57,6 +53,10 @@ declare module "hardhat/types/runtime" {
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockERC20__factory>;
+    getContractFactory(
+      name: "TerraSentinelRiskLedger",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TerraSentinelRiskLedger__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -94,11 +94,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
-      name: "TerraSentinelRiskLedger",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.TerraSentinelRiskLedger>;
-    getContractAt(
       name: "CarbonFloodCredit",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -113,6 +108,11 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.MockERC20>;
+    getContractAt(
+      name: "TerraSentinelRiskLedger",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TerraSentinelRiskLedger>;
 
     deployContract(
       name: "Ownable",
@@ -143,10 +143,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IERC20>;
     deployContract(
-      name: "TerraSentinelRiskLedger",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TerraSentinelRiskLedger>;
-    deployContract(
       name: "CarbonFloodCredit",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.CarbonFloodCredit>;
@@ -158,6 +154,10 @@ declare module "hardhat/types/runtime" {
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
+    deployContract(
+      name: "TerraSentinelRiskLedger",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.TerraSentinelRiskLedger>;
 
     deployContract(
       name: "Ownable",
@@ -195,11 +195,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IERC20>;
     deployContract(
-      name: "TerraSentinelRiskLedger",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TerraSentinelRiskLedger>;
-    deployContract(
       name: "CarbonFloodCredit",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -214,6 +209,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
+    deployContract(
+      name: "TerraSentinelRiskLedger",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.TerraSentinelRiskLedger>;
 
     // default types
     getContractFactory(

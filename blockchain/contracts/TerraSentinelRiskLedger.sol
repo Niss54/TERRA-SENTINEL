@@ -30,15 +30,31 @@ contract TerraSentinelRiskLedger is Ownable {
         string   locationName;      // Human-readable location name
     }
 
+    struct RiskCommitment {
+        bytes32 onchainHash;         // keccak256(abi.encode(hotspot, varScaled, ipfsCid))
+        bytes32 onchainHashPacked;   // keccak256(abi.encodePacked(hotspot, varScaled, ipfsCid))
+        string  hotspot;             // Hotspot corridor identifier
+        uint256 varScaled;           // VaR scaled by 1e4 (e.g. 250.00 -> 2500000)
+        string  ipfsCid;             // IPFS CIDv1
+        uint256 timestamp;           // Block timestamp
+        address anchoredBy;          // Backend authorized wallet
+        bool    verified;            // Data integrity confirmation flag
+    }
+
     // ─── STATE VARIABLES ────────────────────────────────────────────────────
 
     mapping(bytes32 => RiskAssessment) public assessments;
     mapping(bytes32 => bool) public assessmentExists;
     bytes32[] public assessmentIds;
 
+    mapping(bytes32 => RiskCommitment) public commitments;
+    mapping(string => bytes32) public latestCommitmentByHotspot;
+    bytes32[] public commitmentHashes;
+
     mapping(int256 => mapping(int256 => bytes32[])) public locationHistory;
 
     uint256 public constant PRECISION = 1e6;
+    uint256 public constant VAR_PRECISION_SCALE = 1e4;      // 4 decimal places (basis points precision for VaR)
     uint256 public constant CRITICAL_THRESHOLD_BPS = 6500;  // 0.65
     uint256 public constant HIGH_THRESHOLD_BPS = 4000;      // 0.40
     uint256 public constant MEDIUM_THRESHOLD_BPS = 2000;    // 0.20
@@ -83,6 +99,16 @@ contract TerraSentinelRiskLedger is Ownable {
     );
 
     event BackendUpdated(address indexed oldBackend, address indexed newBackend);
+
+    event RiskCommitmentAnchored(
+        bytes32 indexed onchainHash,
+        bytes32 indexed onchainHashPacked,
+        string hotspot,
+        uint256 varScaled,
+        string ipfsCid,
+        address indexed anchoredBy,
+        uint256 timestamp
+    );
 
     // ─── MODIFIERS ───────────────────────────────────────────────────────────
 
@@ -227,6 +253,94 @@ contract TerraSentinelRiskLedger is Ownable {
         uint256 _criticalAlerts
     ) {
         return (totalAssessments, criticalAlerts);
+    }
+
+    // ─── MATHEMATICAL COMMITMENT FUNCTIONS ──────────────────────────────────
+
+    /**
+     * @notice Computes deterministic on-chain hash using canonical ABI encoding.
+     * @dev Hash_onchain = keccak256(abi.encode(hotspot, varScaled, ipfsCid))
+     */
+    function computeOnchainHash(
+        string calldata hotspot,
+        uint256 varScaled,
+        string calldata ipfsCid
+    ) public pure returns (bytes32) {
+        return keccak256(abi.encode(hotspot, varScaled, ipfsCid));
+    }
+
+    /**
+     * @notice Computes deterministic on-chain hash using Solidity packed encoding.
+     * @dev Hash_onchain = keccak256(abi.encodePacked(hotspot, varScaled, ipfsCid))
+     */
+    function computeOnchainHashPacked(
+        string calldata hotspot,
+        uint256 varScaled,
+        string calldata ipfsCid
+    ) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(hotspot, varScaled, ipfsCid));
+    }
+
+    /**
+     * @notice Anchors an immutable cryptographic risk commitment on-chain.
+     */
+    function anchorRiskCommitment(
+        string calldata hotspot,
+        uint256 varScaled,
+        string calldata ipfsCid
+    ) external onlyBackend returns (bytes32 onchainHash, bytes32 onchainHashPacked) {
+        require(bytes(hotspot).length > 0, "TerraSentinelRiskLedger: empty hotspot");
+        require(bytes(ipfsCid).length > 0, "TerraSentinelRiskLedger: empty IPFS CID");
+
+        onchainHash = computeOnchainHash(hotspot, varScaled, ipfsCid);
+        onchainHashPacked = computeOnchainHashPacked(hotspot, varScaled, ipfsCid);
+
+        commitments[onchainHash] = RiskCommitment({
+            onchainHash: onchainHash,
+            onchainHashPacked: onchainHashPacked,
+            hotspot: hotspot,
+            varScaled: varScaled,
+            ipfsCid: ipfsCid,
+            timestamp: block.timestamp,
+            anchoredBy: msg.sender,
+            verified: true
+        });
+
+        latestCommitmentByHotspot[hotspot] = onchainHash;
+        commitmentHashes.push(onchainHash);
+
+        emit RiskCommitmentAnchored(
+            onchainHash,
+            onchainHashPacked,
+            hotspot,
+            varScaled,
+            ipfsCid,
+            msg.sender,
+            block.timestamp
+        );
+
+        return (onchainHash, onchainHashPacked);
+    }
+
+    /**
+     * @notice Verifies data integrity against an anchored on-chain cryptographic commitment.
+     */
+    function verifyRiskCommitment(
+        bytes32 onchainHash,
+        string calldata hotspot,
+        uint256 varScaled,
+        string calldata ipfsCid
+    ) external view returns (bool isValid, bool existsOnchain, uint256 timestamp, address anchoredBy) {
+        bytes32 computed = computeOnchainHash(hotspot, varScaled, ipfsCid);
+        isValid = (computed == onchainHash);
+        RiskCommitment memory comm = commitments[onchainHash];
+        existsOnchain = comm.verified;
+        timestamp = comm.timestamp;
+        anchoredBy = comm.anchoredBy;
+    }
+
+    function getCommitment(bytes32 onchainHash) external view returns (RiskCommitment memory) {
+        return commitments[onchainHash];
     }
 
     // ─── ADMIN FUNCTIONS ─────────────────────────────────────────────────────

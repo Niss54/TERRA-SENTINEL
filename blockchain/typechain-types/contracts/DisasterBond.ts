@@ -78,8 +78,6 @@ export interface DisasterBondInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "activeBondsCount"
-      | "terraSentinelBackend"
-      | "terraSentinelLedger"
       | "allBondIds"
       | "bonds"
       | "createBond"
@@ -92,6 +90,8 @@ export interface DisasterBondInterface extends Interface {
       | "owner"
       | "renounceOwnership"
       | "setBackend"
+      | "terraSentinelBackend"
+      | "terraSentinelLedger"
       | "totalPayouts"
       | "transferOwnership"
       | "usdc"
@@ -107,14 +107,6 @@ export interface DisasterBondInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "activeBondsCount",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "terraSentinelBackend",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "terraSentinelLedger",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -165,6 +157,14 @@ export interface DisasterBondInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "terraSentinelBackend",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "terraSentinelLedger",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "totalPayouts",
     values?: undefined
   ): string;
@@ -176,14 +176,6 @@ export interface DisasterBondInterface extends Interface {
 
   decodeFunctionResult(
     functionFragment: "activeBondsCount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "terraSentinelBackend",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "terraSentinelLedger",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "allBondIds", data: BytesLike): Result;
@@ -216,6 +208,14 @@ export interface DisasterBondInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setBackend", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "terraSentinelBackend",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "terraSentinelLedger",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalPayouts",
     data: BytesLike
@@ -366,10 +366,6 @@ export interface DisasterBond extends BaseContract {
 
   activeBondsCount: TypedContractMethod<[], [bigint], "view">;
 
-  terraSentinelBackend: TypedContractMethod<[], [string], "view">;
-
-  terraSentinelLedger: TypedContractMethod<[], [string], "view">;
-
   allBondIds: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
 
   bonds: TypedContractMethod<
@@ -467,6 +463,10 @@ export interface DisasterBond extends BaseContract {
     "nonpayable"
   >;
 
+  terraSentinelBackend: TypedContractMethod<[], [string], "view">;
+
+  terraSentinelLedger: TypedContractMethod<[], [string], "view">;
+
   totalPayouts: TypedContractMethod<[], [bigint], "view">;
 
   transferOwnership: TypedContractMethod<
@@ -484,12 +484,6 @@ export interface DisasterBond extends BaseContract {
   getFunction(
     nameOrSignature: "activeBondsCount"
   ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "terraSentinelBackend"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "terraSentinelLedger"
-  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "allBondIds"
   ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
@@ -595,6 +589,12 @@ export interface DisasterBond extends BaseContract {
   getFunction(
     nameOrSignature: "setBackend"
   ): TypedContractMethod<[newBackend: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "terraSentinelBackend"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "terraSentinelLedger"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "totalPayouts"
   ): TypedContractMethod<[], [bigint], "view">;

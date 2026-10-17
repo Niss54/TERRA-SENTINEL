@@ -29,7 +29,6 @@ export interface CarbonFloodCreditInterface extends Interface {
       | "CRITICAL_RISK_BPS"
       | "LOW_DAMAGE_DEPTH_CM"
       | "MITIGATION_REWARD"
-      | "terraSentinelBackend"
       | "allowance"
       | "approve"
       | "balanceOf"
@@ -43,6 +42,7 @@ export interface CarbonFloodCreditInterface extends Interface {
       | "retireCredits"
       | "setBackend"
       | "symbol"
+      | "terraSentinelBackend"
       | "totalCFMCMinted"
       | "totalMitigationEvents"
       | "totalSupply"
@@ -71,10 +71,6 @@ export interface CarbonFloodCreditInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "MITIGATION_REWARD",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "terraSentinelBackend",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -125,6 +121,10 @@ export interface CarbonFloodCreditInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "terraSentinelBackend",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "totalCFMCMinted",
     values?: undefined
   ): string;
@@ -161,10 +161,6 @@ export interface CarbonFloodCreditInterface extends Interface {
     functionFragment: "MITIGATION_REWARD",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "terraSentinelBackend",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -193,6 +189,10 @@ export interface CarbonFloodCreditInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "setBackend", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "terraSentinelBackend",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalCFMCMinted",
     data: BytesLike
@@ -379,8 +379,6 @@ export interface CarbonFloodCredit extends BaseContract {
 
   MITIGATION_REWARD: TypedContractMethod<[], [bigint], "view">;
 
-  terraSentinelBackend: TypedContractMethod<[], [string], "view">;
-
   allowance: TypedContractMethod<
     [owner: AddressLike, spender: AddressLike],
     [bigint],
@@ -434,6 +432,8 @@ export interface CarbonFloodCredit extends BaseContract {
 
   symbol: TypedContractMethod<[], [string], "view">;
 
+  terraSentinelBackend: TypedContractMethod<[], [string], "view">;
+
   totalCFMCMinted: TypedContractMethod<[], [bigint], "view">;
 
   totalMitigationEvents: TypedContractMethod<[], [bigint], "view">;
@@ -471,9 +471,6 @@ export interface CarbonFloodCredit extends BaseContract {
   getFunction(
     nameOrSignature: "MITIGATION_REWARD"
   ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "terraSentinelBackend"
-  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "allowance"
   ): TypedContractMethod<
@@ -535,6 +532,9 @@ export interface CarbonFloodCredit extends BaseContract {
   ): TypedContractMethod<[newBackend: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "symbol"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "terraSentinelBackend"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "totalCFMCMinted"

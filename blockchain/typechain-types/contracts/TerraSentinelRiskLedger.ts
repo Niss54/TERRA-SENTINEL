@@ -72,6 +72,37 @@ export declare namespace TerraSentinelRiskLedger {
     varInrLakhs: bigint;
     locationName: string;
   };
+
+  export type RiskCommitmentStruct = {
+    onchainHash: BytesLike;
+    onchainHashPacked: BytesLike;
+    hotspot: string;
+    varScaled: BigNumberish;
+    ipfsCid: string;
+    timestamp: BigNumberish;
+    anchoredBy: AddressLike;
+    verified: boolean;
+  };
+
+  export type RiskCommitmentStructOutput = [
+    onchainHash: string,
+    onchainHashPacked: string,
+    hotspot: string,
+    varScaled: bigint,
+    ipfsCid: string,
+    timestamp: bigint,
+    anchoredBy: string,
+    verified: boolean
+  ] & {
+    onchainHash: string;
+    onchainHashPacked: string;
+    hotspot: string;
+    varScaled: bigint;
+    ipfsCid: string;
+    timestamp: bigint;
+    anchoredBy: string;
+    verified: boolean;
+  };
 }
 
 export interface TerraSentinelRiskLedgerInterface extends Interface {
@@ -81,24 +112,33 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
       | "HIGH_THRESHOLD_BPS"
       | "MEDIUM_THRESHOLD_BPS"
       | "PRECISION"
-      | "terraSentinelBackend"
+      | "VAR_PRECISION_SCALE"
       | "anchorDEMCascade"
       | "anchorRiskAssessment"
+      | "anchorRiskCommitment"
       | "anchorVaRCascade"
       | "assessmentExists"
       | "assessmentIds"
       | "assessments"
+      | "commitmentHashes"
+      | "commitments"
+      | "computeOnchainHash"
+      | "computeOnchainHashPacked"
       | "criticalAlerts"
       | "getAssessment"
+      | "getCommitment"
       | "getLocationHistory"
       | "getRecentAssessments"
       | "getStats"
+      | "latestCommitmentByHotspot"
       | "locationHistory"
       | "owner"
       | "renounceOwnership"
       | "setBackend"
+      | "terraSentinelBackend"
       | "totalAssessments"
       | "transferOwnership"
+      | "verifyRiskCommitment"
   ): FunctionFragment;
 
   getEvent(
@@ -108,6 +148,7 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
       | "DEMCascadeAnchored"
       | "OwnershipTransferred"
       | "RiskAssessmentAnchored"
+      | "RiskCommitmentAnchored"
       | "VaRCascadeAnchored"
   ): EventFragment;
 
@@ -125,7 +166,7 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "PRECISION", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "terraSentinelBackend",
+    functionFragment: "VAR_PRECISION_SCALE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -135,6 +176,10 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
   encodeFunctionData(
     functionFragment: "anchorRiskAssessment",
     values: [BigNumberish, BigNumberish, BigNumberish, string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "anchorRiskCommitment",
+    values: [string, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "anchorVaRCascade",
@@ -160,11 +205,31 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "commitmentHashes",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "commitments",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "computeOnchainHash",
+    values: [string, BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "computeOnchainHashPacked",
+    values: [string, BigNumberish, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "criticalAlerts",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getAssessment",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCommitment",
     values: [BytesLike]
   ): string;
   encodeFunctionData(
@@ -176,6 +241,10 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "getStats", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "latestCommitmentByHotspot",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "locationHistory",
     values: [BigNumberish, BigNumberish, BigNumberish]
@@ -190,12 +259,20 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "terraSentinelBackend",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "totalAssessments",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "verifyRiskCommitment",
+    values: [BytesLike, string, BigNumberish, string]
   ): string;
 
   decodeFunctionResult(
@@ -212,7 +289,7 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "PRECISION", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "terraSentinelBackend",
+    functionFragment: "VAR_PRECISION_SCALE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -221,6 +298,10 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "anchorRiskAssessment",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "anchorRiskCommitment",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -240,11 +321,31 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "commitmentHashes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "commitments",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "computeOnchainHash",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "computeOnchainHashPacked",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "criticalAlerts",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "getAssessment",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCommitment",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -257,6 +358,10 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getStats", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "latestCommitmentByHotspot",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "locationHistory",
     data: BytesLike
   ): Result;
@@ -267,11 +372,19 @@ export interface TerraSentinelRiskLedgerInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "setBackend", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "terraSentinelBackend",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "totalAssessments",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "verifyRiskCommitment",
     data: BytesLike
   ): Result;
 }
@@ -389,6 +502,40 @@ export namespace RiskAssessmentAnchoredEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace RiskCommitmentAnchoredEvent {
+  export type InputTuple = [
+    onchainHash: BytesLike,
+    onchainHashPacked: BytesLike,
+    hotspot: string,
+    varScaled: BigNumberish,
+    ipfsCid: string,
+    anchoredBy: AddressLike,
+    timestamp: BigNumberish
+  ];
+  export type OutputTuple = [
+    onchainHash: string,
+    onchainHashPacked: string,
+    hotspot: string,
+    varScaled: bigint,
+    ipfsCid: string,
+    anchoredBy: string,
+    timestamp: bigint
+  ];
+  export interface OutputObject {
+    onchainHash: string;
+    onchainHashPacked: string;
+    hotspot: string;
+    varScaled: bigint;
+    ipfsCid: string;
+    anchoredBy: string;
+    timestamp: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace VaRCascadeAnchoredEvent {
   export type InputTuple = [
     assessmentId: BytesLike,
@@ -468,7 +615,7 @@ export interface TerraSentinelRiskLedger extends BaseContract {
 
   PRECISION: TypedContractMethod<[], [bigint], "view">;
 
-  terraSentinelBackend: TypedContractMethod<[], [string], "view">;
+  VAR_PRECISION_SCALE: TypedContractMethod<[], [bigint], "view">;
 
   anchorDEMCascade: TypedContractMethod<
     [
@@ -491,6 +638,12 @@ export interface TerraSentinelRiskLedger extends BaseContract {
       locationName: string
     ],
     [string],
+    "nonpayable"
+  >;
+
+  anchorRiskCommitment: TypedContractMethod<
+    [hotspot: string, varScaled: BigNumberish, ipfsCid: string],
+    [[string, string] & { onchainHash: string; onchainHashPacked: string }],
     "nonpayable"
   >;
 
@@ -549,11 +702,48 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     "view"
   >;
 
+  commitmentHashes: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
+
+  commitments: TypedContractMethod<
+    [arg0: BytesLike],
+    [
+      [string, string, string, bigint, string, bigint, string, boolean] & {
+        onchainHash: string;
+        onchainHashPacked: string;
+        hotspot: string;
+        varScaled: bigint;
+        ipfsCid: string;
+        timestamp: bigint;
+        anchoredBy: string;
+        verified: boolean;
+      }
+    ],
+    "view"
+  >;
+
+  computeOnchainHash: TypedContractMethod<
+    [hotspot: string, varScaled: BigNumberish, ipfsCid: string],
+    [string],
+    "view"
+  >;
+
+  computeOnchainHashPacked: TypedContractMethod<
+    [hotspot: string, varScaled: BigNumberish, ipfsCid: string],
+    [string],
+    "view"
+  >;
+
   criticalAlerts: TypedContractMethod<[], [bigint], "view">;
 
   getAssessment: TypedContractMethod<
     [assessmentId: BytesLike],
     [TerraSentinelRiskLedger.RiskAssessmentStructOutput],
+    "view"
+  >;
+
+  getCommitment: TypedContractMethod<
+    [onchainHash: BytesLike],
+    [TerraSentinelRiskLedger.RiskCommitmentStructOutput],
     "view"
   >;
 
@@ -575,6 +765,12 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     "view"
   >;
 
+  latestCommitmentByHotspot: TypedContractMethod<
+    [arg0: string],
+    [string],
+    "view"
+  >;
+
   locationHistory: TypedContractMethod<
     [arg0: BigNumberish, arg1: BigNumberish, arg2: BigNumberish],
     [string],
@@ -591,12 +787,32 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     "nonpayable"
   >;
 
+  terraSentinelBackend: TypedContractMethod<[], [string], "view">;
+
   totalAssessments: TypedContractMethod<[], [bigint], "view">;
 
   transferOwnership: TypedContractMethod<
     [newOwner: AddressLike],
     [void],
     "nonpayable"
+  >;
+
+  verifyRiskCommitment: TypedContractMethod<
+    [
+      onchainHash: BytesLike,
+      hotspot: string,
+      varScaled: BigNumberish,
+      ipfsCid: string
+    ],
+    [
+      [boolean, boolean, bigint, string] & {
+        isValid: boolean;
+        existsOnchain: boolean;
+        timestamp: bigint;
+        anchoredBy: string;
+      }
+    ],
+    "view"
   >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -616,8 +832,8 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     nameOrSignature: "PRECISION"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "terraSentinelBackend"
-  ): TypedContractMethod<[], [string], "view">;
+    nameOrSignature: "VAR_PRECISION_SCALE"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "anchorDEMCascade"
   ): TypedContractMethod<
@@ -642,6 +858,13 @@ export interface TerraSentinelRiskLedger extends BaseContract {
       locationName: string
     ],
     [string],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "anchorRiskCommitment"
+  ): TypedContractMethod<
+    [hotspot: string, varScaled: BigNumberish, ipfsCid: string],
+    [[string, string] & { onchainHash: string; onchainHashPacked: string }],
     "nonpayable"
   >;
   getFunction(
@@ -704,6 +927,41 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "commitmentHashes"
+  ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
+  getFunction(
+    nameOrSignature: "commitments"
+  ): TypedContractMethod<
+    [arg0: BytesLike],
+    [
+      [string, string, string, bigint, string, bigint, string, boolean] & {
+        onchainHash: string;
+        onchainHashPacked: string;
+        hotspot: string;
+        varScaled: bigint;
+        ipfsCid: string;
+        timestamp: bigint;
+        anchoredBy: string;
+        verified: boolean;
+      }
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "computeOnchainHash"
+  ): TypedContractMethod<
+    [hotspot: string, varScaled: BigNumberish, ipfsCid: string],
+    [string],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "computeOnchainHashPacked"
+  ): TypedContractMethod<
+    [hotspot: string, varScaled: BigNumberish, ipfsCid: string],
+    [string],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "criticalAlerts"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
@@ -711,6 +969,13 @@ export interface TerraSentinelRiskLedger extends BaseContract {
   ): TypedContractMethod<
     [assessmentId: BytesLike],
     [TerraSentinelRiskLedger.RiskAssessmentStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getCommitment"
+  ): TypedContractMethod<
+    [onchainHash: BytesLike],
+    [TerraSentinelRiskLedger.RiskCommitmentStructOutput],
     "view"
   >;
   getFunction(
@@ -731,6 +996,9 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "latestCommitmentByHotspot"
+  ): TypedContractMethod<[arg0: string], [string], "view">;
+  getFunction(
     nameOrSignature: "locationHistory"
   ): TypedContractMethod<
     [arg0: BigNumberish, arg1: BigNumberish, arg2: BigNumberish],
@@ -747,11 +1015,33 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     nameOrSignature: "setBackend"
   ): TypedContractMethod<[newBackend: AddressLike], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "terraSentinelBackend"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "totalAssessments"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "transferOwnership"
   ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "verifyRiskCommitment"
+  ): TypedContractMethod<
+    [
+      onchainHash: BytesLike,
+      hotspot: string,
+      varScaled: BigNumberish,
+      ipfsCid: string
+    ],
+    [
+      [boolean, boolean, bigint, string] & {
+        isValid: boolean;
+        existsOnchain: boolean;
+        timestamp: bigint;
+        anchoredBy: string;
+      }
+    ],
+    "view"
+  >;
 
   getEvent(
     key: "BackendUpdated"
@@ -787,6 +1077,13 @@ export interface TerraSentinelRiskLedger extends BaseContract {
     RiskAssessmentAnchoredEvent.InputTuple,
     RiskAssessmentAnchoredEvent.OutputTuple,
     RiskAssessmentAnchoredEvent.OutputObject
+  >;
+  getEvent(
+    key: "RiskCommitmentAnchored"
+  ): TypedContractEvent<
+    RiskCommitmentAnchoredEvent.InputTuple,
+    RiskCommitmentAnchoredEvent.OutputTuple,
+    RiskCommitmentAnchoredEvent.OutputObject
   >;
   getEvent(
     key: "VaRCascadeAnchored"
@@ -850,6 +1147,17 @@ export interface TerraSentinelRiskLedger extends BaseContract {
       RiskAssessmentAnchoredEvent.InputTuple,
       RiskAssessmentAnchoredEvent.OutputTuple,
       RiskAssessmentAnchoredEvent.OutputObject
+    >;
+
+    "RiskCommitmentAnchored(bytes32,bytes32,string,uint256,string,address,uint256)": TypedContractEvent<
+      RiskCommitmentAnchoredEvent.InputTuple,
+      RiskCommitmentAnchoredEvent.OutputTuple,
+      RiskCommitmentAnchoredEvent.OutputObject
+    >;
+    RiskCommitmentAnchored: TypedContractEvent<
+      RiskCommitmentAnchoredEvent.InputTuple,
+      RiskCommitmentAnchoredEvent.OutputTuple,
+      RiskCommitmentAnchoredEvent.OutputObject
     >;
 
     "VaRCascadeAnchored(bytes32,uint256,uint256,uint256,string)": TypedContractEvent<
