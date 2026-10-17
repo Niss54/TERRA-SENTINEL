@@ -96,6 +96,14 @@
 
 ## SLIDE 5: Market Opportunity — HOW IT ACTUALLY WORKS (Architecture)
 
+### **$12.8B TAM · $3.2B SAM · $480M SOM (JAPAC Estuarine Climate Resiliency)**
+
+| Market Sizing Tier | Valuation (USD) | Scope & Methodology |
+|:---|:---|:---|
+| **TAM (Total Addressable Market)** | **$12.8 Billion** | Global enterprise climate risk analytics, physical asset exposure & parametric disaster coverage |
+| **SAM (Serviceable Addressable Market)** | **$3.2 Billion** | JAPAC coastal megacities, port authorities, municipal corporations & industrial corridors |
+| **SOM (Serviceable Obtainable Market)** | **$480 Million** | Top 25 Tier-1 Indian & ASEAN metros + 50 port corridors over 36-month horizon |
+
 ### **Hub-and-Spoke Multi-Agent Architecture via Model Context Protocol (MCP)**
 
 ```

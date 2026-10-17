@@ -698,6 +698,23 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         from backend.app.screenplay import generate_teleprompter_cue_sheet
         return generate_teleprompter_cue_sheet()
 
+    elif tool_name == "evaluate_tam_sam_som_market_opportunity":
+        from backend.app.finale_strategy import evaluate_tam_sam_som_market_opportunity
+        t_b = float(params.get("tam_usd_b", 12.8))
+        s_b = float(params.get("sam_usd_b", 3.2))
+        s_m = float(params.get("som_usd_m", 480.0))
+        return evaluate_tam_sam_som_market_opportunity(tam_usd_b=t_b, sam_usd_b=s_b, som_usd_m=s_m).model_dump()
+
+    elif tool_name == "audit_pitch_deck_slides":
+        from backend.app.finale_strategy import audit_pitch_deck_structure
+        d_path = params.get("deck_path") or None
+        return audit_pitch_deck_structure(deck_path=d_path)
+
+    elif tool_name == "get_singapore_grand_finale_playbook":
+        from backend.app.finale_strategy import generate_singapore_grand_finale_playbook
+        e_name = params.get("event_name") or "Google Cloud AI Builder Cup — JAPAC Grand Finale"
+        return generate_singapore_grand_finale_playbook(event_name=e_name)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

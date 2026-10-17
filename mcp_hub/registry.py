@@ -724,6 +724,44 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "screenplay-controller"
+    },
+    "evaluate_tam_sam_som_market_opportunity": {
+        "name": "evaluate_tam_sam_som_market_opportunity",
+        "description": "Evaluates TAM/SAM/SOM market sizing against Phase 25 governing invariant: TAM = $12.8B, SAM = $3.2B, SOM = $480M.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "tam_usd_b": {"type": "number", "description": "Total Addressable Market in billions USD", "default": 12.8},
+                "sam_usd_b": {"type": "number", "description": "Serviceable Addressable Market in billions USD", "default": 3.2},
+                "som_usd_m": {"type": "number", "description": "Serviceable Obtainable Market in millions USD", "default": 480.0}
+            },
+            "required": ["tam_usd_b", "sam_usd_b", "som_usd_m"]
+        },
+        "target_agent": "finale-strategy-controller"
+    },
+    "audit_pitch_deck_slides": {
+        "name": "audit_pitch_deck_slides",
+        "description": "Statically parses docs/PITCH_DECK.md to verify 10 canonical investor slides, Google Cloud differentiators, and Singapore Grand Finale roadmap.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "deck_path": {"type": "string", "description": "Optional custom PITCH_DECK.md path", "default": ""}
+            },
+            "required": []
+        },
+        "target_agent": "finale-strategy-controller"
+    },
+    "get_singapore_grand_finale_playbook": {
+        "name": "get_singapore_grand_finale_playbook",
+        "description": "Returns structured 48-Hour Live Demo Execution Playbook for the Singapore Grand Finale stage.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "event_name": {"type": "string", "description": "Target championship event name", "default": "Google Cloud AI Builder Cup — JAPAC Grand Finale"}
+            },
+            "required": []
+        },
+        "target_agent": "finale-strategy-controller"
     }
 }
 
