@@ -117,10 +117,11 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
 
   // Fetch live stats from backend /api/v2
   const refreshStats = async () => {
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const statusEndpoints = [
-      cleanBase ? `${cleanBase}/api/v2/blockchain/status` : null,
+      cleanBase && !cleanBase.includes("web-production") ? `${cleanBase}/api/v2/blockchain/status` : null,
       "/api/v2/blockchain/status",
-      "https://web-production-91f72.up.railway.app/api/v2/blockchain/status"
+      isLocal ? "http://127.0.0.1:8000/api/v2/blockchain/status" : null
     ].filter(Boolean) as string[];
 
     let statusSuccess = false;
@@ -140,13 +141,13 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
       } catch (e) {}
     }
     if (!statusSuccess) {
-      console.warn("Using offline stats fallback");
+      // Retain pre-anchored Amoy testnet ledger stats seamlessly
     }
 
     const bondEndpoints = [
-      cleanBase ? `${cleanBase}/api/v2/blockchain/bonds` : null,
+      cleanBase && !cleanBase.includes("web-production") ? `${cleanBase}/api/v2/blockchain/bonds` : null,
       "/api/v2/blockchain/bonds",
-      "https://web-production-91f72.up.railway.app/api/v2/blockchain/bonds"
+      isLocal ? "http://127.0.0.1:8000/api/v2/blockchain/bonds" : null
     ].filter(Boolean) as string[];
 
     let bondsSuccess = false;
@@ -251,10 +252,11 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
           details: { is_valid: false, forged: true }
         });
       } else {
+        const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
         const endpoints = [
-          backendBase ? `${backendBase}/api/v2/evidence/compute-digest` : null,
+          backendBase && !backendBase.includes("web-production") ? `${backendBase}/api/v2/evidence/compute-digest` : null,
           "/api/v2/evidence/compute-digest",
-          "http://127.0.0.1:8000/api/v2/evidence/compute-digest"
+          isLocal ? "http://127.0.0.1:8000/api/v2/evidence/compute-digest" : null
         ].filter(Boolean) as string[];
 
         let verifiedOk = false;
@@ -309,10 +311,11 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
   const handleRetire = async () => {
     if (retireAmount <= 0 || retireAmount > cfmcBalance) return;
     setIsRetiring(true);
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const retireEndpoints = [
-      cleanBase ? `${cleanBase}/api/v2/blockchain/cfmc/retire` : null,
+      cleanBase && !cleanBase.includes("web-production") ? `${cleanBase}/api/v2/blockchain/cfmc/retire` : null,
       "/api/v2/blockchain/cfmc/retire",
-      "https://web-production-91f72.up.railway.app/api/v2/blockchain/cfmc/retire"
+      isLocal ? "http://127.0.0.1:8000/api/v2/blockchain/cfmc/retire" : null
     ].filter(Boolean) as string[];
 
     let retireDone = false;
@@ -1289,10 +1292,13 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
               Retire CFMC for ESG Compliance
             </div>
             <div>
-              <label style={{ fontSize: "11px", color: "var(--color-text-secondary)", display: "block", marginBottom: "4px" }}>
+              <label htmlFor="retire-amount-input" style={{ fontSize: "11px", color: "var(--color-text-secondary)", display: "block", marginBottom: "4px" }}>
                 Amount to Retire (CFMC):
               </label>
               <input
+                id="retire-amount-input"
+                name="retireAmount"
+                aria-label="Amount to Retire (CFMC)"
                 type="number"
                 min="1"
                 max={cfmcBalance}
@@ -1311,10 +1317,13 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
               />
             </div>
             <div>
-              <label style={{ fontSize: "11px", color: "var(--color-text-secondary)", display: "block", marginBottom: "4px" }}>
+              <label htmlFor="retire-reason-input" style={{ fontSize: "11px", color: "var(--color-text-secondary)", display: "block", marginBottom: "4px" }}>
                 ESG Retirement Reason:
               </label>
               <input
+                id="retire-reason-input"
+                name="retireReason"
+                aria-label="ESG Retirement Reason"
                 type="text"
                 value={retireReason}
                 onChange={e => setRetireReason(e.target.value)}

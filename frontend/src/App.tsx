@@ -1012,7 +1012,7 @@ function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: 
       compliance_gap_pct: Number((riskScore * 48).toFixed(1)),
       recommended_actions: profile.recommended_actions,
       bilingual_alert_hindi: profile.regional_alert_text,
-      bilingual_alert_english: `⚠️ [TERRA-SENTINEL GLOBAL HAZARD ADVISORY | TIER: ${riskTier}] ${locName} facing critical inundation threat (> ${depth}cm surge) under ${sat}% soil saturation index. Total Enterprise Value at Risk: $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} Cr). Immediate civil protection protocols and parametric liquidity safeguards activated.`,
+      bilingual_alert_english: `⚠️ [TERRA-SENTINEL GLOBAL HAZARD ADVISORY | TIER: ${riskTier}] ${locName} facing critical inundation threat (> ${depth}cm surge) under ${sat}% soil saturation index. Total Enterprise Value at Risk: ${profile.is_india ? `₹${(varInr / 10000000).toFixed(0)} Cr ($${(varUsd / 1000000).toFixed(1)}M USD)` : `$${(varUsd / 1000000).toFixed(1)}M USD ${profile.secondary_var_display.startsWith('(') ? profile.secondary_var_display : `(${profile.secondary_var_display})`}`}. Immediate civil protection protocols and parametric liquidity safeguards activated.`,
       regional_language: profile.regional_language,
       regional_language_native: profile.regional_language_native,
       regional_lang_code: profile.regional_lang_code,
@@ -1355,9 +1355,14 @@ export function App() {
     let reconnectTimer: any = null;
     let isMounted = true;
     let retryDelay = 3000;
+    let failureCount = 0;
 
     const connect = () => {
       if (!isMounted) return;
+      if (failureCount >= 4) {
+        // Quiet fallback after consecutive handshake rejects (e.g. cloud provider rate limit)
+        return;
+      }
       try {
         const wsUrl = getWebSocketUrl();
 
@@ -1366,17 +1371,24 @@ export function App() {
           if (isMounted) {
             setWsConnected(true);
             retryDelay = 3000;
+            failureCount = 0;
           }
         };
         ws.onclose = () => {
           if (isMounted) {
             setWsConnected(false);
-            reconnectTimer = setTimeout(connect, retryDelay);
-            retryDelay = Math.min(retryDelay * 2, 60000);
+            failureCount++;
+            if (failureCount < 4) {
+              reconnectTimer = setTimeout(connect, retryDelay);
+              retryDelay = Math.min(retryDelay * 2, 30000);
+            }
           }
         };
         ws.onerror = () => {
-          if (isMounted) setWsConnected(false);
+          if (isMounted) {
+            setWsConnected(false);
+            failureCount++;
+          }
         };
         ws.onmessage = (event) => {
           try {
@@ -1398,8 +1410,11 @@ export function App() {
       } catch (e) {
         if (isMounted) {
           setWsConnected(false);
-          reconnectTimer = setTimeout(connect, retryDelay);
-          retryDelay = Math.min(retryDelay * 2, 60000);
+          failureCount++;
+          if (failureCount < 4) {
+            reconnectTimer = setTimeout(connect, retryDelay);
+            retryDelay = Math.min(retryDelay * 2, 30000);
+          }
         }
       }
     };
@@ -3270,10 +3285,13 @@ export function App() {
 
               {/* Tool Selector */}
               <div>
-                <label style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", textTransform: "uppercase", display: "block", marginBottom: "4px" }}>
+                <label htmlFor="mcp-tool-select" style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", textTransform: "uppercase", display: "block", marginBottom: "4px" }}>
                   Select Registered Tool:
                 </label>
                 <select
+                  id="mcp-tool-select"
+                  name="mcpToolSelect"
+                  aria-label="Select Registered Tool"
                   value={mcpToolName}
                   onChange={(e) => {
                     const t = e.target.value;
@@ -3996,10 +4014,13 @@ export function App() {
             {mcpModalTab === "playground" && (
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 <div>
-                  <label style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", textTransform: "uppercase", display: "block", marginBottom: "4px" }}>
+                  <label htmlFor="mcp-playground-target-tool" style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", textTransform: "uppercase", display: "block", marginBottom: "4px" }}>
                     Target Tool:
                   </label>
                   <select
+                    id="mcp-playground-target-tool"
+                    name="mcpPlaygroundTargetTool"
+                    aria-label="Target Tool"
                     value={mcpToolName}
                     onChange={(e) => {
                       const t = e.target.value;

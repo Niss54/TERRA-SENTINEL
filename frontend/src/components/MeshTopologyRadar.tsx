@@ -137,10 +137,11 @@ export const MeshTopologyRadar: React.FC<MeshTopologyRadarProps> = ({ backendBas
 
   const fetchTopology = async () => {
     setLoading(true);
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const endpoints = [
-      backendBase ? `${backendBase}/api/v1/mesh/topology` : null,
+      backendBase && !backendBase.includes("web-production") ? `${backendBase}/api/v1/mesh/topology` : null,
       "/api/v1/mesh/topology",
-      "http://127.0.0.1:8000/api/v1/mesh/topology"
+      isLocal ? "http://127.0.0.1:8000/api/v1/mesh/topology" : null
     ].filter(Boolean) as string[];
 
     for (const url of endpoints) {
@@ -215,11 +216,11 @@ export const MeshTopologyRadar: React.FC<MeshTopologyRadarProps> = ({ backendBas
     const targetNode = updatedNodes.find((n) => n.duck_id === "DUCK-ISOLATED-07");
     if (targetNode) setSelectedNode(targetNode);
 
-    // Also attempt backend dispatch
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const endpoints = [
-      backendBase ? `${backendBase}/api/v1/mesh/simulate-sos` : null,
+      backendBase && !backendBase.includes("web-production") ? `${backendBase}/api/v1/mesh/simulate-sos` : null,
       "/api/v1/mesh/simulate-sos",
-      "http://127.0.0.1:8000/api/v1/mesh/simulate-sos"
+      isLocal ? "http://127.0.0.1:8000/api/v1/mesh/simulate-sos" : null
     ].filter(Boolean) as string[];
 
     for (const url of endpoints) {

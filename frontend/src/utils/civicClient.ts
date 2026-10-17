@@ -126,7 +126,9 @@ export class CivicClient {
       ? `आपातकालीन चेतावनी (${params.location}): अत्यधिक वर्षा (${pEff.toFixed(1)} मिमी) एवं जलभराव (${dWater} सेमी) के कारण ${bRisk} महत्वपूर्ण इमारतों के प्रभावित होने की आशंका है। अनुमानित वित्तीय जोखिम ₹${varCrores} करोड़ है। एनडीएमए आपदा प्रतिक्रिया दल को तत्काल डीवाटरिंग पंप तैनात करने और विद्युत सबस्टेशनों को सुरक्षित करने का निर्देश दिया जाता है।`
       : `Emergency Advisory (${params.location}): Extreme precipitation of ${pEff.toFixed(1)} mm and inundation of ${dWater} cm projected across ${bRisk} critical structures. Financial exposure: $${varUsdM}M USD. Deploy auxiliary flood barriers and high-capacity drainage pumps immediately.`;
 
-    const english = `EXECUTIVE ALERT: Intense precipitation of ${pEff.toFixed(1)} mm and inundation of ${dWater} cm projected across ${bRisk} critical assets in ${params.location}. Projected Enterprise Value-at-Risk stands at ₹${varCrores} Crores ($${varUsdM}M USD). Mandate immediate physical floodgate deployment and lifeline protocol actuation.`;
+    const english = isIndia
+      ? `EXECUTIVE ALERT: Intense precipitation of ${pEff.toFixed(1)} mm and inundation of ${dWater} cm projected across ${bRisk} critical assets in ${params.location}. Projected Enterprise Value-at-Risk stands at ₹${varCrores} Crores ($${varUsdM}M USD). Mandate immediate physical floodgate deployment and lifeline protocol actuation.`
+      : `EXECUTIVE ALERT: Intense precipitation of ${pEff.toFixed(1)} mm and inundation of ${dWater} cm projected across ${bRisk} critical assets in ${params.location}. Projected Enterprise Value-at-Risk stands at $${varUsdM}M USD. Mandate immediate physical floodgate deployment and lifeline protocol actuation.`;
 
     return {
       status: 'COMPLETED',

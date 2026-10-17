@@ -1790,8 +1790,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                 </h3>
                 <form onSubmit={handleSubmitSos} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   <div>
-                    <label style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Incident Title</label>
+                    <label htmlFor="sos-incident-title" style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Incident Title</label>
                     <input
+                      id="sos-incident-title"
+                      name="sosIncidentTitle"
+                      aria-label="Incident Title"
                       type="text"
                       className="form-input"
                       value={newSosTitle}
@@ -1803,8 +1806,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   </div>
 
                   <div>
-                    <label style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Category</label>
+                    <label htmlFor="sos-category-select" style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Category</label>
                     <select
+                      id="sos-category-select"
+                      name="sosCategory"
+                      aria-label="Incident Category"
                       className="form-input"
                       value={newSosCategory}
                       onChange={(e) => setNewSosCategory(e.target.value)}
@@ -1818,8 +1824,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   </div>
 
                   <div>
-                    <label style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Location Name</label>
+                    <label htmlFor="sos-location-name" style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Location Name</label>
                     <input
+                      id="sos-location-name"
+                      name="sosLocationName"
+                      aria-label="Location Name"
                       type="text"
                       className="form-input"
                       value={newSosLocation}
@@ -2053,8 +2062,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ fontSize: "13px", color: "var(--color-text-secondary)", fontWeight: 600 }}>Operating Relief Agency:</span>
+              <label htmlFor="operating-agency-select" style={{ fontSize: "13px", color: "var(--color-text-secondary)", fontWeight: 600 }}>Operating Relief Agency:</label>
               <select
+                id="operating-agency-select"
+                name="operatingAgency"
+                aria-label="Operating Relief Agency"
                 value={operatingAgency}
                 onChange={(e) => setOperatingAgency(e.target.value)}
                 className="form-input"
@@ -2637,8 +2649,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
               {/* Basin Select */}
               <div style={{ background: "rgba(0, 0, 0, 0.3)", padding: "14px 16px", borderRadius: "10px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
-                <label style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Target Hydrological Basin</label>
+                <label htmlFor="calc-basin-select" style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Target Hydrological Basin</label>
                 <select
+                  id="calc-basin-select"
+                  name="calcBasin"
+                  aria-label="Target Hydrological Basin"
                   value={calcBasin}
                   onChange={(e) => setCalcBasin(e.target.value)}
                   className="form-input"
@@ -2681,12 +2696,15 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               {/* Tonnage Slider */}
               <div style={{ background: "rgba(0, 0, 0, 0.3)", padding: "14px 16px", borderRadius: "10px", border: "1px solid rgba(52, 211, 153, 0.25)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-                  <label style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Carbon Tonnes Retired</label>
+                  <label htmlFor="calc-tonnes-slider" style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Carbon Tonnes Retired</label>
                   <span style={{ fontSize: "12px", fontWeight: 800, color: "#34D399", background: "rgba(52, 211, 153, 0.15)", padding: "2px 8px", borderRadius: "4px", border: "1px solid rgba(52, 211, 153, 0.3)" }}>
                     {calcTons} tCO₂e
                   </span>
                 </div>
                 <input
+                  id="calc-tonnes-slider"
+                  name="calcTonnes"
+                  aria-label="Carbon Tonnes Retired"
                   type="range"
                   min="10"
                   max="1000"
@@ -2705,12 +2723,15 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               {/* Asset Exposure Slider */}
               <div style={{ background: "rgba(0, 0, 0, 0.3)", padding: "14px 16px", borderRadius: "10px", border: "1px solid rgba(245, 158, 11, 0.25)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-                  <label style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Asset Exposure at Risk</label>
+                  <label htmlFor="calc-asset-exposure-slider" style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Asset Exposure at Risk</label>
                   <span style={{ fontSize: "12px", fontWeight: 800, color: "#F59E0B", background: "rgba(245, 158, 11, 0.15)", padding: "2px 8px", borderRadius: "4px", border: "1px solid rgba(245, 158, 11, 0.3)" }}>
-                    ₹{calcAssetValueCr} Crores
+                    ${((calcAssetValueCr * 10000000) / 83.5 / 1000000).toFixed(1)}M USD (₹{calcAssetValueCr} Cr)
                   </span>
                 </div>
                 <input
+                  id="calc-asset-exposure-slider"
+                  name="calcAssetExposure"
+                  aria-label="Asset Exposure at Risk"
                   type="range"
                   min="10"
                   max="500"
@@ -2720,9 +2741,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   style={{ width: "100%", marginTop: "8px", accentColor: "#F59E0B", cursor: "pointer" }}
                 />
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "10px", color: "var(--color-text-muted)", marginTop: "4px" }}>
-                  <span>₹10 Cr</span>
-                  <span>₹250 Cr</span>
-                  <span>₹500 Cr</span>
+                  <span>$1.2M (₹10 Cr)</span>
+                  <span>$30M (₹250 Cr)</span>
+                  <span>$60M (₹500 Cr)</span>
                 </div>
               </div>
             </div>
@@ -2745,7 +2766,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   ${calcAvoidedVarUsd.toLocaleString()}
                 </div>
                 <div style={{ fontSize: "11px", color: "#A7F3D0", marginTop: "2px" }}>
-                  ₹{calcAvoidedVarInrCr} Crores Loss Prevented
+                  ₹{calcAvoidedVarInrCr} Crores (${(calcAvoidedVarUsd / 1000000).toFixed(2)}M) Loss Prevented
                 </div>
               </div>
 
@@ -2824,8 +2845,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
 
             <form onSubmit={handleRetireCarbon} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "14px", marginTop: "14px", alignItems: "flex-end" }}>
               <div>
-                <label style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Beneficiary Organization</label>
+                <label htmlFor="retire-beneficiary-input" style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Beneficiary Organization</label>
                 <input
+                  id="retire-beneficiary-input"
+                  name="retireBeneficiary"
+                  aria-label="Beneficiary Organization"
                   type="text"
                   className="form-input"
                   value={retireBeneficiary}
@@ -2836,8 +2860,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               </div>
 
               <div>
-                <label style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Corporate CIN / LEI</label>
+                <label htmlFor="retire-cin-input" style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Corporate CIN / LEI</label>
                 <input
+                  id="retire-cin-input"
+                  name="retireCin"
+                  aria-label="Corporate CIN / LEI"
                   type="text"
                   className="form-input"
                   value={retireCin}
@@ -2848,8 +2875,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               </div>
 
               <div>
-                <label style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Carbon Pool</label>
+                <label htmlFor="retire-pool-select" style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Carbon Pool</label>
                 <select
+                  id="retire-pool-select"
+                  name="retirePool"
+                  aria-label="Carbon Pool"
                   className="form-input"
                   value={retirePool}
                   onChange={(e) => setRetirePool(e.target.value)}
@@ -2862,8 +2892,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               </div>
 
               <div>
-                <label style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Tons (tCO₂e)</label>
+                <label htmlFor="retire-tons-input" style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Tons (tCO₂e)</label>
                 <input
+                  id="retire-tons-input"
+                  name="retireTons"
+                  aria-label="Tons (tCO₂e)"
                   type="number"
                   min="1"
                   max="5000"
@@ -2899,8 +2932,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             </form>
 
             <div style={{ marginTop: "10px" }}>
-              <label style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Retirement Reason / Regulatory Mandate</label>
+              <label htmlFor="retire-reason-text-input" style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Retirement Reason / Regulatory Mandate</label>
               <input
+                id="retire-reason-text-input"
+                name="retireReasonText"
+                aria-label="Retirement Reason / Regulatory Mandate"
                 type="text"
                 className="form-input"
                 value={retireReason}
@@ -3088,6 +3124,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
 
                 <div style={{ position: "relative" }}>
                   <input
+                    id="carbon-search-input"
+                    name="carbonSearch"
+                    aria-label="Search by enterprise or CID"
                     type="text"
                     placeholder="Search by enterprise or CID..."
                     value={carbonSearchQuery}

@@ -91,10 +91,11 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
 
   const fetchRoute = async () => {
     setLoadingRoute(true);
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const endpoints = [
-      backendBase ? `${backendBase}/api/v1/evacuation/routes` : null,
+      backendBase && !backendBase.includes("web-production") ? `${backendBase}/api/v1/evacuation/routes` : null,
       "/api/v1/evacuation/routes",
-      "http://127.0.0.1:8000/api/v1/evacuation/routes"
+      isLocal ? "http://127.0.0.1:8000/api/v1/evacuation/routes" : null
     ].filter(Boolean) as string[];
 
     for (const url of endpoints) {
@@ -136,10 +137,11 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
 
   const fetchFleet = async () => {
     setLoadingFleet(true);
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const endpoints = [
-      backendBase ? `${backendBase}/api/v1/evacuation/fleet` : null,
+      backendBase && !backendBase.includes("web-production") ? `${backendBase}/api/v1/evacuation/fleet` : null,
       "/api/v1/evacuation/fleet",
-      "http://127.0.0.1:8000/api/v1/evacuation/fleet"
+      isLocal ? "http://127.0.0.1:8000/api/v1/evacuation/fleet" : null
     ].filter(Boolean) as string[];
 
     for (const url of endpoints) {
@@ -166,10 +168,11 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
     setDispatchStatus("DISPATCH CONFIRMED: 3 NDRF & SDRF units locked to Kurla West corridor. Evacuation route active.");
     setFleet(prev => prev.map(f => ({ ...f, status: "RAPID_TRANSIT" })));
 
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const endpoints = [
-      backendBase ? `${backendBase}/api/v1/evacuation/fleet-dispatch?target_sector=Kurla+West+Lowlands` : null,
+      backendBase && !backendBase.includes("web-production") ? `${backendBase}/api/v1/evacuation/fleet-dispatch?target_sector=Kurla+West+Lowlands` : null,
       "/api/v1/evacuation/fleet-dispatch?target_sector=Kurla+West+Lowlands",
-      "http://127.0.0.1:8000/api/v1/evacuation/fleet-dispatch?target_sector=Kurla+West+Lowlands"
+      isLocal ? "http://127.0.0.1:8000/api/v1/evacuation/fleet-dispatch?target_sector=Kurla+West+Lowlands" : null
     ].filter(Boolean) as string[];
 
     for (const url of endpoints) {
@@ -205,10 +208,11 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
     };
     setOracleResult(payoutResult);
 
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     const endpoints = [
-      backendBase ? `${backendBase}/api/v1/oracle/auto-payout` : null,
+      backendBase && !backendBase.includes("web-production") ? `${backendBase}/api/v1/oracle/auto-payout` : null,
       "/api/v1/oracle/auto-payout",
-      "http://127.0.0.1:8000/api/v1/oracle/auto-payout"
+      isLocal ? "http://127.0.0.1:8000/api/v1/oracle/auto-payout" : null
     ].filter(Boolean) as string[];
 
     for (const url of endpoints) {

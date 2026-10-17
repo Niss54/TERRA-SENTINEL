@@ -164,6 +164,9 @@ export const VedaRasterComparator: React.FC<VedaRasterComparatorProps> = ({
         {/* Controls */}
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <select
+            id="veda-collection-select"
+            name="vedaCollection"
+            aria-label="Select VEDA or Sentinel Collection"
             value={selectedCollection}
             onChange={(e) => setSelectedCollection(e.target.value)}
             style={{
@@ -181,6 +184,9 @@ export const VedaRasterComparator: React.FC<VedaRasterComparatorProps> = ({
           </select>
 
           <select
+            id="veda-colormap-select"
+            name="vedaColormap"
+            aria-label="Select Colormap"
             value={selectedColormap}
             onChange={(e) => setSelectedColormap(e.target.value)}
             style={{
