@@ -40,7 +40,7 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
   backendBase = "",
   activeHotspot
 }) => {
-  const cleanBase = backendBase && !backendBase.includes("0edc4") ? backendBase.replace(/\/$/, "") : "";
+  const cleanBase = backendBase && !backendBase.includes("0edc4") && !backendBase.includes("91f72") ? backendBase.replace(/\/$/, "") : "";
   const [stats, setStats] = useState<any>({
     network: "Polygon Amoy Testnet",
     chain_id: 80002,

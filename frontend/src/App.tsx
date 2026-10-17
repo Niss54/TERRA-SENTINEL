@@ -42,7 +42,7 @@ import { MultiHazardEcologicalCockpit } from "./components/MultiHazardEcological
 const getBackendBase = (): string => {
   if (typeof window !== "undefined") {
     const custom = localStorage.getItem("TERRA_SENTINEL_CUSTOM_API_URL");
-    if (custom && custom.includes("0edc4")) {
+    if (custom && (custom.includes("0edc4") || custom.includes("91f72") || custom.includes("railway.app"))) {
       try { localStorage.removeItem("TERRA_SENTINEL_CUSTOM_API_URL"); } catch (e) {}
     } else if (custom && custom.trim()) {
       return custom.trim().replace(/\/$/, "");
@@ -56,7 +56,7 @@ const getBackendBase = (): string => {
     if (host.includes("vercel.app")) {
       return "";
     }
-    const envUrl = (import.meta as any).env?.VITE_BACKEND_URL;
+    const envUrl = (import.meta as any).env?.VITE_BACKEND_URL || (import.meta as any).env?.VITE_API_URL;
     if (envUrl && envUrl.trim() && !envUrl.includes("0edc4")) {
       return envUrl.trim().replace(/\/$/, "");
     }
@@ -64,17 +64,17 @@ const getBackendBase = (): string => {
       return window.location.origin;
     }
   }
-  const envUrl = (import.meta as any).env?.VITE_BACKEND_URL;
+  const envUrl = (import.meta as any).env?.VITE_BACKEND_URL || (import.meta as any).env?.VITE_API_URL;
   if (envUrl && envUrl.trim() && !envUrl.includes("0edc4")) {
     return envUrl.trim().replace(/\/$/, "");
   }
-  return "https://web-production-91f72.up.railway.app";
+  return "https://terra-sentinel.onrender.com";
 };
 
 const getWebSocketUrl = (): string => {
   if (typeof window !== "undefined") {
     const custom = localStorage.getItem("TERRA_SENTINEL_CUSTOM_API_URL");
-    if (custom && custom.trim() && !custom.includes("0edc4")) {
+    if (custom && custom.trim() && !custom.includes("0edc4") && !custom.includes("91f72") && !custom.includes("railway.app")) {
       const clean = custom.trim().replace(/\/$/, "");
       return clean.startsWith("https://")
         ? clean.replace("https://", "wss://") + "/ws/events"
@@ -85,14 +85,14 @@ const getWebSocketUrl = (): string => {
       return `ws://${host}:8000/ws/events`;
     }
   }
-  return "wss://web-production-91f72.up.railway.app/ws/events";
+  return "wss://terra-sentinel.onrender.com/ws/events";
 };
 
 const getPublicBackendUrl = (): string => {
   const base = getBackendBase();
   if (base) return base;
   if (typeof window !== "undefined" && window.location.origin) return window.location.origin;
-  return "https://web-production-91f72.up.railway.app";
+  return "https://terra-sentinel.onrender.com";
 };
 
 const API_BASE = `${getBackendBase()}/api/v1`;

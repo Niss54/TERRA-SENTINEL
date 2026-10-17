@@ -166,7 +166,7 @@ flowchart TD
 ### SLIDE 14: Provide links to your:
 - **GitHub Public Repository:** [https://github.com/Niss54/TERRA-SENTINEL](https://github.com/Niss54/TERRA-SENTINEL)
 - **Demo Video Link (3 Minutes):** [https://youtu.be/YOUR_DEMO_VIDEO_URL_HERE](https://youtu.be/YOUR_DEMO_VIDEO_URL_HERE) *(Paste your YouTube/Drive link)*
-- **Final Product Link (Live App):** [https://terra-sentinel-demo.web.app](https://terra-sentinel-demo.web.app) *(Paste your deployed URL)*
+- **Final Product Link (Live App):** [https://terra-sentinel-self.vercel.app](https://terra-sentinel-self.vercel.app) *(Paste your deployed URL)*
 
 ---
 

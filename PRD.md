@@ -4067,7 +4067,7 @@ where $P(Y \le \hat{Y}_\alpha) = \alpha$, giving decision-makers clear worst-cas
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://terra-sentinel-production.up.railway.app/api/$1"
+      "destination": "https://terra-sentinel.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
