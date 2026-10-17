@@ -501,6 +501,42 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["geojson_data"]
         },
         "target_agent": "mission-control-cockpit"
+    },
+    "evaluate_edge_offline_availability": {
+        "name": "evaluate_edge_offline_availability",
+        "description": "Evaluates edge network resilience and verifies Availability = 100% (Cached Shell ⊕ Local Heuristics).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "is_online": {"type": "boolean", "description": "Network connectivity status", "default": True},
+                "has_cached_shell": {"type": "boolean", "description": "Service worker cache shell status", "default": True},
+                "has_local_heuristics": {"type": "boolean", "description": "Local deterministic heuristics status", "default": True}
+            },
+            "required": ["is_online"]
+        },
+        "target_agent": "edge-network-resilience"
+    },
+    "get_pwa_edge_manifest": {
+        "name": "get_pwa_edge_manifest",
+        "description": "Returns PWA service worker caching metadata, cache version, and offline survival capabilities.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "target_agent": "edge-network-resilience"
+    },
+    "reconcile_edge_offline_queue": {
+        "name": "reconcile_edge_offline_queue",
+        "description": "Processes and reconciles client mutation queue buffered during network partitions.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "mutations": {"type": "array", "description": "List of queued offline mutations", "default": []}
+            },
+            "required": []
+        },
+        "target_agent": "edge-network-resilience"
     }
 }
 

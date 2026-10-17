@@ -600,6 +600,22 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         max_vertices = int(params.get("max_vertices", 3000))
         return optimize_gis_contour_vectors(geojson_data=geojson_data, max_vertices=max_vertices)
 
+    elif tool_name == "evaluate_edge_offline_availability":
+        from backend.app.edge_worker import evaluate_edge_availability
+        is_on = bool(params.get("is_online", True))
+        has_sh = bool(params.get("has_cached_shell", True))
+        has_lh = bool(params.get("has_local_heuristics", True))
+        return evaluate_edge_availability(is_online=is_on, has_cached_shell=has_sh, has_local_heuristics=has_lh).model_dump()
+
+    elif tool_name == "get_pwa_edge_manifest":
+        from backend.app.edge_worker import edge_worker_controller
+        return edge_worker_controller.get_edge_diagnostics()
+
+    elif tool_name == "reconcile_edge_offline_queue":
+        from backend.app.edge_worker import reconcile_offline_queue
+        mutations = params.get("mutations", [])
+        return reconcile_offline_queue(mutations=mutations)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
