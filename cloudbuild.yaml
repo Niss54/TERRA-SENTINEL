@@ -11,7 +11,7 @@ steps:
       - '-c'
       - |
         pip install --no-cache-dir -r requirements.txt
-        pytest tests/test_phase1.py tests/test_phase5_e2e.py tests/test_phase6_winning_edge.py
+        pytest tests/test_phase1.py tests/test_phase5_e2e.py tests/test_phase20_docker_hardening.py tests/test_phase21_cloud_build_ci.py
 
   # Step 2: Build container image using Docker BuildKit
   - name: 'gcr.io/cloud-builders/docker'

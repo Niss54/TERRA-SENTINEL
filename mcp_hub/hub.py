@@ -632,6 +632,23 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         dockerfile_path = params.get("dockerfile_path") or None
         return inspect_dockerfile_security(dockerfile_path=dockerfile_path)
 
+    elif tool_name == "validate_ci_pipeline_step":
+        from backend.app.cloud_ci import evaluate_ci_pipeline_sequence
+        steps = params.get("steps", ["test", "build", "push", "deploy"])
+        branch = str(params.get("branch", "main"))
+        return evaluate_ci_pipeline_sequence(steps=steps, branch=branch).model_dump()
+
+    elif tool_name == "get_cloud_build_configuration":
+        from backend.app.cloud_ci import inspect_cloudbuild_yaml
+        yaml_path = params.get("yaml_path") or None
+        return inspect_cloudbuild_yaml(yaml_path=yaml_path)
+
+    elif tool_name == "simulate_git_push_ci_trigger":
+        from backend.app.cloud_ci import simulate_ci_trigger
+        branch = str(params.get("branch", "main"))
+        commit_sha = str(params.get("commit_sha", "HEAD"))
+        return simulate_ci_trigger(branch=branch, commit_sha=commit_sha)
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

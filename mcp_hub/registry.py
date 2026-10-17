@@ -573,6 +573,48 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "container-packaging-controller"
+    },
+    "validate_ci_pipeline_step": {
+        "name": "validate_ci_pipeline_step",
+        "description": "Enforces Phase 21 CI/CD governing invariant: GitPush(main) ==> Test ==> Build ==> Deploy(CloudRun).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "steps": {
+                    "type": "array",
+                    "description": "List of pipeline step identifiers in proposed execution order",
+                    "default": ["test", "build", "push", "deploy"]
+                },
+                "branch": {"type": "string", "description": "Triggering git branch name", "default": "main"}
+            },
+            "required": ["steps"]
+        },
+        "target_agent": "cloud-build-ci-controller"
+    },
+    "get_cloud_build_configuration": {
+        "name": "get_cloud_build_configuration",
+        "description": "Parses and returns static verification of cloudbuild.yaml structure, step IDs, timeout, and deployment target.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "yaml_path": {"type": "string", "description": "Optional custom cloudbuild.yaml path", "default": ""}
+            },
+            "required": []
+        },
+        "target_agent": "cloud-build-ci-controller"
+    },
+    "simulate_git_push_ci_trigger": {
+        "name": "simulate_git_push_ci_trigger",
+        "description": "Simulates Git Push CI/CD trigger to evaluate automated action (BUILD_AND_DEPLOY vs TEST_ONLY).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "branch": {"type": "string", "description": "Triggering git branch name", "default": "main"},
+                "commit_sha": {"type": "string", "description": "Commit SHA hash", "default": "HEAD"}
+            },
+            "required": []
+        },
+        "target_agent": "cloud-build-ci-controller"
     }
 }
 
