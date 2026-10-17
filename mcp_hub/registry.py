@@ -374,6 +374,50 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["beneficiary", "assessment_id", "risk_score_bps", "dem_depth_cm"]
         },
         "target_agent": "carbon-credit-layer"
+    },
+    "compute_satellite_spectral_indices": {
+        "name": "compute_satellite_spectral_indices",
+        "description": "Calculates NDWI = (Green - NIR)/(Green + NIR) and NDVI = (NIR - Red)/(NIR + Red) multispectral indices from Sentinel-2 bands.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "green": {"type": "number", "description": "Sentinel-2 B03 Green reflectance (0.0 to 1.0)"},
+                "red": {"type": "number", "description": "Sentinel-2 B04 Red reflectance (0.0 to 1.0)"},
+                "nir": {"type": "number", "description": "Sentinel-2 B08 NIR reflectance (0.0 to 1.0)"},
+                "swir": {"type": "number", "description": "Optional Sentinel-2 B11 SWIR reflectance"}
+            },
+            "required": ["green", "red", "nir"]
+        },
+        "target_agent": "earth-observation-pipeline"
+    },
+    "ingest_earth_observation_telemetry": {
+        "name": "ingest_earth_observation_telemetry",
+        "description": "Ingests Copernicus Sentinel-2 MSI L2A metadata, ISRO Bhuvan NRSC geological basin layers, and GEE SRTM 30m DEM.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "lat": {"type": "number", "description": "Latitude coordinate", "default": 19.0728},
+                "lon": {"type": "number", "description": "Longitude coordinate", "default": 72.8797},
+                "elevation_m": {"type": "number", "description": "Surface elevation in meters", "default": 12.0}
+            },
+            "required": ["lat", "lon"]
+        },
+        "target_agent": "earth-observation-pipeline"
+    },
+    "analyze_satellite_imagery": {
+        "name": "analyze_satellite_imagery",
+        "description": "Executes Gemini 2.0 Flash multimodal spatial reasoning over Sentinel-2 multispectral rasters, DEM elevation contours, and telemetry.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "lat": {"type": "number", "description": "Latitude coordinate", "default": 19.0728},
+                "lon": {"type": "number", "description": "Longitude coordinate", "default": 72.8797},
+                "location_name": {"type": "string", "description": "Asset or corridor location name", "default": "Target Corridor"},
+                "depth_cm": {"type": "integer", "description": "Physical inundation depth in cm", "default": 85}
+            },
+            "required": ["lat", "lon"]
+        },
+        "target_agent": "earth-observation-pipeline"
     }
 }
 

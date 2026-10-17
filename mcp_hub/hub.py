@@ -189,6 +189,22 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
                 "simulated": True
             }
 
+    elif tool_name == "compute_satellite_spectral_indices":
+        from backend.app.satellite import compute_spectral_indices_sync
+        green = float(params.get("green", 0.28))
+        red = float(params.get("red", 0.18))
+        nir = float(params.get("nir", 0.08))
+        swir = params.get("swir")
+        swir_val = float(swir) if swir is not None else None
+        return compute_spectral_indices_sync(green=green, red=red, nir=nir, swir=swir_val)
+
+    elif tool_name == "ingest_earth_observation_telemetry":
+        from backend.app.satellite import ingest_earth_observation_telemetry_sync
+        lat = float(params.get("lat", 19.0728))
+        lon = float(params.get("lon", 72.8797))
+        elev = float(params.get("elevation_m", 12.0))
+        return ingest_earth_observation_telemetry_sync(lat=lat, lon=lon, elevation_m=elev)
+
     elif tool_name == "analyze_satellite_imagery":
         from backend.app.satellite import earth_observation_engine
         lat = float(params.get("lat", 19.0728))
@@ -202,6 +218,7 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
             depth_cm=depth,
             weather_summary=f"Severe storm event, {depth}cm depth"
         )
+
 
     elif tool_name == "compute_hydraulic_flow_accumulation":
         from backend.app.hydraulic import hydraulic_controller
