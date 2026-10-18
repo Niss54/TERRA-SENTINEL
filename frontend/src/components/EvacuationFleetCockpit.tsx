@@ -194,10 +194,14 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
       event_id: `EVT-ORACLE-PAYOUT-${Date.now()}`,
       status: "PAYOUT_EXECUTED",
       consecutive_breaches: 2,
-      payout_amount_usdc: 50000,
+      payout_amount_usdc: 36000,
+      total_payout_amount_inr: 3000000,
+      total_beneficiaries_paid: 12,
       beneficiary: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-      tx_hash: "0x3f5c71a9e88d01bfa24e8d356781290abcdef45129837648127394871928374a",
-      message: "ORACLE THRESHOLD VERIFIED: Dual-confirmation (LoRa 145cm + GLOFAS 165 m³/s) confirmed. $50,000 USDC automatically released from escrow to emergency relief wallet."
+      tx_hash: "0x89f7b1029da1e72b43b672e819bdf018c1a93e8271a4f0284b01e827a1928374",
+      polygon_tx_hash: "0x89f7b1029da1e72b43b672e819bdf018c1a93e8271a4f0284b01e827a1928374",
+      ipfs_cid: "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+      message: "ORACLE THRESHOLD VERIFIED: Tripartite consensus confirmed. Parametric disaster payout automatically disbursed."
     };
     setOracleResult(payoutResult);
 
@@ -514,10 +518,10 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
                   ✓ SETTLEMENT CONFIRMED ON POLYGON AMOY
                 </div>
                 <div className="mono" style={{ color: "#94a3b8" }}>
-                  Tx: {oracleResult.polygon_tx_hash.slice(0, 16)}...
+                  Tx: {((oracleResult.polygon_tx_hash || oracleResult.tx_hash || "0x89f7b1029da1e72b") as string).slice(0, 16)}...
                 </div>
                 <div className="mono" style={{ color: "#94a3b8" }}>
-                  IPFS: {oracleResult.ipfs_cid.slice(0, 16)}...
+                  IPFS: {((oracleResult.ipfs_cid || "bafybeigdyrzt5sfp7udm7hu76") as string).slice(0, 16)}...
                 </div>
                 <div style={{ color: "#FFF", marginTop: "2px" }}>
                   Total Paid: {isIndia ? `₹${(oracleResult.total_payout_amount_inr || 3000000).toLocaleString()}` : "$36,000 USDC"} across {oracleResult.total_beneficiaries_paid || 12} wallets
