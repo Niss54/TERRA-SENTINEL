@@ -67,15 +67,38 @@ async def get_relief_case_by_id(
     return c
 
 
+def _resolve_agency(agency_str: Optional[str]) -> ReliefAgency:
+    if not agency_str:
+        return ReliefAgency.NDRF_BATTALION_5
+    clean = agency_str.upper().replace(" ", "_").replace("-", "_")
+    for a in ReliefAgency:
+        if a.value in clean or clean in a.value:
+            return a
+    return ReliefAgency.NDRF_BATTALION_5
+
+
 @router.post("/relief/claim/{case_id}", response_model=ReliefCase)
+@router.post("/relief/cases/{case_id}/claim", response_model=ReliefCase)
 async def claim_relief_case(
     case_id: str = Path(..., description="Case identifier to claim"),
-    req: ClaimCaseRequest = ...
+    req: Optional[ClaimCaseRequest] = None,
+    agency: Optional[str] = Query(None, description="Operating relief agency name or enum")
 ):
     """
     Claims a disaster relief case for an organization with a 24-hour mutual-aid lease lock.
     Prevents duplicate deployment of scarce rescue resources.
     """
+    if req is None:
+        target_agency = _resolve_agency(agency)
+        req = ClaimCaseRequest(
+            agency=target_agency,
+            lead_officer="Officer on Duty",
+            team_headcount=6,
+            deployed_vehicle="NDRF Inflatable Rescue Boat (Amphibious)"
+        )
+    elif agency and not req.agency:
+        req.agency = _resolve_agency(agency)
+
     try:
         return crisis_cleanup_engine.claim_case(case_id, req)
     except ValueError as ve:
@@ -86,13 +109,23 @@ async def claim_relief_case(
 
 
 @router.post("/relief/work/{case_id}", response_model=ReliefCase)
+@router.post("/relief/cases/{case_id}/work", response_model=ReliefCase)
 async def update_relief_case_work(
     case_id: str = Path(..., description="Case identifier to update"),
-    req: UpdateWorkRequest = ...
+    req: Optional[UpdateWorkRequest] = None,
+    agency: Optional[str] = Query(None)
 ):
     """
     Updates operational on-site work progress, active volunteer count, and deployed equipment.
     """
+    if req is None:
+        req = UpdateWorkRequest(
+            status=CaseStatus.IN_PROGRESS,
+            equipment_deployed=["High-pressure dewatering pump", "Stretcher kit"],
+            volunteers_active=6,
+            work_notes=f"Active response work underway by {agency or 'Relief Unit'}."
+        )
+
     try:
         return crisis_cleanup_engine.update_work_progress(case_id, req)
     except ValueError as ve:
@@ -103,13 +136,22 @@ async def update_relief_case_work(
 
 
 @router.post("/relief/close/{case_id}", response_model=ReliefCase)
+@router.post("/relief/cases/{case_id}/close", response_model=ReliefCase)
 async def close_relief_case(
     case_id: str = Path(..., description="Case identifier to close"),
-    req: CloseCaseRequest = ...
+    req: Optional[CloseCaseRequest] = None,
+    agency: Optional[str] = Query(None)
 ):
     """
     Marks a disaster relief work order as completed and permanently closed with officer signoff.
     """
+    if req is None:
+        req = CloseCaseRequest(
+            resolution_summary=f"Incident successfully resolved and site secured by {agency or 'Relief Unit'}.",
+            survivor_status="SAFE_EVACUATED",
+            signoff_officer="Field Operations Lead"
+        )
+
     try:
         return crisis_cleanup_engine.close_case(case_id, req)
     except ValueError as ve:

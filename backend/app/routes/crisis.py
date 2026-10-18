@@ -58,6 +58,7 @@ async def get_citizen_incident_by_id(
 
 
 @router.post("/crisis/verify/{incident_id}", response_model=CitizenIncident)
+@router.post("/crisis/incidents/{incident_id}/verify", response_model=CitizenIncident)
 async def verify_citizen_incident(
     incident_id: str = Path(..., description="Unique incident identifier to verify"),
     sar_backscatter_db: float = Query(-4.0, description="Simulated/live Sentinel-1 SAR decibel backscatter (<= -3.5 dB confirms flood)"),
