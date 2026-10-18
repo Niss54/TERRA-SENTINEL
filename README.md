@@ -60,7 +60,7 @@ Yet today, **a fatal operational disconnect paralyzes disaster response and fina
 ## 🎬 Mission-Control Cockpit & Visual Walkthrough
 
 <p align="center">
-  <img src="./public/dashboard.png" alt="TERRA-SENTINEL Mission-Control Dashboard" width="100%" />
+  <img src="./public/screenshots/01_Planetary_Command_Radar.png" alt="TERRA-SENTINEL Mission-Control Dashboard" width="100%" />
 </p>
 
 <div align="center">
