@@ -30,7 +30,10 @@ import {
   Satellite,
   Navigation,
   HeartHandshake,
-  Mountain
+  Mountain,
+  Menu,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { BlockchainPanel } from "./components/BlockchainPanel";
 import { VedaRasterComparator } from "./components/VedaRasterComparator";
@@ -662,6 +665,7 @@ export function App() {
 
   // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh' | 'evac' | 'humanitarian' | 'multihazard'
   const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh" | "evac" | "humanitarian" | "multihazard">("command");
+  const [isNavExpanded, setIsNavExpanded] = useState<boolean>(true);
 
   // MCP Hub Connection & Interactive Tester State
   const [showMcpModal, setShowMcpModal] = useState<boolean>(false);
@@ -1075,14 +1079,15 @@ export function App() {
     }
   };
 
-  // Map resize handler when switching back to Command Radar view
+  // Map resize handler when switching view or toggling navigation rail
   useEffect(() => {
     if (activeView === "command" && mapInstanceRef.current) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         mapInstanceRef.current?.invalidateSize();
-      }, 150);
+      }, 250);
+      return () => clearTimeout(timer);
     }
-  }, [activeView]);
+  }, [activeView, isNavExpanded]);
 
   // Execute MCP Tool via JSON-RPC 2.0 (Live Playground)
   const executeMcpTool = async (tool: string, rawParams: string) => {
@@ -1190,220 +1195,430 @@ export function App() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", background: "var(--color-bg-deep)", position: "relative" }}>
+    <div className="app-shell">
       {/* Background Ambient Constellation Particles */}
       <ParticleBackground />
 
       {/* ========================================================
-          TOP HEADER COMMAND BAR
+          LEFT EXECUTIVE NAVIGATION RAIL / SLIDER DRAWER
           ======================================================== */}
-      <header
-        style={{
-          height: "64px",
-          minHeight: "64px",
-          background: "#16181c",
-          borderBottom: "1px solid #232730",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 20px",
-          zIndex: 1000,
-          position: "relative",
-          boxShadow: "0 2px 12px rgba(0, 0, 0, 0.45)"
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
+      <aside className={`app-sidebar ${isNavExpanded ? "app-sidebar-expanded" : "app-sidebar-collapsed"}`}>
+        {/* Brand Header */}
+        <div className="sidebar-header">
           <div
-            style={{
-              position: "relative",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "38px",
-              height: "38px",
-              borderRadius: "10px",
-              background: "#1c2027",
-              border: "1px solid #2c323e",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
-              flexShrink: 0
-            }}
+            className="sidebar-brand"
+            onClick={() => setActiveView("command")}
+            title="TERRA-SENTINEL Planetary Intelligence"
           >
-            <img
-              src="/logo.png"
-              alt="TERRA-SENTINEL Logo"
+            <div
               style={{
-                width: "28px",
-                height: "28px",
-                objectFit: "contain"
+                width: "36px",
+                height: "36px",
+                borderRadius: "9px",
+                background: "#1c2027",
+                border: "1px solid #2c323e",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0
               }}
-            />
+            >
+              <img
+                src="/terra-logo.png"
+                alt="TERRA-SENTINEL Logo"
+                style={{ width: "24px", height: "24px", objectFit: "contain" }}
+              />
+            </div>
+            {isNavExpanded && (
+              <div style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#FFF", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>
+                  TERRA<span style={{ color: "var(--color-primary)" }}>-SENTINEL</span>
+                </span>
+                <span style={{ fontSize: "0.62rem", color: "var(--color-text-muted)", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                  PLANETARY RADAR
+                </span>
+              </div>
+            )}
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "2px", flexShrink: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <h1 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#FFFFFF", letterSpacing: "0.02em", margin: 0, lineHeight: 1.2, fontFamily: "var(--font-display)" }}>
-                TERRA-SENTINEL<span style={{ color: "#38BDF8" }}>-CLIMATE</span>
-              </h1>
-              <span className="cyber-badge">
-                ENTERPRISE INTELLIGENCE
+          {isNavExpanded && (
+            <button
+              onClick={() => setIsNavExpanded(false)}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "var(--color-text-secondary)",
+                cursor: "pointer",
+                padding: "4px",
+                borderRadius: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+              title="Collapse Sidebar (Icon Rail Mode)"
+            >
+              <ChevronLeft size={16} />
+            </button>
+          )}
+        </div>
+
+        {/* Navigation Modules (Categorized into 3 sleek operational tiers) */}
+        <div className="sidebar-content">
+          {/* Group 1: Core Intelligence */}
+          <div className="sidebar-section">
+            {isNavExpanded && <div className="sidebar-section-title">Core Intelligence</div>}
+            
+            <button
+              className={`sidebar-item ${activeView === "command" ? "active" : ""}`}
+              onClick={() => setActiveView("command")}
+              title="Command Radar & GIS Intelligence"
+            >
+              <div className="sidebar-item-icon">
+                <Globe size={15} color={activeView === "command" ? "#38BDF8" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "command" ? 700 : 500 }}>Command Radar</span>
+                  <span className="sidebar-item-badge">LIVE GIS</span>
+                </>
+              )}
+            </button>
+
+            <button
+              className={`sidebar-item ${activeView === "agents" ? "active" : ""}`}
+              onClick={() => setActiveView("agents")}
+              title="Multi-Agent Swarm Intelligence"
+            >
+              <div className="sidebar-item-icon">
+                <Bot size={15} color={activeView === "agents" ? "#38BDF8" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "agents" ? 700 : 500 }}>Multi-Agent Swarm</span>
+                  <span className="sidebar-item-badge">AI</span>
+                </>
+              )}
+            </button>
+
+            <button
+              className={`sidebar-item ${activeView === "multihazard" ? "active" : ""}`}
+              onClick={() => setActiveView("multihazard")}
+              title="Multi-Hazard Landslide & Ecological Monitoring"
+            >
+              <div className="sidebar-item-icon">
+                <Mountain size={15} color={activeView === "multihazard" ? "#38BDF8" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "multihazard" ? 700 : 500 }}>Multi-Hazard & Eco</span>
+                  <span className="sidebar-item-badge">NEW</span>
+                </>
+              )}
+            </button>
+
+            <button
+              className={`sidebar-item ${activeView === "veda" ? "active" : ""}`}
+              onClick={() => setActiveView("veda")}
+              title="NASA VEDA Raster Swipe Analysis"
+            >
+              <div className="sidebar-item-icon">
+                <Satellite size={15} color={activeView === "veda" ? "#2DD4BF" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "veda" ? 700 : 500 }}>NASA VEDA Swipe</span>
+                  <span className="sidebar-item-badge">EARTH</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Group 2: Financial & Risk Governance */}
+          <div className="sidebar-section">
+            {isNavExpanded && <div className="sidebar-section-title">Risk & Governance</div>}
+
+            <button
+              className={`sidebar-item ${activeView === "finance" ? "active" : ""}`}
+              onClick={() => setActiveView("finance")}
+              title="Financial Value-at-Risk & BRSR Principle 6"
+            >
+              <div className="sidebar-item-icon">
+                <TrendingUp size={15} color={activeView === "finance" ? "#10B981" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "finance" ? 700 : 500 }}>Financial & BRSR</span>
+                  <span className="sidebar-item-badge">VAR</span>
+                </>
+              )}
+            </button>
+
+            <button
+              className={`sidebar-item ${activeView === "blockchain" ? "active" : ""}`}
+              onClick={() => setActiveView("blockchain")}
+              title="Web3 Cryptographic Ledger Audit Trail"
+            >
+              <div className="sidebar-item-icon">
+                <Shield size={15} color={activeView === "blockchain" ? "#A78BFA" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "blockchain" ? 700 : 500 }}>Web3 & Ledger</span>
+                  <span className="sidebar-item-badge">ON-CHAIN</span>
+                </>
+              )}
+            </button>
+
+            <button
+              className={`sidebar-item ${activeView === "humanitarian" ? "active" : ""}`}
+              onClick={() => setActiveView("humanitarian")}
+              title="Humanitarian Relief & Carbon Credit Retirement"
+            >
+              <div className="sidebar-item-icon">
+                <HeartHandshake size={15} color={activeView === "humanitarian" ? "#34D399" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "humanitarian" ? 700 : 500 }}>Humanitarian & Carbon</span>
+                  <span className="sidebar-item-badge">TOUCAN</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Group 3: Protocols & Operations */}
+          <div className="sidebar-section">
+            {isNavExpanded && <div className="sidebar-section-title">Protocols & Operations</div>}
+
+            <button
+              className={`sidebar-item ${activeView === "mcp" ? "active" : ""}`}
+              onClick={() => setActiveView("mcp")}
+              title="Model Context Protocol (MCP) JSON-RPC Hub"
+            >
+              <div className="sidebar-item-icon">
+                <Zap size={15} color={activeView === "mcp" ? "#F59E0B" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "mcp" ? 700 : 500 }}>MCP Tool Hub</span>
+                  <span className="sidebar-item-badge">RPC 2.0</span>
+                </>
+              )}
+            </button>
+
+            <button
+              className={`sidebar-item ${activeView === "mesh" ? "active" : ""}`}
+              onClick={() => setActiveView("mesh")}
+              title="ClusterDuck LoRa Mesh Emergency Network"
+            >
+              <div className="sidebar-item-icon">
+                <Radio size={15} color={activeView === "mesh" ? "#F87171" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "mesh" ? 700 : 500 }}>LoRa Mesh Radar</span>
+                  <span className="sidebar-item-badge">OFF-GRID</span>
+                </>
+              )}
+            </button>
+
+            <button
+              className={`sidebar-item ${activeView === "evac" ? "active" : ""}`}
+              onClick={() => setActiveView("evac")}
+              title="Autonomous Safe Evacuation & Fleet Cockpit"
+            >
+              <div className="sidebar-item-icon">
+                <Navigation size={15} color={activeView === "evac" ? "#60A5FA" : "var(--color-text-secondary)"} />
+              </div>
+              {isNavExpanded && (
+                <>
+                  <span style={{ fontWeight: activeView === "evac" ? 700 : 500 }}>Evacuation & Fleet</span>
+                  <span className="sidebar-item-badge">ROUTES</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Sidebar Footer */}
+        <div className="sidebar-footer">
+          {isNavExpanded ? (
+            <>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.68rem", color: "var(--color-text-muted)" }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10B981" }} />
+                <span>v3.2 GLOBAL</span>
+              </div>
+              <button
+                onClick={() => setIsNavExpanded(false)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "var(--color-text-secondary)",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center"
+                }}
+                title="Collapse to Icon Rail"
+              >
+                <ChevronLeft size={15} />
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setIsNavExpanded(true)}
+              style={{
+                width: "100%",
+                background: "transparent",
+                border: "none",
+                color: "var(--color-text-secondary)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "4px 0"
+              }}
+              title="Expand Sidebar"
+            >
+              <ChevronRight size={16} />
+            </button>
+          )}
+        </div>
+      </aside>
+
+      {/* ========================================================
+          MAIN WORKSPACE VIEWPORT
+          ======================================================== */}
+      <div className="app-main-viewport">
+        {/* Top Executive Header */}
+        <header className="top-executive-bar">
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
+            {!isNavExpanded && (
+              <button
+                onClick={() => setIsNavExpanded(true)}
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "6px",
+                  padding: "6px 8px",
+                  color: "var(--color-text-secondary)",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+                title="Expand Navigation Menu"
+              >
+                <Menu size={15} />
+              </button>
+            )}
+
+            {/* Active View Badge / Operational Context */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
+              <span style={{ fontSize: "0.88rem", fontWeight: 700, color: "#FFF", whiteSpace: "nowrap" }}>
+                {activeView === "command" && "Planetary Command Radar"}
+                {activeView === "agents" && "Multi-Agent Swarm Intelligence"}
+                {activeView === "multihazard" && "Multi-Hazard Landslide & Ecological Radar"}
+                {activeView === "veda" && "NASA VEDA Earth Data & Raster Comparator"}
+                {activeView === "finance" && "Financial Value-at-Risk & BRSR Audit"}
+                {activeView === "blockchain" && "Cryptographic Ledger & Audit Trail"}
+                {activeView === "humanitarian" && "Humanitarian Relief & Toucan Carbon Bridge"}
+                {activeView === "mcp" && "Model Context Protocol (MCP) Tool Hub"}
+                {activeView === "mesh" && "ClusterDuck Protocol LoRa Mesh Network"}
+                {activeView === "evac" && "Autonomous Evacuation & Fleet Operations"}
+              </span>
+
+              {activeView === "command" && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    padding: "3px 9px",
+                    borderRadius: "6px",
+                    background: "rgba(0, 240, 255, 0.08)",
+                    border: "1px solid rgba(0, 240, 255, 0.25)",
+                    fontSize: "0.72rem",
+                    color: "var(--color-primary)",
+                    whiteSpace: "nowrap"
+                  }}
+                >
+                  <Compass size={12} />
+                  <span>Target: <b>{locationName.split("—")[0]}</b></span>
+                  <span className={`badge ${getTierClass(result?.agent1.risk_tier)}`} style={{ fontSize: "0.6rem", padding: "0 5px" }}>
+                    {result?.agent1.risk_tier || "CRITICAL"}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Action Controls */}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+            <button
+              className="mcp-pill-btn"
+              onClick={() => setShowMcpModal(true)}
+              title="Connect external AI agents (Claude Desktop, Cursor, Custom Agents) to TERRA-SENTINEL MCP Server"
+            >
+              <span className="pulse-ping" style={{ width: "6px", height: "6px" }}>
+                <span className="pulse-ping-dot" style={{ backgroundColor: "#38BDF8" }}></span>
+                <span className="pulse-ping-core" style={{ backgroundColor: "#38BDF8" }}></span>
+              </span>
+              <Zap size={12} color="#38BDF8" />
+              <span>Connect MCP</span>
+            </button>
+
+            <button
+              className="btn-secondary"
+              style={{ padding: "4px 9px", fontSize: "0.72rem" }}
+              onClick={() => {
+                setShowApiModal(true);
+                fetchIntegrationStatus();
+              }}
+            >
+              <Key size={12} color="#9CA3AF" />
+              <span>API Keys</span>
+            </button>
+
+            <button
+              className="btn-primary"
+              style={{ padding: "4px 10px", fontSize: "0.72rem" }}
+              onClick={() => setShowBriefingModal(true)}
+            >
+              <FileDown size={12} />
+              <span>Briefing</span>
+            </button>
+
+            {/* Live Indicator */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                fontSize: "0.68rem",
+                color: "var(--color-text-muted)",
+                padding: "3px 8px",
+                background: "#111316",
+                border: "1px solid #232730",
+                borderRadius: "9999px"
+              }}
+            >
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: wsConnected ? "#10B981" : "#F59E0B",
+                  boxShadow: wsConnected ? "0 0 6px rgba(16, 185, 129, 0.5)" : "none"
+                }}
+              />
+              <span className="mono" style={{ color: "#E5E7EB", fontWeight: 600 }}>
+                {wsConnected ? "LIVE" : "POLLING"}
               </span>
             </div>
-            <p style={{ fontSize: "0.68rem", color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.2, whiteSpace: "nowrap" }}>
-              Autonomous Multi-Agent Environmental &amp; Risk Intelligence
-            </p>
           </div>
-        </div>
+        </header>
 
-        {/* Executive Mode Navigation Tabs */}
-        <nav className="nav-tab-container" aria-label="Module Navigation" style={{ flexShrink: 0 }}>
-          <button
-            className={`nav-tab-btn ${activeView === "command" ? "active" : ""}`}
-            onClick={() => setActiveView("command")}
-          >
-            <Globe size={13} color={activeView === "command" ? "#38BDF8" : "var(--color-text-secondary)"} />
-            <span>Command Radar</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "agents" ? "active" : ""}`}
-            onClick={() => setActiveView("agents")}
-          >
-            <Bot size={13} color={activeView === "agents" ? "#38BDF8" : "var(--color-text-secondary)"} />
-            <span>Multi-Agent Swarm</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "mcp" ? "active" : ""}`}
-            onClick={() => setActiveView("mcp")}
-          >
-            <Zap size={13} color={activeView === "mcp" ? "#F59E0B" : "var(--color-text-secondary)"} />
-            <span>MCP Tool Hub</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "finance" ? "active" : ""}`}
-            onClick={() => setActiveView("finance")}
-          >
-            <TrendingUp size={13} color={activeView === "finance" ? "#10B981" : "var(--color-text-secondary)"} />
-            <span>Financial & BRSR</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "blockchain" ? "active" : ""}`}
-            onClick={() => setActiveView("blockchain")}
-          >
-            <Shield size={13} color={activeView === "blockchain" ? "#A78BFA" : "var(--color-text-secondary)"} />
-            <span>Web3 & Ledger</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "veda" ? "active" : ""}`}
-            onClick={() => setActiveView("veda")}
-          >
-            <Satellite size={13} color={activeView === "veda" ? "#2DD4BF" : "var(--color-text-secondary)"} />
-            <span>NASA VEDA Swipe</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "mesh" ? "active" : ""}`}
-            onClick={() => setActiveView("mesh")}
-          >
-            <Radio size={13} color={activeView === "mesh" ? "#F87171" : "var(--color-text-secondary)"} />
-            <span>LoRa Mesh Radar</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "evac" ? "active" : ""}`}
-            onClick={() => setActiveView("evac")}
-          >
-            <Navigation size={13} color={activeView === "evac" ? "#60A5FA" : "var(--color-text-secondary)"} />
-            <span>Evacuation & Fleet</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "humanitarian" ? "active" : ""}`}
-            onClick={() => setActiveView("humanitarian")}
-          >
-            <HeartHandshake size={13} color={activeView === "humanitarian" ? "#34D399" : "var(--color-text-secondary)"} />
-            <span>Humanitarian & Carbon</span>
-          </button>
-          <button
-            className={`nav-tab-btn ${activeView === "multihazard" ? "active" : ""}`}
-            onClick={() => setActiveView("multihazard")}
-          >
-            <Mountain size={13} color={activeView === "multihazard" ? "#38BDF8" : "var(--color-text-secondary)"} />
-            <span>Multi-Hazard & Eco</span>
-          </button>
-        </nav>
-
-        {/* Right Action Controls */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
-          {/* Prominent Connect MCP Button */}
-          <button
-            className="mcp-pill-btn"
-            onClick={() => {
-              setShowMcpModal(true);
-            }}
-            title="Connect external AI agents (Claude Desktop, Cursor, Custom Agents) to TERRA-SENTINEL MCP Server"
-          >
-            <span className="pulse-ping" style={{ width: "6px", height: "6px" }}>
-              <span className="pulse-ping-dot" style={{ backgroundColor: "#38BDF8" }}></span>
-              <span className="pulse-ping-core" style={{ backgroundColor: "#38BDF8" }}></span>
-            </span>
-            <Zap size={12} color="#38BDF8" />
-            <span>Connect MCP</span>
-          </button>
-
-          <button
-            className="btn-secondary"
-            style={{
-              padding: "4px 9px",
-              fontSize: "0.72rem"
-            }}
-            onClick={() => {
-              setShowApiModal(true);
-              fetchIntegrationStatus();
-            }}
-          >
-            <Key size={12} color="#9CA3AF" />
-            <span>API Keys</span>
-          </button>
-
-          <button
-            className="btn-primary"
-            style={{
-              padding: "4px 10px",
-              fontSize: "0.72rem"
-            }}
-            onClick={() => setShowBriefingModal(true)}
-          >
-            <FileDown size={12} />
-            <span>Briefing</span>
-          </button>
-
-          {/* Clean Live Status indicator */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-              fontSize: "0.68rem",
-              color: "var(--color-text-muted)",
-              padding: "3px 8px",
-              background: "#111316",
-              border: "1px solid #232730",
-              borderRadius: "9999px"
-            }}
-          >
-            <span
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: wsConnected ? "#10B981" : "#F59E0B",
-                boxShadow: wsConnected ? "0 0 6px rgba(16, 185, 129, 0.5)" : "none"
-              }}
-            />
-            <span className="mono" style={{ color: "#E5E7EB", fontWeight: 600 }}>
-              {wsConnected ? "LIVE" : "POLLING"}
-            </span>
-          </div>
-        </div>
-      </header>
-
-      {/* Live Telemetry Marquee Banner */}
-      <TelemetryTicker />
+        {/* Live Telemetry Marquee Banner */}
+        <TelemetryTicker />
 
       {/* ========================================================
           VIEW 1: LIVE COMMAND RADAR (3-COLUMN COCKPIT)
@@ -2880,6 +3095,8 @@ export function App() {
           <MultiHazardEcologicalCockpit backendBase={getBackendBase()} />
         </main>
       )}
+
+      </div> {/* end app-main-viewport */}
 
       {/* ========================================================
           EXECUTIVE C-SUITE & NDMA BRIEFING MODAL (WINNING EDGE)
