@@ -79,6 +79,9 @@ interface Agent1Data {
   metrics: MetricValues;
   triggered_chronic: boolean;
   execution_time_ms: number;
+  clay_flood_prob?: number;
+  clay_sar_penetration?: boolean;
+  clay_embeddings_preview?: number[];
 }
 
 interface Agent2Data {
@@ -1611,6 +1614,36 @@ export function App() {
                     </div>
                   </div>
                 </div>
+
+                {/* Clay Earth Foundation Model (ViT-MAE) Sub-panel */}
+                {result.agent1.clay_flood_prob !== undefined && (
+                  <div style={{ marginTop: "10px", padding: "8px 10px", background: "rgba(20, 184, 166, 0.08)", border: "1px solid rgba(20, 184, 166, 0.25)", borderRadius: "6px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                      <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#2dd4bf", letterSpacing: "0.03em" }}>
+                        CLAY FOUNDATION MODEL (ViT-B/16 MAE)
+                      </span>
+                      {result.agent1.clay_sar_penetration && (
+                        <span className="badge" style={{ fontSize: "0.6rem", padding: "1px 6px", background: "rgba(59, 130, 246, 0.2)", color: "#60a5fa", border: "1px solid rgba(59, 130, 246, 0.4)" }}>
+                          🛰️ SAR RADAR PENETRATION ACTIVE
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.72rem" }}>
+                      <span style={{ color: "var(--color-text-muted)" }}>Zero-Shot Flood Probability:</span>
+                      <span className="mono" style={{ fontWeight: 800, color: result.agent1.clay_flood_prob > 0.6 ? "#f87171" : result.agent1.clay_flood_prob > 0.3 ? "#fbbf24" : "#34d399" }}>
+                        {(result.agent1.clay_flood_prob * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                    {result.agent1.clay_embeddings_preview && result.agent1.clay_embeddings_preview.length > 0 && (
+                      <div style={{ marginTop: "4px", fontSize: "0.62rem", color: "var(--color-text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <span className="mono" style={{ color: "#94a3b8" }}>d=768 Latent:</span>
+                        <span className="mono" style={{ color: "#cbd5e1" }}>
+                          [{result.agent1.clay_embeddings_preview.slice(0, 4).map((v: number) => v.toFixed(3)).join(", ")}...]
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px", paddingTop: "8px", borderTop: "1px solid rgba(255,255,255,0.06)", fontSize: "0.72rem" }}>
                   <span style={{ color: "var(--color-text-muted)" }}>Dominant Driver: <b style={{ color: "var(--color-primary)" }}>{result.agent1.dominant_factor}</b></span>

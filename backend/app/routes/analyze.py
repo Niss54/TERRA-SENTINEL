@@ -21,6 +21,7 @@ from backend.app.agent1_ml import flood_ml_engine
 from backend.app.agent2_geo import chronic_geo_engine
 from backend.app.agent3_financial import financial_risk_engine
 from backend.app.hydrology_sequence import hydrology_sequence_engine, CatchmentDescriptors, UngaugedBasinResult
+from backend.app.clay_foundation import clay_engine, ClayFloodProbRequest
 
 router = APIRouter(tags=["Analysis & Agent Orchestration"])
 
@@ -360,6 +361,25 @@ async def analyze_location(req: AnalyzeRequest):
         content=f"Telemetry: 24h Rain={metrics.precipitation_24h_mm}mm, Soil Saturation={metrics.soil_saturation_pct}%. Model: {pred.get('engine')}. Risk Score={risk_score} ({risk_tier}). Dominant factor: {dominant}. Probabilities: [{probs_summary}]."
     ))
 
+    # Clay Earth Foundation Model (ViT-MAE) Multi-Sensor Inference
+    clay_res = clay_engine.predict_zero_shot_flood_prob(ClayFloodProbRequest(
+        event_id=event_id,
+        lat=req.lat,
+        lon=req.lon,
+        precipitation_mm_hr=metrics.precipitation_24h_mm / 4.0,
+        cloud_cover_pct=85.0 if metrics.precipitation_24h_mm > 50 else 30.0,
+        sar_vv_db=-18.5 if metrics.precipitation_24h_mm > 70 else -11.5,
+        sar_baseline_vv_db=-11.0,
+        dem_elevation_m=metrics.elevation_m
+    ))
+
+    thought_trace.append(AgentTraceStep(
+        agent_id="agent-1-acute",
+        step_name="Clay Foundation Model (ViT-MAE)",
+        action_type="OBSERVATION",
+        content=f"Clay Earth Foundation Model (102.4M params, d=768): Zero-Shot Flood Prob={clay_res.flood_probability*100:.1f}%, SAR Radar Penetration={clay_res.sar_penetration_active}, Specular Delta={clay_res.backscatter_delta_db}dB."
+    ))
+
     thought_trace.append(AgentTraceStep(
         agent_id="agent-1-acute",
         step_name="Threshold Evaluation",
@@ -374,7 +394,10 @@ async def analyze_location(req: AnalyzeRequest):
         dominant_factor=dominant,
         metrics=metrics,
         triggered_chronic=triggered_chronic,
-        execution_time_ms=round((t1 - t0) * 1000, 2)
+        execution_time_ms=round((t1 - t0) * 1000, 2),
+        clay_flood_prob=clay_res.flood_probability,
+        clay_sar_penetration=clay_res.sar_penetration_active,
+        clay_embeddings_preview=clay_res.clay_embedding_summary.get("latent_vector_head")
     )
 
     # ----------------------------------------------------

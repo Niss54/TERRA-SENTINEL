@@ -35,6 +35,9 @@ class Agent1Result(BaseModel):
     metrics: RiskMetrics
     triggered_chronic: bool = Field(..., description="Whether downstream Agent 2 was automatically activated")
     execution_time_ms: float = Field(..., description="Inference time in milliseconds")
+    clay_flood_prob: Optional[float] = Field(None, description="Clay Earth Foundation Model zero-shot flood probability")
+    clay_sar_penetration: Optional[bool] = Field(None, description="Whether SAR radar penetration was active")
+    clay_embeddings_preview: Optional[List[float]] = Field(None, description="Preview of 768-dim Clay latent representation")
     timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
 
 
