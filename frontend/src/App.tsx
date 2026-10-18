@@ -3065,7 +3065,7 @@ export function App() {
           ======================================================== */}
       {activeView === "mesh" && (
         <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
-          <MeshTopologyRadar />
+          <MeshTopologyRadar backendBase={getBackendBase()} />
         </main>
       )}
 
@@ -3074,7 +3074,7 @@ export function App() {
           ======================================================== */}
       {activeView === "evac" && (
         <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
-          <EvacuationFleetCockpit />
+          <EvacuationFleetCockpit backendBase={getBackendBase()} />
         </main>
       )}
 
