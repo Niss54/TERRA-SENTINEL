@@ -26,9 +26,12 @@ import {
   TrendingUp,
   Code,
   Check,
-  Play
+  Play,
+  Satellite
 } from "lucide-react";
 import { BlockchainPanel } from "./components/BlockchainPanel";
+import { VedaRasterComparator } from "./components/VedaRasterComparator";
+import { MeshTopologyRadar } from "./components/MeshTopologyRadar";
 
 const getBackendBase = (): string => {
   if (typeof window !== "undefined") {
@@ -527,8 +530,8 @@ export function App() {
   const [currentLon, setCurrentLon] = useState<number>(72.8797);
   const [locationName, setLocationName] = useState<string>("Mumbai — Mithi River & Kurla Basin");
 
-  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain'
-  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain">("command");
+  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh'
+  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh">("command");
 
   // MCP Hub Connection & Interactive Tester State
   const [showMcpModal, setShowMcpModal] = useState<boolean>(false);
@@ -1155,6 +1158,20 @@ export function App() {
           >
             <Shield size={13} color={activeView === "blockchain" ? "#A78BFA" : "var(--color-text-secondary)"} />
             <span>Web3 & Ledger</span>
+          </button>
+          <button
+            className={`nav-tab-btn ${activeView === "veda" ? "active" : ""}`}
+            onClick={() => setActiveView("veda")}
+          >
+            <Satellite size={13} color={activeView === "veda" ? "#2DD4BF" : "var(--color-text-secondary)"} />
+            <span>NASA VEDA Swipe</span>
+          </button>
+          <button
+            className={`nav-tab-btn ${activeView === "mesh" ? "active" : ""}`}
+            onClick={() => setActiveView("mesh")}
+          >
+            <Radio size={13} color={activeView === "mesh" ? "#F87171" : "var(--color-text-secondary)"} />
+            <span>LoRa Mesh Radar</span>
           </button>
         </nav>
 
@@ -2622,6 +2639,28 @@ export function App() {
           backendBase={getBackendBase()}
           activeHotspot={DEFAULT_HOTSPOTS.find(h => h.name === locationName) || DEFAULT_HOTSPOTS[0]}
         />
+      )}
+
+      {/* ========================================================
+          VIEW 6: NASA VEDA DUAL-VIEW SWIPE COMPARATOR
+          ======================================================== */}
+      {activeView === "veda" && (
+        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+          <VedaRasterComparator
+            lat={currentLat}
+            lon={currentLon}
+            locationName={locationName}
+          />
+        </main>
+      )}
+
+      {/* ========================================================
+          VIEW 7: CLUSTERDUCK PROTOCOL LORA MESH RADAR
+          ======================================================== */}
+      {activeView === "mesh" && (
+        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+          <MeshTopologyRadar />
+        </main>
       )}
 
       {/* ========================================================

@@ -37,7 +37,7 @@ Phase 23: End-to-End Regression Verification ██████████ 100%
 Phase 24: AI Builder Cup 3-Minute Video Demo Screenplay ██████████ 100% ✅
 Phase 25: 10-Slide Executive VC Pitch Deck ██████████ 100% ✅
 Phase 26: Google Research & Open Climate Fix Architecture Synthesis ██████████ 100% ✅
-Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) ██████░░░░ 60% 🔄
+Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) ████████░░ 85% 🔄
 ```
 
 ---
@@ -262,8 +262,8 @@ Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (Clust
 - [x] **Phase 27.1: Clay Earth Foundation Model (ViT-MAE) Multi-Sensor Inference Engine:** Vision Transformer patch projection, spatial/temporal positional encodings, zero-shot flood probe (`backend/app/clay_foundation.py`, `/api/v1/clay/embeddings`, `/api/v1/clay/flood-prob`), wired into Agent 1 analysis pipeline (`backend/app/routes/analyze.py`, `backend/app/schemas.py`) and cockpit UI (`frontend/src/App.tsx`). 7/7 backend unit tests passing in `tests/test_phase27_clay_foundation.py`.
 - [x] **Phase 27.2: NASA VEDA Backend STAC & Dynamic COG Raster Service:** Standard STAC collections (`/api/v1/stac/collections`), STAC search (`/api/v1/stac/search`), Web Mercator Slippy Map dynamic raster tiler (`/api/v1/raster/tile/{z}/{x}/{y}` with colormapping), and sub-50ms zonal statistics (`/api/v1/raster/statistics`, `backend/app/veda_raster.py`, `backend/app/routes/veda.py`). 9/9 backend unit tests passing in `tests/test_phase27_veda_backend.py`.
 - [x] **Phase 27.3: ClusterDuck Protocol LoRa Ad-Hoc Mesh Gateway:** DuckPacket binary/JSON decoder, node hierarchy (`DuckLink`, `MamaDuck`, `PapaDuck`), loop prevention ($H \le 6$), deduplication cache, topology mapping, and off-grid Emergency SOS simulation (`backend/app/cluster_duck.py`, `backend/app/routes/cluster_duck.py`, `/api/v1/telemetry/duckpacket`, `/api/v1/mesh/topology`). 8/8 backend unit tests passing in `tests/test_phase27_cluster_duck.py`.
-- [ ] **Phase 27.4: NASA VEDA-UI Dual-View Swipe Comparator:** Interactive before-and-after flood inundation split-screen slider (`frontend/src/components/VedaRasterComparator.tsx`).
-- [ ] **Phase 27.5: ClusterDuck Mesh Topology Radar:** LoRa mesh node graph, hop counts, RSSI signal indicators & dead-zone alert panel (`frontend/src/components/MeshTopologyRadar.tsx`).
+- [x] **Phase 27.4: NASA VEDA-UI Dual-View Swipe Comparator:** Interactive before-and-after flood inundation split-screen slider, colormaps (`blues`, `sar_radar`, `viridis`, `magma`), STAC metadata inspector, and real-time sub-50ms zonal statistics (`frontend/src/components/VedaRasterComparator.tsx`). Verified via Chrome DevTools MCP.
+- [x] **Phase 27.5: ClusterDuck Mesh Topology Radar:** LoRa ad-hoc mesh node radar, DuckLink/MamaDuck/PapaDuck node hierarchy, RSSI signal indicators, interactive off-grid SOS dispatch simulation, and dead-zone alert panel (`frontend/src/components/MeshTopologyRadar.tsx`). Verified via Chrome DevTools MCP.
 - [ ] **Phase 27.6: Unified Quality Gate & Chrome DevTools MCP Verification:** 100% test pass, zero-error production build, and DevTools visual capture.
 
 
