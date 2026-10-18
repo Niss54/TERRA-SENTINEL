@@ -160,70 +160,110 @@ async def get_llm_status():
 async def bhasha_tts(payload: Dict[str, Any]):
     """
     Generates authentic neural voice speech:
-    - Indic/Hindi via Sarvam AI (priya, aditya)
-    - English/Multilingual via ElevenLabs
+    - Indic/Regional via Sarvam AI (10+ Indic languages: Hindi, Bengali, Marathi, Tamil, Telugu, Kannada, Gujarati, etc.)
+    - Government of India Bhashini (Digital India Bhasha API)
+    - Global English/International via ElevenLabs Multilingual v2
     With automatic cross-engine failover and browser Web Speech API fallback.
     """
     text = payload.get("text", "")
-    language = payload.get("language", "auto")
+    language_code = payload.get("language_code") or payload.get("lang_code") or payload.get("language", "auto")
     speaker = payload.get("speaker", "priya")
     voice_id = payload.get("voice_id", None)
     engine = payload.get("engine", "auto")
 
-    # Detect Devanagari Hindi characters
+    # Detect Devanagari or other Indic scripts if language is auto
     has_devanagari = any("\u0900" <= c <= "\u097F" for c in text)
-    if language == "auto":
-        language = "hi" if has_devanagari else "en"
+    has_bengali = any("\u0980" <= c <= "\u09FF" for c in text)
+    has_tamil = any("\u0B80" <= c <= "\u0BFF" for c in text)
+    has_telugu = any("\u0C00" <= c <= "\u0C7F" for c in text)
+    has_kannada = any("\u0C80" <= c <= "\u0CFF" for c in text)
+    has_gujarati = any("\u0A80" <= c <= "\u0AFF" for c in text)
+    has_arabic_urdu = any("\u0600" <= c <= "\u06FF" for c in text)
 
-    # Prioritize ElevenLabs for English or explicit request
-    if (engine == "elevenlabs") or (engine == "auto" and language == "en"):
+    is_indic = has_devanagari or has_bengali or has_tamil or has_telugu or has_kannada or has_gujarati or has_arabic_urdu
+
+    if language_code == "auto":
+        if has_bengali:
+            language_code = "bn-IN"
+        elif has_tamil:
+            language_code = "ta-IN"
+        elif has_kannada:
+            language_code = "kn-IN"
+        elif has_gujarati:
+            language_code = "gu-IN"
+        elif has_arabic_urdu:
+            language_code = "ur-IN"
+        elif has_devanagari:
+            language_code = "hi-IN"
+        else:
+            language_code = "en-US"
+
+    is_english = language_code.startswith("en")
+
+    # 1. Prioritize ElevenLabs for English or explicit request
+    if (engine == "elevenlabs") or (engine == "auto" and is_english):
         audio_b64 = financial_risk_engine.synthesize_elevenlabs_speech(text, voice_id=voice_id)
         if audio_b64:
             return {
                 "status": "success",
                 "source": "elevenlabs",
-                "language": language,
+                "language": language_code,
                 "mime_type": "audio/mpeg",
                 "audio_b64": audio_b64
             }
 
-    # Prioritize Sarvam AI for Hindi or explicit request
-    if (engine == "sarvam") or (engine == "auto" and language == "hi") or (language == "hi"):
-        audio_b64 = financial_risk_engine.synthesize_sarvam_speech(text, speaker=speaker)
+    # 2. Prioritize Sarvam AI for Indic/Regional languages
+    if (engine == "sarvam") or (engine == "auto" and (is_indic or not is_english)):
+        audio_b64 = financial_risk_engine.synthesize_sarvam_speech(text, speaker=speaker, language_code=language_code)
         if audio_b64:
             return {
                 "status": "success",
                 "source": "sarvam_ai",
                 "speaker": speaker,
-                "language": "hi",
+                "language": language_code,
                 "mime_type": "audio/wav",
                 "audio_b64": audio_b64
             }
 
-    # Cross-engine fallback: Try Sarvam if ElevenLabs failed, or vice versa
-    if language == "en":
+    # 3. Prioritize Bhashini (Government of India) for Indic regional languages
+    if settings.UDYAT_KEY and settings.INFERENCE and (is_indic or not is_english):
+        audio_b64 = financial_risk_engine.synthesize_bhashini_speech(text, language_code=language_code)
+        if audio_b64:
+            return {
+                "status": "success",
+                "source": "bhashini",
+                "language": language_code,
+                "mime_type": "audio/wav",
+                "audio_b64": audio_b64
+            }
+
+    # 4. Cross-engine failover: Try ElevenLabs if Sarvam failed, or Sarvam if ElevenLabs failed
+    if is_english:
+        audio_b64 = financial_risk_engine.synthesize_sarvam_speech(text, speaker=speaker, language_code="en-IN")
+        if audio_b64:
+            return {
+                "status": "success",
+                "source": "sarvam_ai_en",
+                "language": "en-IN",
+                "mime_type": "audio/wav",
+                "audio_b64": audio_b64
+            }
+    else:
         audio_b64 = financial_risk_engine.synthesize_elevenlabs_speech(text, voice_id=voice_id)
         if audio_b64:
             return {
                 "status": "success",
-                "source": "elevenlabs",
+                "source": "elevenlabs_fallback",
+                "language": language_code,
                 "mime_type": "audio/mpeg",
-                "audio_b64": audio_b64
-            }
-    else:
-        audio_b64 = financial_risk_engine.synthesize_sarvam_speech(text, speaker=speaker)
-        if audio_b64:
-            return {
-                "status": "success",
-                "source": "sarvam_ai",
-                "mime_type": "audio/wav",
                 "audio_b64": audio_b64
             }
 
     return {
         "status": "fallback",
         "source": "browser_speech",
-        "message": "Cloud neural TTS engines unconfigured or unavailable, using Web Speech API."
+        "language_code": language_code,
+        "message": "Cloud neural TTS engines unconfigured or unavailable, using browser Web Speech API."
     }
 
 
@@ -512,6 +552,10 @@ async def analyze_location(req: AnalyzeRequest):
             recommended_actions=recommended_actions,
             bilingual_alert_hindi=hindi_alert,
             bilingual_alert_english=english_alert,
+            regional_language=fin_result.get("regional_language", "Hindi"),
+            regional_language_native=fin_result.get("regional_language_native", "हिन्दी"),
+            regional_lang_code=fin_result.get("regional_lang_code", "hi-IN"),
+            regional_alert_text=fin_result.get("regional_alert_text", hindi_alert),
             last_active_model=fin_result.get("last_active_model", "Google-Vertex-AI/gemini-3.5-flash"),
             execution_time_ms=fin_result["execution_time_ms"]
         )
@@ -618,7 +662,10 @@ async def get_executive_briefing(event_id: str):
         } if event.agent3 else None,
         "bilingual_alerts": {
             "hindi": event.agent3.bilingual_alert_hindi if event.agent3 else None,
-            "english": event.agent3.bilingual_alert_english if event.agent3 else None
+            "english": event.agent3.bilingual_alert_english if event.agent3 else None,
+            "regional": event.agent3.regional_alert_text if event.agent3 else None,
+            "regional_language": event.agent3.regional_language if event.agent3 else "Hindi",
+            "regional_language_native": event.agent3.regional_language_native if event.agent3 else "हिन्दी"
         } if event.agent3 else None,
         "recommended_actions": event.agent3.recommended_actions if event.agent3 else [
             "Maintain standard municipal drainage telemetry surveillance."
@@ -772,9 +819,10 @@ async def get_executive_briefing_html(event_id: str):
   </div>
 
   <div class="alert-box">
-    <b>📢 Bhasha-AI Bilingual Civil Alert Dispatch:</b><br/>
-    <div style="margin-top: 6px; font-family: sans-serif;"><b>Hindi (देवनागरी):</b> {briefing['bilingual_alerts']['hindi']}</div>
-    <div style="margin-top: 4px; color: #4A5568;"><b>English:</b> {briefing['bilingual_alerts']['english']}</div>
+    <b>📢 Multi-Tier Civil Protection & ESG Advisory Broadcast:</b><br/>
+    <div style="margin-top: 6px; font-family: sans-serif;"><b>🌍 Global Primary (English):</b> {briefing['bilingual_alerts']['english']}</div>
+    <div style="margin-top: 4px; color: #2D3748;"><b>📍 Regional Native ({briefing['bilingual_alerts'].get('regional_language_native', 'Local')} / {briefing['bilingual_alerts'].get('regional_language', 'Regional')}):</b> {briefing['bilingual_alerts'].get('regional') or briefing['bilingual_alerts']['hindi']}</div>
+    <div style="margin-top: 4px; color: #718096; font-size: 11px;"><b>🏛️ Central Command (Hindi / हिन्दी):</b> {briefing['bilingual_alerts']['hindi']}</div>
   </div>
 
   <div style="margin-top: 16px;">

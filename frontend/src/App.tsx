@@ -76,6 +76,9 @@ interface Hotspot {
   description: string;
   typical_annual_loss_inr: string;
   typical_annual_loss_usd?: string;
+  regional_language?: string;
+  regional_language_native?: string;
+  regional_lang_code?: string;
 }
 
 interface MetricValues {
@@ -126,6 +129,11 @@ interface Agent3Data {
   recommended_actions: string[];
   bilingual_alert_hindi?: string;
   bilingual_alert_english?: string;
+  regional_language?: string;
+  regional_language_native?: string;
+  regional_lang_code?: string;
+  regional_alert_text?: string;
+  tts_audio_b64?: string;
   execution_time_ms: number;
 }
 
@@ -162,7 +170,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "CRITICAL",
     description: "Flagship Southeast Asian financial district exposed to extreme tropical cloudbursts, spring tide sea-level rise, and coastal barrage drainage saturation.",
     typical_annual_loss_inr: "₹2,450 Crores",
-    typical_annual_loss_usd: "$295M USD"
+    typical_annual_loss_usd: "$295M USD",
+    regional_language: "English / Malay",
+    regional_language_native: "Melayu / English",
+    regional_lang_code: "en-SG"
   },
   {
     id: "jakarta-ciliwung",
@@ -176,7 +187,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "CRITICAL",
     description: "Rapidly subsiding delta megalopolis experiencing acute land subsidence (-10cm/yr), sea-wall overtopping, and monsoon flash surges.",
     typical_annual_loss_inr: "₹3,800 Crores",
-    typical_annual_loss_usd: "$455M USD"
+    typical_annual_loss_usd: "$455M USD",
+    regional_language: "Indonesian",
+    regional_language_native: "Bahasa Indonesia",
+    regional_lang_code: "id-ID"
   },
   {
     id: "rotterdam-delta",
@@ -190,7 +204,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "HIGH",
     description: "Europe's largest deepwater logistics port protected by Maeslantkering storm surge barrier under North Sea tidal extremes.",
     typical_annual_loss_inr: "₹4,200 Crores",
-    typical_annual_loss_usd: "$510M USD"
+    typical_annual_loss_usd: "$510M USD",
+    regional_language: "Dutch",
+    regional_language_native: "Nederlands",
+    regional_lang_code: "nl-NL"
   },
   {
     id: "tokyo-arakawa",
@@ -204,7 +221,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "HIGH",
     description: "Low-lying Eastern Tokyo zone protected by G-CANS underground discharge tunnel during category-5 super typhoons.",
     typical_annual_loss_inr: "₹6,100 Crores",
-    typical_annual_loss_usd: "$735M USD"
+    typical_annual_loss_usd: "$735M USD",
+    regional_language: "Japanese",
+    regional_language_native: "日本語",
+    regional_lang_code: "ja-JP"
   },
   {
     id: "newyork-manhattan",
@@ -218,7 +238,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "HIGH",
     description: "Dense financial capital vulnerable to Atlantic hurricane storm surges, Nor'easters, and subway transit tunnel inundation.",
     typical_annual_loss_inr: "₹7,500 Crores",
-    typical_annual_loss_usd: "$910M USD"
+    typical_annual_loss_usd: "$910M USD",
+    regional_language: "English",
+    regional_language_native: "English",
+    regional_lang_code: "en-US"
   },
   {
     id: "accra-odaw",
@@ -232,7 +255,27 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "CRITICAL",
     description: "Sub-Saharan coastal capital facing seasonal flash inundation, urban plastic drainage blockages, and informal settlement vulnerability.",
     typical_annual_loss_inr: "₹950 Crores",
-    typical_annual_loss_usd: "$115M USD"
+    typical_annual_loss_usd: "$115M USD",
+    regional_language: "English / Akan",
+    regional_language_native: "Twi / English",
+    regional_lang_code: "en-GH"
+  },
+  {
+    id: "sylhet-surma",
+    name: "Sylhet — Surma-Meghna River & Haor Wetlands",
+    state: "Sylhet Division",
+    country: "Bangladesh",
+    flag: "🇧🇩",
+    region: "ASIA",
+    lat: 24.8949,
+    lon: 91.8687,
+    risk_profile: "CRITICAL",
+    description: "Low-lying northeastern wetland basin vulnerable to transboundary flash inundations, monsoon crests, and extensive haor basin submergence.",
+    typical_annual_loss_inr: "₹1,850 Crores",
+    typical_annual_loss_usd: "$220M USD",
+    regional_language: "Bengali",
+    regional_language_native: "বাংলা",
+    regional_lang_code: "bn-BD"
   },
   {
     id: "sindh-indus",
@@ -246,7 +289,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "CRITICAL",
     description: "Glacial lake outburst and super-monsoon breach zone across the lower Indus agricultural basin and Murree landslide tracts.",
     typical_annual_loss_inr: "₹2,100 Crores",
-    typical_annual_loss_usd: "$250M USD"
+    typical_annual_loss_usd: "$250M USD",
+    regional_language: "Urdu",
+    regional_language_native: "اردو",
+    regional_lang_code: "ur-PK"
   },
   {
     id: "mumbai-mithi",
@@ -260,7 +306,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "CRITICAL",
     description: "High-density urban basin prone to severe monsoon cloudburst overflow, tidal lock, and suburban transit standstill.",
     typical_annual_loss_inr: "₹1,200 Crores",
-    typical_annual_loss_usd: "$145M USD"
+    typical_annual_loss_usd: "$145M USD",
+    regional_language: "Marathi",
+    regional_language_native: "मराठी",
+    regional_lang_code: "mr-IN"
   },
   {
     id: "bengaluru-bellandur",
@@ -274,7 +323,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "HIGH",
     description: "Major tech corridor affected by lake interconnect encroachment, impervious surface runoff, and rapid road inundation.",
     typical_annual_loss_inr: "₹450 Crores",
-    typical_annual_loss_usd: "$55M USD"
+    typical_annual_loss_usd: "$55M USD",
+    regional_language: "Kannada",
+    regional_language_native: "ಕನ್ನಡ",
+    regional_lang_code: "kn-IN"
   },
   {
     id: "assam-kaziranga",
@@ -288,7 +340,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "CRITICAL",
     description: "Annual Brahmaputra riverine surge causing catastrophic agricultural submergence and habitat displacement.",
     typical_annual_loss_inr: "₹850 Crores",
-    typical_annual_loss_usd: "$102M USD"
+    typical_annual_loss_usd: "$102M USD",
+    regional_language: "Assamese",
+    regional_language_native: "অসমীয়া",
+    regional_lang_code: "as-IN"
   },
   {
     id: "chennai-velachery",
@@ -302,7 +357,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "HIGH",
     description: "Coastal low-lying urban depression prone to northeast monsoon depressions and slow stormwater drainage.",
     typical_annual_loss_inr: "₹680 Crores",
-    typical_annual_loss_usd: "$82M USD"
+    typical_annual_loss_usd: "$82M USD",
+    regional_language: "Tamil",
+    regional_language_native: "தமிழ்",
+    regional_lang_code: "ta-IN"
   },
   {
     id: "mundra-industrial",
@@ -316,7 +374,10 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     risk_profile: "MEDIUM",
     description: "Heavy coastal logistics and thermal infrastructure exposed to Arabian Sea cyclones and carbon emission transition audits.",
     typical_annual_loss_inr: "₹320 Crores",
-    typical_annual_loss_usd: "$38M USD"
+    typical_annual_loss_usd: "$38M USD",
+    regional_language: "Gujarati",
+    regional_language_native: "ગુજરાતી",
+    regional_lang_code: "gu-IN"
   }
 ];
 
@@ -470,6 +531,82 @@ function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: 
       ],
       bilingual_alert_hindi: `⚠️ [टेरा-सेंटिनल वैश्विक चेतावनी | स्तर: ${riskTier}] ${locName} में ${sat}% संतृप्ति और तीव्र मौसमी दबाव के कारण जलभराव का जोखिम है। अनुमानित वित्तीय जोखिम $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} करोड़) है। आपातकालीन जल निकासी और सुरक्षा प्रोटोकॉल तत्काल लागू करें।`,
       bilingual_alert_english: `⚠️ [TERRA-SENTINEL GLOBAL HAZARD ADVISORY | TIER: ${riskTier}] ${locName} facing critical inundation threat (> ${depth}cm surge) under ${sat}% soil saturation index. Total Enterprise Value at Risk: $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} Cr). Immediate civil protection protocols and parametric liquidity safeguards activated.`,
+      regional_language: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
+        ? "Bengali"
+        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
+        ? "Marathi"
+        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
+        ? "Urdu"
+        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
+        ? "Tamil"
+        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
+        ? "Kannada"
+        : (locName.toLowerCase().includes("assam"))
+        ? "Assamese"
+        : (locName.toLowerCase().includes("gujarat") || locName.toLowerCase().includes("mundra"))
+        ? "Gujarati"
+        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
+        ? "Japanese"
+        : (locName.toLowerCase().includes("indonesia") || locName.toLowerCase().includes("jakarta"))
+        ? "Indonesian"
+        : (locName.toLowerCase().includes("rotterdam") || locName.toLowerCase().includes("netherlands"))
+        ? "Dutch"
+        : "Hindi",
+      regional_language_native: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
+        ? "বাংলা"
+        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
+        ? "मराठी"
+        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
+        ? "اردو"
+        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
+        ? "தமிழ்"
+        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
+        ? "ಕನ್ನಡ"
+        : (locName.toLowerCase().includes("assam"))
+        ? "অসমীয়া"
+        : (locName.toLowerCase().includes("gujarat") || locName.toLowerCase().includes("mundra"))
+        ? "ગુજરાતી"
+        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
+        ? "日本語"
+        : (locName.toLowerCase().includes("indonesia") || locName.toLowerCase().includes("jakarta"))
+        ? "Bahasa Indonesia"
+        : (locName.toLowerCase().includes("rotterdam") || locName.toLowerCase().includes("netherlands"))
+        ? "Nederlands"
+        : "हिन्दी",
+      regional_lang_code: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
+        ? "bn-BD"
+        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
+        ? "mr-IN"
+        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
+        ? "ur-PK"
+        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
+        ? "ta-IN"
+        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
+        ? "kn-IN"
+        : (locName.toLowerCase().includes("assam"))
+        ? "as-IN"
+        : (locName.toLowerCase().includes("gujarat") || locName.toLowerCase().includes("mundra"))
+        ? "gu-IN"
+        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
+        ? "ja-JP"
+        : (locName.toLowerCase().includes("indonesia") || locName.toLowerCase().includes("jakarta"))
+        ? "id-ID"
+        : (locName.toLowerCase().includes("rotterdam") || locName.toLowerCase().includes("netherlands"))
+        ? "nl-NL"
+        : "hi-IN",
+      regional_alert_text: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
+        ? `⚠️ [জরুরি সতর্কতা | স্তর: ${riskTier}] ${locName}-এ মারাত্মক জলাবদ্ধতার (${depth} সেমি) পূর্বাভাস। আনুমানিক আর্থিক ক্ষতি $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} কোটি)। দুর্যোগ মোকাবিলা দল অবিলম্বে নিষ্কাশন পাম্প ও প্রতিরক্ষামূলক ব্যবস্থা চালু করুন।`
+        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
+        ? `⚠️ [आपत्कालीन इशारा | स्तर: ${riskTier}] ${locName} मध्ये तीव्र पूरस्थिती (${depth} सेमी) निर्माण होण्याची शक्यता आहे. अंदाजित आर्थिक नुकसान $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} कोटी)। आपत्ती व्यवस्थापन पथकांनी त्वरित जलउपसा पंप कार्यान्वित करावेत.`
+        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
+        ? `⚠️ [ہنگامی الرٹ | درجہ: ${riskTier}] ${locName} میں شدید سیلاب اور پانی جمع ہونے (${depth} سینٹی میٹر) کا شدید خدشہ ہے۔ متوقع مالیاتی نقصان $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} کروڑ)۔ حفاظتی اقدامات فوری طور پر نافذ کیے جائیں۔`
+        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
+        ? `⚠️ [அவசர எச்சரிக்கை | நிலை: ${riskTier}] ${locName} பகுதியில் தீவிர வெள்ளப்பெருக்கு (${depth} செ.மீ) அபாயம். மதிப்பிடப்பட்ட இழப்பு $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} கோடி). மீட்பு நடவடிக்கைகள் உடனடியாக செயல்படுத்தப்பட வேண்டும்.`
+        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
+        ? `⚠️ [ತುರ್ತು ಎಚ್ಚರಿಕೆ | ಹಂತ: ${riskTier}] ${locName} ನಲ್ಲಿ ತೀವ್ರ ಪ್ರವಾಹ ಮತ್ತು ನೀರು ನಿಲ್ಲುವಿಕೆ (${depth} ಸೆಂ.ಮೀ) ಸಂಭವನೀಯತೆ ಇದೆ. ಅಂದಾಜು ನಷ್ಟ $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} ಕೋಟಿ). ತಕ್ಷಣ ರಕ್ಷಣಾ ಕ್ರಮಗಳನ್ನು ಕೈಗೊಳ್ಳಿ.`
+        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
+        ? `⚠️ [緊急警報 | レベル: ${riskTier}] ${locName}における深刻な浸水被害（水深${depth}cm）の予測。想定被害総額: $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} Cr)。直ちに排水ポンプを配備し警戒態勢を確立してください。`
+        : `⚠️ [टेरा-सेंटिनल वैश्विक चेतावनी | स्तर: ${riskTier}] ${locName} में ${sat}% संतृप्ति और तीव्र मौसमी दबाव के कारण जलभराव का जोखिम है। अनुमानित वित्तीय जोखिम $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} करोड़) है। आपातकालीन जल निकासी और सुरक्षा प्रोटोकॉल तत्काल लागू करें।`,
       execution_time_ms: 68.7
     },
     thought_trace: [
@@ -684,7 +821,7 @@ export function App() {
   // Analysis State
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<AnalysisResult | null>(() => buildFallbackAnalysis(1.2868, 103.8545, "Singapore — Marina Bay & Kallang Basin", 85, 90));
-  const [activeLangTab, setActiveLangTab] = useState<"english" | "hindi">("english");
+  const [activeLangTab, setActiveLangTab] = useState<"english" | "regional">("english");
   const [wsConnected, setWsConnected] = useState<boolean>(false);
   const [liveSteps, setLiveSteps] = useState<ThoughtStep[]>([]);
   const [copied, setCopied] = useState<boolean>(false);
@@ -1031,7 +1168,7 @@ export function App() {
     }
   };
 
-  const speakText = async (text: string) => {
+  const speakText = async (text: string, langCode?: string) => {
     if (isPlayingAudio) {
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
@@ -1042,35 +1179,40 @@ export function App() {
 
     setIsPlayingAudio(true);
 
-    // 1. Try authentic Sarvam AI Indic Neural Voice for Hindi
-    if (activeLangTab === "hindi") {
-      try {
-        const res = await fetch(`${API_BASE}/bhasha/tts`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text, speaker: "priya" })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.status === "success" && data.audio_b64) {
-            const audio = new Audio("data:audio/wav;base64," + data.audio_b64);
-            audio.onended = () => setIsPlayingAudio(false);
-            audio.onerror = () => setIsPlayingAudio(false);
-            await audio.play();
-            return;
-          }
+    const targetLangCode = activeLangTab === "english" ? "en-US" : (langCode || result?.agent3?.regional_lang_code || "hi-IN");
+
+    // 1. Try authentic Neural Voice (Sarvam AI / Bhashini / ElevenLabs) via backend /bhasha/tts
+    try {
+      const res = await fetch(`${API_BASE}/bhasha/tts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          language_code: targetLangCode,
+          speaker: "priya"
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.status === "success" && data.audio_b64) {
+          const mime = data.mime_type || (data.source === "elevenlabs" ? "audio/mpeg" : "audio/wav");
+          const audio = new Audio(`data:${mime};base64,` + data.audio_b64);
+          audio.onended = () => setIsPlayingAudio(false);
+          audio.onerror = () => setIsPlayingAudio(false);
+          await audio.play();
+          return;
         }
-      } catch (e) {
-        console.warn("Sarvam AI TTS call skipped, falling back to Web Speech:", e);
       }
+    } catch (e) {
+      console.warn("Cloud neural TTS call skipped, falling back to Web Speech:", e);
     }
 
-    // 2. Global Primary English Web Speech Dispatch (en-US standard)
+    // 2. High-fidelity Web Speech API Fallback with localized BCP-47 tag
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1.0;
-      utterance.lang = activeLangTab === "english" ? "en-US" : "hi-IN";
+      utterance.lang = targetLangCode;
       utterance.onend = () => setIsPlayingAudio(false);
       utterance.onerror = () => setIsPlayingAudio(false);
       window.speechSynthesis.speak(utterance);
@@ -2228,22 +2370,22 @@ export function App() {
                             fontWeight: activeLangTab === "english" ? 700 : 400
                           }}
                         >
-                          English (Global)
+                          English (Global Primary)
                         </button>
                         <button
-                          onClick={() => setActiveLangTab("hindi")}
+                          onClick={() => setActiveLangTab("regional")}
                           style={{
                             fontSize: "0.68rem",
                             padding: "2px 8px",
                             borderRadius: "4px",
                             border: "none",
-                            background: activeLangTab === "hindi" ? "var(--color-primary)" : "rgba(255,255,255,0.05)",
+                            background: activeLangTab === "regional" ? "var(--color-primary)" : "rgba(255,255,255,0.05)",
                             color: "#FFF",
                             cursor: "pointer",
-                            fontWeight: activeLangTab === "hindi" ? 700 : 400
+                            fontWeight: activeLangTab === "regional" ? 700 : 400
                           }}
                         >
-                          हिन्दी (Local)
+                          {result.agent3.regional_language_native || "Local"} ({result.agent3.regional_language || "Regional"})
                         </button>
                       </div>
                     </div>
@@ -2251,7 +2393,7 @@ export function App() {
                     <div style={{ fontSize: "0.75rem", color: "var(--color-text-primary)", lineHeight: 1.45, marginBottom: "8px" }}>
                       {activeLangTab === "english"
                         ? result.agent3.bilingual_alert_english
-                        : result.agent3.bilingual_alert_hindi}
+                        : (result.agent3.regional_alert_text || result.agent3.bilingual_alert_hindi)}
                     </div>
 
                     <div style={{ display: "flex", gap: "8px" }}>
@@ -2267,12 +2409,13 @@ export function App() {
                           speakText(
                             activeLangTab === "english"
                               ? result.agent3?.bilingual_alert_english || ""
-                              : result.agent3?.bilingual_alert_hindi || ""
+                              : (result.agent3?.regional_alert_text || result.agent3?.bilingual_alert_hindi || ""),
+                            result.agent3?.regional_lang_code
                           )
                         }
                       >
                         {isPlayingAudio ? <Square size={13} color="var(--color-primary)" /> : <Volume2 size={13} />}
-                        {isPlayingAudio ? "Stop Audio" : "Play Global Dispatch Audio"}
+                        {isPlayingAudio ? "Stop Audio" : (activeLangTab === "english" ? "Play Global Audio (English)" : `Play ${result.agent3?.regional_language || "Regional"} Audio`)}
                         {isPlayingAudio && (
                           <div className="audio-equalizer">
                             <div className="audio-bar"></div>
@@ -2290,7 +2433,7 @@ export function App() {
                           const txt =
                             activeLangTab === "english"
                               ? result.agent3?.bilingual_alert_english || ""
-                              : result.agent3?.bilingual_alert_hindi || "";
+                              : (result.agent3?.regional_alert_text || result.agent3?.bilingual_alert_hindi || "");
                           navigator.clipboard.writeText(txt);
                           setCopied(true);
                           setTimeout(() => setCopied(false), 2000);
@@ -3209,7 +3352,7 @@ export function App() {
                 <b style={{ color: "var(--color-primary)" }}>Primary English Broadcast:</b> {result?.agent3?.bilingual_alert_english || "Critical waterlogging projected for transit and industrial substations. Immediate flood barrier deployment mandated."}
               </div>
               <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", lineHeight: 1.5, padding: "0 4px" }}>
-                <b style={{ color: "#9CA3AF" }}>Regional Localization (हिन्दी / Local):</b> {result?.agent3?.bilingual_alert_hindi || "जलभराव की स्थिति गंभीर है। तत्काल जल निकासी द्वार खोलें और सुरक्षा प्रोटोकॉल लागू करें।"}
+                <b style={{ color: "#9CA3AF" }}>Regional Native ({result?.agent3?.regional_language_native || "Local"} / {result?.agent3?.regional_language || "Regional"}):</b> {result?.agent3?.regional_alert_text || result?.agent3?.bilingual_alert_hindi || "जलभराव की स्थिति गंभीर है। तत्काल जल निकासी द्वार खोलें और सुरक्षा प्रोटोकॉल लागू करें।"}
               </div>
             </div>
 

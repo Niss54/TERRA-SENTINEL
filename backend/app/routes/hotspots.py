@@ -21,7 +21,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="HIGH",
         description="High-density tropical island financial hub vulnerable to high-tide sea surges, cloudburst drainage chokepoints, and MAS Environmental Risk Stress Testing.",
         typical_annual_loss_inr="₹3,480 Crores",
-        typical_annual_loss_usd="$420M USD"
+        typical_annual_loss_usd="$420M USD",
+        regional_language="Malay / Mandarin / Tamil",
+        regional_language_native="Melayu / 华语",
+        regional_lang_code="ms"
     ),
     HotspotModel(
         id="jakarta-ciliwung",
@@ -35,7 +38,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="CRITICAL",
         description="World's fastest-sinking mega-delta facing rapid land subsidence (10-20cm/yr), extreme Ciliwung monsoonal discharge, and coastal sea wall breaches.",
         typical_annual_loss_inr="₹14,900 Crores",
-        typical_annual_loss_usd="$1.8B USD"
+        typical_annual_loss_usd="$1.8B USD",
+        regional_language="Bahasa Indonesia",
+        regional_language_native="Bahasa",
+        regional_lang_code="id"
     ),
     HotspotModel(
         id="rotterdam-delta",
@@ -49,7 +55,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="MEDIUM",
         description="Sub-sea level European economic gateway protected by storm surge barriers, evaluated via Deltares HydroMT computational flood models.",
         typical_annual_loss_inr="₹2,570 Crores",
-        typical_annual_loss_usd="$310M USD"
+        typical_annual_loss_usd="$310M USD",
+        regional_language="Dutch",
+        regional_language_native="Nederlands",
+        regional_lang_code="nl"
     ),
     HotspotModel(
         id="tokyo-arakawa",
@@ -63,7 +72,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="HIGH",
         description="Super-typhoon storm surge risk across eastern lowlands below high-tide sea level, reliant on G-Cans underground diversion discharge channels.",
         typical_annual_loss_inr="₹9,960 Crores",
-        typical_annual_loss_usd="$1.2B USD"
+        typical_annual_loss_usd="$1.2B USD",
+        regional_language="Japanese",
+        regional_language_native="日本語",
+        regional_lang_code="ja"
     ),
     HotspotModel(
         id="newyork-manhattan",
@@ -77,7 +89,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="HIGH",
         description="Vulnerable financial center infrastructure facing Atlantic hurricane storm surges, sub-grade transit inundation, and FEMA flood zone mandates.",
         typical_annual_loss_inr="₹19,920 Crores",
-        typical_annual_loss_usd="$2.4B USD"
+        typical_annual_loss_usd="$2.4B USD",
+        regional_language="Spanish",
+        regional_language_native="Español",
+        regional_lang_code="es"
     ),
     HotspotModel(
         id="accra-odaw",
@@ -91,7 +106,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="CRITICAL",
         description="Rapidly urbanizing West African coastal basin monitored by Sentinel Flood-Watch for wetland encroachment, plastic-choked canals, and flash floods.",
         typical_annual_loss_inr="₹1,490 Crores",
-        typical_annual_loss_usd="$180M USD"
+        typical_annual_loss_usd="$180M USD",
+        regional_language="Twi / Akan",
+        regional_language_native="Twi",
+        regional_lang_code="tw"
     ),
     HotspotModel(
         id="sindh-indus",
@@ -105,7 +123,27 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="CRITICAL",
         description="Glacial melt compound flood corridor and steep Himalayan slope susceptibility evaluated via SailabAlert AI early warning.",
         typical_annual_loss_inr="₹24,000 Crores",
-        typical_annual_loss_usd="$2.9B USD"
+        typical_annual_loss_usd="$2.9B USD",
+        regional_language="Urdu",
+        regional_language_native="اردو",
+        regional_lang_code="ur"
+    ),
+    HotspotModel(
+        id="sylhet-surma",
+        name="Sylhet — Surma-Meghna River & Haor Wetlands",
+        state="Sylhet Division",
+        country="Bangladesh",
+        flag="🇧🇩",
+        region="ASIA",
+        lat=24.8949,
+        lon=91.8687,
+        risk_profile="CRITICAL",
+        description="Transboundary monsoonal flash-flood catchment where torrential Cherrapunji-Mawsynram runoff inundates the lower Meghna delta.",
+        typical_annual_loss_inr="₹4,800 Crores",
+        typical_annual_loss_usd="$580M USD",
+        regional_language="Bengali",
+        regional_language_native="বাংলা",
+        regional_lang_code="bn"
     ),
     HotspotModel(
         id="mumbai-mithi",
@@ -119,7 +157,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="CRITICAL",
         description="High-density urban basin prone to severe monsoon cloudburst overflow, tidal lock, and suburban transit standstill.",
         typical_annual_loss_inr="₹1,200 Crores",
-        typical_annual_loss_usd="$145M USD"
+        typical_annual_loss_usd="$145M USD",
+        regional_language="Marathi",
+        regional_language_native="मराठी",
+        regional_lang_code="mr"
     ),
     HotspotModel(
         id="bengaluru-bellandur",
@@ -133,7 +174,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="HIGH",
         description="Major global tech corridor affected by lake interconnect encroachment, impervious surface runoff, and rapid road inundation.",
         typical_annual_loss_inr="₹450 Crores",
-        typical_annual_loss_usd="$55M USD"
+        typical_annual_loss_usd="$55M USD",
+        regional_language="Kannada",
+        regional_language_native="ಕನ್ನಡ",
+        regional_lang_code="kn"
     ),
     HotspotModel(
         id="assam-kaziranga",
@@ -147,7 +191,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="CRITICAL",
         description="Annual Brahmaputra riverine surge causing catastrophic agricultural submergence and habitat displacement.",
         typical_annual_loss_inr="₹850 Crores",
-        typical_annual_loss_usd="$102M USD"
+        typical_annual_loss_usd="$102M USD",
+        regional_language="Assamese",
+        regional_language_native="অসমীয়া",
+        regional_lang_code="as"
     ),
     HotspotModel(
         id="chennai-velachery",
@@ -161,7 +208,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="HIGH",
         description="Coastal low-lying urban depression prone to northeast monsoon depressions and slow stormwater drainage.",
         typical_annual_loss_inr="₹680 Crores",
-        typical_annual_loss_usd="$82M USD"
+        typical_annual_loss_usd="$82M USD",
+        regional_language="Tamil",
+        regional_language_native="தமிழ்",
+        regional_lang_code="ta"
     ),
     HotspotModel(
         id="mundra-industrial",
@@ -175,7 +225,10 @@ GLOBAL_HOTSPOTS: List[HotspotModel] = [
         risk_profile="MEDIUM",
         description="Heavy coastal logistics and thermal infrastructure exposed to Arabian Sea cyclones and carbon emission transition audits.",
         typical_annual_loss_inr="₹320 Crores",
-        typical_annual_loss_usd="$38M USD"
+        typical_annual_loss_usd="$38M USD",
+        regional_language="Gujarati",
+        regional_language_native="ગુજરાતી",
+        regional_lang_code="gu"
     )
 ]
 

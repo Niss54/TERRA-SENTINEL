@@ -47,6 +47,10 @@ class Settings(BaseSettings):
     ELEVENLABS_API_KEY: str = ""
     ELEVENLABS_VOICE_ID: str = "21m00Tcm4TlvDq8ikWAM"
     SARVAM_API_KEY: str = ""
+    UDYAT_KEY: str = ""
+    INFERENCE: str = ""
+    BHASHINI_USER_ID: str = ""
+    BHASHINI_API_KEY: str = ""
 
     # Thresholds
     ACUTE_RISK_TRIGGER_THRESHOLD: float = 0.65  # Triggers Agent 2 if risk_score > 0.65
@@ -94,6 +98,11 @@ class Settings(BaseSettings):
                 "name": "Sarvam AI (Indic Speech)",
                 "configured": bool(self.SARVAM_API_KEY and self.SARVAM_API_KEY.strip()),
                 "role": "Bhasha-AI Hindi & Regional Neural Speech"
+            },
+            "bhashini": {
+                "name": "Bhashini Mission (National Language Translation Mission)",
+                "configured": bool((self.UDYAT_KEY or self.BHASHINI_API_KEY) and (self.INFERENCE or self.BHASHINI_INFERENCE_KEY)),
+                "role": "22 Scheduled Indian Languages Translation & Speech Synthesis"
             }
         }
 

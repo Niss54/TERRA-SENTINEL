@@ -74,6 +74,11 @@ class Agent3Result(BaseModel):
     recommended_actions: List[str] = Field(default_factory=list, description="Actionable mitigation recommendations")
     bilingual_alert_hindi: Optional[str] = Field(None, description="Localized Hindi civic alert for responders")
     bilingual_alert_english: Optional[str] = Field(None, description="Localized English civic alert")
+    regional_language: Optional[str] = Field("Hindi", description="Localized regional language name")
+    regional_language_native: Optional[str] = Field("हिन्दी", description="Localized regional language in native script")
+    regional_lang_code: Optional[str] = Field("hi", description="ISO language code")
+    regional_alert_text: Optional[str] = Field(None, description="Localized civic alert in regional native script")
+    tts_audio_b64: Optional[str] = Field(None, description="Base64 encoded synthesized neural speech")
     last_active_model: Optional[str] = Field("Google-Vertex-AI/gemini-3.5-flash", description="Active AI model employed")
     execution_time_ms: float
     timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
@@ -112,6 +117,9 @@ class HotspotModel(BaseModel):
     description: str
     typical_annual_loss_inr: str
     typical_annual_loss_usd: Optional[str] = Field(default=None, description="Typical annual loss in USD")
+    regional_language: Optional[str] = Field(default="English", description="Localized regional language name")
+    regional_language_native: Optional[str] = Field(default="English", description="Localized regional language in native script")
+    regional_lang_code: Optional[str] = Field(default="en", description="ISO 639-1 / Bhashini language code")
 
 
 class HealthResponse(BaseModel):
