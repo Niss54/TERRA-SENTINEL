@@ -64,11 +64,15 @@ interface Hotspot {
   id: string;
   name: string;
   state: string;
+  country?: string;
+  flag?: string;
+  region?: string;
   lat: number;
   lon: number;
   risk_profile: string;
   description: string;
   typical_annual_loss_inr: string;
+  typical_annual_loss_usd?: string;
 }
 
 interface MetricValues {
@@ -144,54 +148,172 @@ interface AnalysisResult {
 
 const DEFAULT_HOTSPOTS: Hotspot[] = [
   {
+    id: "singapore-marinabay",
+    name: "Singapore — Marina Bay & Kallang Basin",
+    state: "Central Region",
+    country: "Singapore",
+    flag: "🇸🇬",
+    region: "ASEAN",
+    lat: 1.2868,
+    lon: 103.8545,
+    risk_profile: "CRITICAL",
+    description: "Flagship Southeast Asian financial district exposed to extreme tropical cloudbursts, spring tide sea-level rise, and coastal barrage drainage saturation.",
+    typical_annual_loss_inr: "₹2,450 Crores",
+    typical_annual_loss_usd: "$295M USD"
+  },
+  {
+    id: "jakarta-ciliwung",
+    name: "Jakarta — Ciliwung River Sinking Basin",
+    state: "Special Capital Region",
+    country: "Indonesia",
+    flag: "🇮🇩",
+    region: "ASEAN",
+    lat: -6.2088,
+    lon: 106.8456,
+    risk_profile: "CRITICAL",
+    description: "Rapidly subsiding delta megalopolis experiencing acute land subsidence (-10cm/yr), sea-wall overtopping, and monsoon flash surges.",
+    typical_annual_loss_inr: "₹3,800 Crores",
+    typical_annual_loss_usd: "$455M USD"
+  },
+  {
+    id: "rotterdam-delta",
+    name: "Rotterdam — Rhine-Meuse Delta & Port Corridor",
+    state: "South Holland",
+    country: "Netherlands",
+    flag: "🇳🇱",
+    region: "WEST",
+    lat: 51.9244,
+    lon: 4.4777,
+    risk_profile: "HIGH",
+    description: "Europe's largest deepwater logistics port protected by Maeslantkering storm surge barrier under North Sea tidal extremes.",
+    typical_annual_loss_inr: "₹4,200 Crores",
+    typical_annual_loss_usd: "$510M USD"
+  },
+  {
+    id: "tokyo-arakawa",
+    name: "Tokyo — Arakawa River Lowland & Tokyo Bay",
+    state: "Kanto",
+    country: "Japan",
+    flag: "🇯🇵",
+    region: "ASIA",
+    lat: 35.6762,
+    lon: 139.6503,
+    risk_profile: "HIGH",
+    description: "Low-lying Eastern Tokyo zone protected by G-CANS underground discharge tunnel during category-5 super typhoons.",
+    typical_annual_loss_inr: "₹6,100 Crores",
+    typical_annual_loss_usd: "$735M USD"
+  },
+  {
+    id: "newyork-manhattan",
+    name: "New York — Lower Manhattan & Jamaica Bay Corridor",
+    state: "New York",
+    country: "United States",
+    flag: "🇺🇸",
+    region: "WEST",
+    lat: 40.7128,
+    lon: -74.0060,
+    risk_profile: "HIGH",
+    description: "Dense financial capital vulnerable to Atlantic hurricane storm surges, Nor'easters, and subway transit tunnel inundation.",
+    typical_annual_loss_inr: "₹7,500 Crores",
+    typical_annual_loss_usd: "$910M USD"
+  },
+  {
+    id: "accra-odaw",
+    name: "Accra — Korle Lagoon & Odaw River Basin",
+    state: "Greater Accra",
+    country: "Ghana",
+    flag: "🇬🇭",
+    region: "AFRICA",
+    lat: 5.6037,
+    lon: -0.1870,
+    risk_profile: "CRITICAL",
+    description: "Sub-Saharan coastal capital facing seasonal flash inundation, urban plastic drainage blockages, and informal settlement vulnerability.",
+    typical_annual_loss_inr: "₹950 Crores",
+    typical_annual_loss_usd: "$115M USD"
+  },
+  {
+    id: "sindh-indus",
+    name: "Sindh — Indus River Basin & Murree Hills",
+    state: "Sindh",
+    country: "Pakistan",
+    flag: "🇵🇰",
+    region: "ASIA",
+    lat: 25.3960,
+    lon: 68.3578,
+    risk_profile: "CRITICAL",
+    description: "Glacial lake outburst and super-monsoon breach zone across the lower Indus agricultural basin and Murree landslide tracts.",
+    typical_annual_loss_inr: "₹2,100 Crores",
+    typical_annual_loss_usd: "$250M USD"
+  },
+  {
     id: "mumbai-mithi",
     name: "Mumbai — Mithi River & Kurla Basin",
     state: "Maharashtra",
+    country: "India",
+    flag: "🇮🇳",
+    region: "ASIA",
     lat: 19.0728,
     lon: 72.8797,
     risk_profile: "CRITICAL",
     description: "High-density urban basin prone to severe monsoon cloudburst overflow, tidal lock, and suburban transit standstill.",
-    typical_annual_loss_inr: "₹1,200 Crores"
+    typical_annual_loss_inr: "₹1,200 Crores",
+    typical_annual_loss_usd: "$145M USD"
   },
   {
     id: "bengaluru-bellandur",
     name: "Bengaluru — Bellandur & Outer Ring Road Tech Corridor",
     state: "Karnataka",
+    country: "India",
+    flag: "🇮🇳",
+    region: "ASIA",
     lat: 12.9352,
     lon: 77.6775,
     risk_profile: "HIGH",
     description: "Major tech corridor affected by lake interconnect encroachment, impervious surface runoff, and rapid road inundation.",
-    typical_annual_loss_inr: "₹450 Crores"
+    typical_annual_loss_inr: "₹450 Crores",
+    typical_annual_loss_usd: "$55M USD"
   },
   {
     id: "assam-kaziranga",
     name: "Assam — Brahmaputra Basin & Kaziranga Eco-Corridor",
     state: "Assam",
+    country: "India",
+    flag: "🇮🇳",
+    region: "ASIA",
     lat: 26.5775,
     lon: 93.1711,
     risk_profile: "CRITICAL",
     description: "Annual Brahmaputra riverine surge causing catastrophic agricultural submergence and habitat displacement.",
-    typical_annual_loss_inr: "₹850 Crores"
+    typical_annual_loss_inr: "₹850 Crores",
+    typical_annual_loss_usd: "$102M USD"
   },
   {
     id: "chennai-velachery",
     name: "Chennai — Velachery & Pallikaranai Wetland Basin",
     state: "Tamil Nadu",
+    country: "India",
+    flag: "🇮🇳",
+    region: "ASIA",
     lat: 12.9759,
     lon: 80.2212,
     risk_profile: "HIGH",
     description: "Coastal low-lying urban depression prone to northeast monsoon depressions and slow stormwater drainage.",
-    typical_annual_loss_inr: "₹680 Crores"
+    typical_annual_loss_inr: "₹680 Crores",
+    typical_annual_loss_usd: "$82M USD"
   },
   {
     id: "mundra-industrial",
     name: "Gujarat — Mundra Port & Industrial Corridor",
     state: "Gujarat",
+    country: "India",
+    flag: "🇮🇳",
+    region: "ASIA",
     lat: 22.8395,
     lon: 69.7042,
     risk_profile: "MEDIUM",
     description: "Heavy coastal logistics and thermal infrastructure exposed to Arabian Sea cyclones and carbon emission transition audits.",
-    typical_annual_loss_inr: "₹320 Crores"
+    typical_annual_loss_inr: "₹320 Crores",
+    typical_annual_loss_usd: "$38M USD"
   }
 ];
 
@@ -343,8 +465,8 @@ function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: 
         "Trigger parametric catastrophe insurance hedge under IRDAI guidelines.",
         "Provision contingency capital reserve for BRSR Principle 6 audit compliance."
       ],
-      bilingual_alert_hindi: `⚠️ [ऐजिस-भारत चेतावनी | स्तर: ${riskTier}] ${locName} में ${sat}% मृदा संतृप्ति और भारी वर्षा के कारण जलभराव की गंभीर आशंका है। अनुमानित वित्तीय जोखिम ₹${(varInr / 10000000).toFixed(0)} करोड़ है। एनडीएमए प्रोटोकॉल लागू करें और महत्वपूर्ण संरचनाओं को सुरक्षित करें।`,
-      bilingual_alert_english: `⚠️ [TERRA-SENTINEL ALERT | TIER: ${riskTier}] ${locName} facing acute flood risk (> ${depth}cm depth) with ${sat}% soil saturation. Estimated Enterprise Value at Risk: ₹${(varInr / 10000000).toFixed(0)} Crores. Immediate municipal drainage actuation required.`,
+      bilingual_alert_hindi: `⚠️ [टेरा-सेंटिनल वैश्विक चेतावनी | स्तर: ${riskTier}] ${locName} में ${sat}% संतृप्ति और तीव्र मौसमी दबाव के कारण जलभराव का जोखिम है। अनुमानित वित्तीय जोखिम $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} करोड़) है। आपातकालीन जल निकासी और सुरक्षा प्रोटोकॉल तत्काल लागू करें।`,
+      bilingual_alert_english: `⚠️ [TERRA-SENTINEL GLOBAL HAZARD ADVISORY | TIER: ${riskTier}] ${locName} facing critical inundation threat (> ${depth}cm surge) under ${sat}% soil saturation index. Total Enterprise Value at Risk: $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} Cr). Immediate civil protection protocols and parametric liquidity safeguards activated.`,
       execution_time_ms: 68.7
     },
     thought_trace: [
@@ -352,7 +474,7 @@ function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: 
         agent_id: "agent-1-acute",
         step_name: "UNDERSTAND",
         action_type: "INGEST",
-        content: `Ingesting telemetry at ${lat.toFixed(4)}°N, ${lon.toFixed(4)}°E. Cloudburst simulation: +${rain}mm.`,
+        content: `Ingesting telemetry at ${lat.toFixed(4)}°N, ${lon.toFixed(4)}°E. Meteorological anomaly simulation: +${rain}mm.`,
         timestamp: new Date().toLocaleTimeString()
       },
       {
@@ -373,14 +495,14 @@ function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: 
         agent_id: "agent-3-financial",
         step_name: "VAR SIMULATION & RAG",
         action_type: "FINANCIAL_MODEL",
-        content: `ChromaDB retrieved SEBI BRSR & NDMA policies. Value at Risk: ₹${(varInr / 10000000).toFixed(0)} Cr.`,
+        content: `ChromaDB retrieved ESG compliance directives & catastrophe guidelines. Value at Risk: $${(varUsd / 1000000).toFixed(1)}M USD.`,
         timestamp: new Date().toLocaleTimeString()
       },
       {
         agent_id: "agent-3-financial",
-        step_name: "BHASHA-AI DISPATCH",
+        step_name: "GLOBAL DISPATCH",
         action_type: "DELIVER",
-        content: "Generated verified Hindi (देवनागरी) and English broadcast alerts.",
+        content: "Generated verified English (Primary Global) and multilingual broadcast alerts.",
         timestamp: new Date().toLocaleTimeString()
       }
     ]
@@ -488,7 +610,7 @@ function TelemetryTicker() {
       <div className="marquee-content">
         <span className="marquee-item">
           <span className="pulse-ping"><span className="pulse-ping-dot"></span><span className="pulse-ping-core"></span></span>
-          <span className="marquee-emerald">LIVE TELEMETRY:</span> BHARAT MONSOON RADAR ACTIVE (IMD / OPEN-METEO)
+          <span className="marquee-emerald">GLOBAL CLIMATE RADAR:</span> PLANETARY MULTI-HAZARD OBSERVATORY ACTIVE (OPEN-METEO / NASA SRTM / SENTINEL-1)
         </span>
         <span className="marquee-item">
           <span className="marquee-highlight">AGENT 1 (ACUTE RISK):</span> GRADIENT BOOSTING ML CLASSIFIER (95.14% ACCURACY)
@@ -497,16 +619,16 @@ function TelemetryTicker() {
           <span className="marquee-amber">AGENT 2 (CHRONIC HAZARD):</span> 30m SRTM DEM & HAZUS DEPTH-DAMAGE ENGINE
         </span>
         <span className="marquee-item">
-          <span className="marquee-highlight">AGENT 3 (FINANCIAL VaR):</span> SEBI BRSR ESG VECTOR RAG (CHROMADB)
+          <span className="marquee-highlight">AGENT 3 (FINANCIAL VaR):</span> GLOBAL ESG POLICY VECTOR RAG (CHROMADB)
         </span>
         <span className="marquee-item">
-          <span className="marquee-emerald">BHASHA-AI:</span> HINDI (देवनागरी) & ENGLISH MULTILINGUAL VOICE READY
+          <span className="marquee-emerald">GLOBAL DISPATCH:</span> PRIMARY ENGLISH (NEURAL TTS) + MULTILINGUAL CIVIC LOCALIZATIONS
         </span>
         <span className="marquee-item">
           <span className="marquee-highlight">MULTI-AGENT MCP HUB:</span> JSON-RPC 2.0 PROTOCOL ENGINE ON PORT 8001
         </span>
         <span className="marquee-item">
-          <span className="marquee-amber">BHARAT HOTSPOTS:</span> MUMBAI • BENGALURU • ASSAM • CHENNAI • GUJARAT MUNDRA
+          <span className="marquee-amber">PLANETARY HOTSPOTS:</span> 🇸🇬 SINGAPORE • 🇮🇩 JAKARTA • 🇳🇱 ROTTERDAM • 🇯🇵 TOKYO • 🇺🇸 NEW YORK • 🇬🇭 ACCRA • 🇵🇰 SINDH • 🇮🇳 MUMBAI
         </span>
       </div>
     </div>
@@ -514,27 +636,29 @@ function TelemetryTicker() {
 }
 
 const SCENARIO_PRESETS = [
-  { id: "mithi_cloudburst", label: "⛈️ Mithi Cloudburst & Sea Lock", desc: "Google LSTM + DGMR P(R>80)=89% | 135mm rain / 94% sat", rain: 135, sat: 94, hotspotId: "mumbai-mithi" },
-  { id: "kurla_sluice_jam", label: "⚙️ Kurla Sluice Mechanical Jam", desc: "3000HP Pump Trip | 88mm rain / 86% sat", rain: 88, sat: 86, hotspotId: "mumbai-mithi" },
-  { id: "dharavi_storm_surge", label: "🌊 Dharavi Surge (P90 Tail Risk)", desc: "92% Impervious Cover | 115mm rain / 91% sat", rain: 115, sat: 91, hotspotId: "mumbai-mithi" },
-  { id: "blr_22", label: "🌊 Bengaluru '22 Lake Breach", desc: "+85mm rain / 90% saturation", rain: 85, sat: 90, hotspotId: "bengaluru-bellandur" },
-  { id: "assam_24", label: "⛈️ Assam Brahmaputra River Surge", desc: "+125mm rain / 96% saturation", rain: 125, sat: 96, hotspotId: "assam-kaziranga" },
-  { id: "baseline", label: "🌤️ Baseline Monsoon Standard", desc: "+30mm rain / 50% saturation", rain: 30, sat: 50, hotspotId: "mumbai-mithi" }
+  { id: "sg_tide", label: "🇸🇬 Singapore Spring Tide Surge", desc: "Marina Barrage High Tide + Cloudburst | 120mm rain / 92% sat", rain: 120, sat: 92, hotspotId: "singapore-marinabay" },
+  { id: "rotterdam_surge", label: "🇳🇱 Rotterdam Storm Surge", desc: "North Sea Barrier Test + Delta Runoff | 95mm rain / 88% sat", rain: 95, sat: 88, hotspotId: "rotterdam-delta" },
+  { id: "tokyo_typhoon", label: "🇯🇵 Tokyo Super Typhoon", desc: "Arakawa Lowland Inundation | 140mm rain / 95% sat", rain: 140, sat: 95, hotspotId: "tokyo-arakawa" },
+  { id: "nyc_hurricane", label: "🇺🇸 NYC Hurricane Storm Surge", desc: "Lower Manhattan Subway Tunnel Threat | 110mm rain / 90% sat", rain: 110, sat: 90, hotspotId: "newyork-manhattan" },
+  { id: "mithi_cloudburst", label: "🇮🇳 Mumbai Cloudburst & Sea Lock", desc: "Google LSTM + DGMR P(R>80)=89% | 135mm rain / 94% sat", rain: 135, sat: 94, hotspotId: "mumbai-mithi" },
+  { id: "accra_flash", label: "🇬🇭 Accra Odaw Basin Flash Flood", desc: "Korle Lagoon Choke + Convective Torrent | 105mm rain / 91% sat", rain: 105, sat: 91, hotspotId: "accra-odaw" },
+  { id: "indus_surge", label: "🇵🇰 Sindh Indus Super Flood", desc: "Glacial Melt + Heavy Monsoon Depression | 130mm rain / 96% sat", rain: 130, sat: 96, hotspotId: "sindh-indus" }
 ];
 
 const MCP_TOOL_TEMPLATES: Record<string, string> = {
-  fetch_weather_vectors: '{\n  "lat": 19.0728,\n  "lon": 72.8797\n}',
+  fetch_weather_vectors: '{\n  "lat": 1.2868,\n  "lon": 103.8545\n}',
   run_flood_classifier: '{\n  "precipitation_24h_mm": 95.0,\n  "precipitation_7d_mm": 210.0,\n  "soil_saturation_pct": 88.0,\n  "relative_humidity_pct": 85.0,\n  "elevation_m": 12.0\n}',
-  compute_dem_exposure: '{\n  "lat": 19.0728,\n  "lon": 72.8797,\n  "risk_score": 0.78,\n  "radius_km": 10.0\n}',
-  query_policy_rag: '{\n  "region": "India",\n  "sector": "Industrial",\n  "damage_estimate_inr": 450000000\n}'
+  compute_dem_exposure: '{\n  "lat": 1.2868,\n  "lon": 103.8545,\n  "risk_score": 0.78,\n  "radius_km": 10.0\n}',
+  query_policy_rag: '{\n  "region": "Singapore",\n  "sector": "Industrial",\n  "damage_estimate_inr": 450000000\n}'
 };
 
 export function App() {
   const [hotspots, setHotspots] = useState<Hotspot[]>(DEFAULT_HOTSPOTS);
-  const [selectedHotspot, setSelectedHotspot] = useState<string>("mumbai-mithi");
-  const [currentLat, setCurrentLat] = useState<number>(19.0728);
-  const [currentLon, setCurrentLon] = useState<number>(72.8797);
-  const [locationName, setLocationName] = useState<string>("Mumbai — Mithi River & Kurla Basin");
+  const [selectedHotspot, setSelectedHotspot] = useState<string>("singapore-marinabay");
+  const [selectedRegion, setSelectedRegion] = useState<string>("ALL");
+  const [currentLat, setCurrentLat] = useState<number>(1.2868);
+  const [currentLon, setCurrentLon] = useState<number>(103.8545);
+  const [locationName, setLocationName] = useState<string>("Singapore — Marina Bay & Kallang Basin");
 
   // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh' | 'evac' | 'humanitarian' | 'multihazard'
   const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh" | "evac" | "humanitarian" | "multihazard">("command");
@@ -555,8 +679,8 @@ export function App() {
 
   // Analysis State
   const [loading, setLoading] = useState<boolean>(false);
-  const [result, setResult] = useState<AnalysisResult | null>(() => buildFallbackAnalysis(19.0728, 72.8797, "Mumbai — Mithi River & Kurla Basin", 85, 90));
-  const [activeLangTab, setActiveLangTab] = useState<"hindi" | "english">("hindi");
+  const [result, setResult] = useState<AnalysisResult | null>(() => buildFallbackAnalysis(1.2868, 103.8545, "Singapore — Marina Bay & Kallang Basin", 85, 90));
+  const [activeLangTab, setActiveLangTab] = useState<"english" | "hindi">("english");
   const [wsConnected, setWsConnected] = useState<boolean>(false);
   const [liveSteps, setLiveSteps] = useState<ThoughtStep[]>([]);
   const [copied, setCopied] = useState<boolean>(false);
@@ -937,11 +1061,12 @@ export function App() {
       }
     }
 
-    // 2. Fallback to Web Speech API
+    // 2. Global Primary English Web Speech Dispatch (en-US standard)
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1.0;
+      utterance.lang = activeLangTab === "english" ? "en-US" : "hi-IN";
       utterance.onend = () => setIsPlayingAudio(false);
       utterance.onerror = () => setIsPlayingAudio(false);
       window.speechSynthesis.speak(utterance);
@@ -1300,45 +1425,82 @@ export function App() {
             gap: "16px"
           }}
         >
-          {/* Section: Bharat Hotspots */}
+          {/* Section: Global Hotspots */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
               <Compass size={16} color="var(--color-primary)" />
               <h2 style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--color-text-secondary)" }}>
-                Bharat Climate Hotspots
+                Global Climate Hotspots & Corridors
               </h2>
             </div>
 
+            {/* Regional Filter Pills */}
+            <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginBottom: "10px" }}>
+              {[
+                { id: "ALL", label: "🌐 All (12)" },
+                { id: "ASEAN", label: "🇸🇬 ASEAN" },
+                { id: "WEST", label: "🇪🇺/🇺🇸 West" },
+                { id: "ASIA", label: "🌏 Asia" },
+                { id: "AFRICA", label: "🌍 Africa" }
+              ].map((rf) => (
+                <button
+                  key={rf.id}
+                  onClick={() => setSelectedRegion(rf.id)}
+                  style={{
+                    fontSize: "0.65rem",
+                    padding: "3px 8px",
+                    borderRadius: "6px",
+                    border: "1px solid",
+                    borderColor: selectedRegion === rf.id ? "var(--color-primary)" : "rgba(255, 255, 255, 0.08)",
+                    background: selectedRegion === rf.id ? "rgba(0, 240, 255, 0.15)" : "rgba(255, 255, 255, 0.02)",
+                    color: selectedRegion === rf.id ? "#FFF" : "var(--color-text-secondary)",
+                    cursor: "pointer",
+                    fontWeight: selectedRegion === rf.id ? 700 : 500,
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  {rf.label}
+                </button>
+              ))}
+            </div>
+
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-              {hotspots.map((h) => {
-                const isSelected = selectedHotspot === h.id;
-                return (
-                  <div
-                    key={h.id}
-                    onClick={() => handleSelectHotspot(h)}
-                    className={`hotspot-item ${isSelected ? "active" : ""}`}
-                    style={{
-                      padding: "8px 12px",
-                      borderRadius: "var(--radius-md)",
-                      background: isSelected ? "rgba(0, 240, 255, 0.08)" : "rgba(255, 255, 255, 0.02)",
-                      border: `1px solid ${isSelected ? "rgba(0, 240, 255, 0.35)" : "rgba(255, 255, 255, 0.05)"}`,
-                      cursor: "pointer"
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.85rem", fontWeight: 600, color: isSelected ? "#FFF" : "var(--color-text-primary)" }}>
-                        {h.name.split("—")[0]}
-                      </span>
-                      <span className={`badge ${getTierClass(h.risk_profile)}`} style={{ fontSize: "0.65rem", padding: "1px 6px" }}>
-                        {h.risk_profile}
-                      </span>
+              {hotspots
+                .filter((h) => {
+                  if (selectedRegion === "ALL") return true;
+                  const r = (h.region || "").toUpperCase();
+                  if (selectedRegion === "WEST") return r === "WEST" || r === "EUROPE" || r === "AMERICAS";
+                  return r === selectedRegion.toUpperCase();
+                })
+                .map((h) => {
+                  const isSelected = selectedHotspot === h.id;
+                  return (
+                    <div
+                      key={h.id}
+                      onClick={() => handleSelectHotspot(h)}
+                      className={`hotspot-item ${isSelected ? "active" : ""}`}
+                      style={{
+                        padding: "8px 12px",
+                        borderRadius: "var(--radius-md)",
+                        background: isSelected ? "rgba(0, 240, 255, 0.08)" : "rgba(255, 255, 255, 0.02)",
+                        border: `1px solid ${isSelected ? "rgba(0, 240, 255, 0.35)" : "rgba(255, 255, 255, 0.05)"}`,
+                        cursor: "pointer"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: "0.85rem", fontWeight: 600, color: isSelected ? "#FFF" : "var(--color-text-primary)" }}>
+                          {h.flag ? `${h.flag} ` : ""}{h.name.split("—")[0]}
+                        </span>
+                        <span className={`badge ${getTierClass(h.risk_profile)}`} style={{ fontSize: "0.65rem", padding: "1px 6px" }}>
+                          {h.risk_profile}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", marginTop: "3px" }}>
+                        {h.country ? `${h.country} (${h.state})` : h.state} • Loss: {h.typical_annual_loss_usd || h.typical_annual_loss_inr}
+                      </div>
                     </div>
-                    <div style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", marginTop: "3px" }}>
-                      {h.state} • Loss: {h.typical_annual_loss_inr}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
 
@@ -1830,28 +1992,14 @@ export function App() {
                     </div>
                   </div>
 
-                  {/* Bhasha-AI Bilingual Civic Broadcast (Winning Edge) */}
+                  {/* Global Civil Broadcast (Winning Edge) */}
                   <div style={{ background: "rgba(0,0,0,0.3)", borderRadius: "8px", padding: "10px", marginTop: "12px", border: "1px solid rgba(255,255,255,0.08)" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem", fontWeight: 700, color: "#FFF" }}>
                         <Radio size={14} color="var(--color-primary)" />
-                        <span>Bhasha-AI Civic Broadcast</span>
+                        <span>Civil Protection Broadcast Dispatch</span>
                       </div>
                       <div style={{ display: "flex", gap: "4px" }}>
-                        <button
-                          onClick={() => setActiveLangTab("hindi")}
-                          style={{
-                            fontSize: "0.68rem",
-                            padding: "2px 8px",
-                            borderRadius: "4px",
-                            border: "none",
-                            background: activeLangTab === "hindi" ? "var(--color-primary)" : "rgba(255,255,255,0.05)",
-                            color: "#FFF",
-                            cursor: "pointer"
-                          }}
-                        >
-                          हिंदी
-                        </button>
                         <button
                           onClick={() => setActiveLangTab("english")}
                           style={{
@@ -1861,18 +2009,34 @@ export function App() {
                             border: "none",
                             background: activeLangTab === "english" ? "var(--color-primary)" : "rgba(255,255,255,0.05)",
                             color: "#FFF",
-                            cursor: "pointer"
+                            cursor: "pointer",
+                            fontWeight: activeLangTab === "english" ? 700 : 400
                           }}
                         >
-                          English
+                          English (Global)
+                        </button>
+                        <button
+                          onClick={() => setActiveLangTab("hindi")}
+                          style={{
+                            fontSize: "0.68rem",
+                            padding: "2px 8px",
+                            borderRadius: "4px",
+                            border: "none",
+                            background: activeLangTab === "hindi" ? "var(--color-primary)" : "rgba(255,255,255,0.05)",
+                            color: "#FFF",
+                            cursor: "pointer",
+                            fontWeight: activeLangTab === "hindi" ? 700 : 400
+                          }}
+                        >
+                          हिन्दी (Local)
                         </button>
                       </div>
                     </div>
 
                     <div style={{ fontSize: "0.75rem", color: "var(--color-text-primary)", lineHeight: 1.45, marginBottom: "8px" }}>
-                      {activeLangTab === "hindi"
-                        ? result.agent3.bilingual_alert_hindi
-                        : result.agent3.bilingual_alert_english}
+                      {activeLangTab === "english"
+                        ? result.agent3.bilingual_alert_english
+                        : result.agent3.bilingual_alert_hindi}
                     </div>
 
                     <div style={{ display: "flex", gap: "8px" }}>
@@ -1886,14 +2050,14 @@ export function App() {
                         }}
                         onClick={() =>
                           speakText(
-                            activeLangTab === "hindi"
-                              ? result.agent3?.bilingual_alert_hindi || ""
-                              : result.agent3?.bilingual_alert_english || ""
+                            activeLangTab === "english"
+                              ? result.agent3?.bilingual_alert_english || ""
+                              : result.agent3?.bilingual_alert_hindi || ""
                           )
                         }
                       >
                         {isPlayingAudio ? <Square size={13} color="var(--color-primary)" /> : <Volume2 size={13} />}
-                        {isPlayingAudio ? "Stop Audio" : "Audio Readout"}
+                        {isPlayingAudio ? "Stop Audio" : "Play Global Dispatch Audio"}
                         {isPlayingAudio && (
                           <div className="audio-equalizer">
                             <div className="audio-bar"></div>
@@ -1909,9 +2073,9 @@ export function App() {
                         style={{ padding: "4px 10px", fontSize: "0.7rem" }}
                         onClick={() => {
                           const txt =
-                            activeLangTab === "hindi"
-                              ? result.agent3?.bilingual_alert_hindi || ""
-                              : result.agent3?.bilingual_alert_english || "";
+                            activeLangTab === "english"
+                              ? result.agent3?.bilingual_alert_english || ""
+                              : result.agent3?.bilingual_alert_hindi || "";
                           navigator.clipboard.writeText(txt);
                           setCopied(true);
                           setTimeout(() => setCopied(false), 2000);
@@ -2818,17 +2982,17 @@ export function App() {
               </div>
             </div>
 
-            {/* Bhasha-AI Official Civic Alerts */}
+            {/* Global Civil Protection Broadcast */}
             <div style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", padding: "14px", marginBottom: "20px" }}>
-              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#FFF", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#FFF", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
                 <Radio size={14} color="var(--color-primary)" />
-                Bhasha-AI Bilingual Civil Protection Broadcast Dispatch:
+                Global Civil Protection Broadcast Dispatch:
               </div>
-              <div style={{ fontSize: "0.75rem", color: "var(--color-text-primary)", lineHeight: 1.5, marginBottom: "8px" }}>
-                <b>हिन्दी (देवनागरी):</b> {result?.agent3?.bilingual_alert_hindi || "मीठी नदी और कुर्ला बेसिन में जलभराव की स्थिति गंभीर है। तत्काल जल निकासी द्वार खोलें।"}
+              <div style={{ fontSize: "0.8rem", color: "#FFF", lineHeight: 1.5, marginBottom: "10px", background: "rgba(0, 240, 255, 0.06)", padding: "10px 12px", borderRadius: "6px", borderLeft: "3px solid var(--color-primary)" }}>
+                <b style={{ color: "var(--color-primary)" }}>Primary English Broadcast:</b> {result?.agent3?.bilingual_alert_english || "Critical waterlogging projected for transit and industrial substations. Immediate flood barrier deployment mandated."}
               </div>
-              <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", lineHeight: 1.5 }}>
-                <b>English:</b> {result?.agent3?.bilingual_alert_english || "Critical waterlogging projected for transit and industrial substations. Immediate flood barrier deployment mandated."}
+              <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", lineHeight: 1.5, padding: "0 4px" }}>
+                <b style={{ color: "#9CA3AF" }}>Regional Localization (हिन्दी / Local):</b> {result?.agent3?.bilingual_alert_hindi || "जलभराव की स्थिति गंभीर है। तत्काल जल निकासी द्वार खोलें और सुरक्षा प्रोटोकॉल लागू करें।"}
               </div>
             </div>
 

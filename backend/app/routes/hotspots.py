@@ -1,68 +1,186 @@
 """
-Preloaded Bharat Climate Hotspots Route
-Exposes mission-critical Indian urban and rural hazard test corridors.
+Preloaded Global & Regional Climate Hotspots Route
+Exposes planetary mission-critical urban and coastal hazard corridors across Singapore, ASEAN, Europe, Americas, and South Asia.
 """
 from typing import List
 from fastapi import APIRouter
 from backend.app.schemas import HotspotModel
 
-router = APIRouter(tags=["Bharat Hotspots"])
+router = APIRouter(tags=["Global Hotspots"])
 
-BHARAT_HOTSPOTS: List[HotspotModel] = [
+GLOBAL_HOTSPOTS: List[HotspotModel] = [
+    HotspotModel(
+        id="singapore-marinabay",
+        name="Singapore — Marina Bay & Kallang Basin",
+        state="Central Region",
+        country="Singapore",
+        flag="🇸🇬",
+        region="ASEAN",
+        lat=1.2868,
+        lon=103.8545,
+        risk_profile="HIGH",
+        description="High-density tropical island financial hub vulnerable to high-tide sea surges, cloudburst drainage chokepoints, and MAS Environmental Risk Stress Testing.",
+        typical_annual_loss_inr="₹3,480 Crores",
+        typical_annual_loss_usd="$420M USD"
+    ),
+    HotspotModel(
+        id="jakarta-ciliwung",
+        name="Jakarta — Ciliwung River & North Coast Sinking Basin",
+        state="DKI Jakarta",
+        country="Indonesia",
+        flag="🇮🇩",
+        region="ASEAN",
+        lat=-6.2088,
+        lon=106.8456,
+        risk_profile="CRITICAL",
+        description="World's fastest-sinking mega-delta facing rapid land subsidence (10-20cm/yr), extreme Ciliwung monsoonal discharge, and coastal sea wall breaches.",
+        typical_annual_loss_inr="₹14,900 Crores",
+        typical_annual_loss_usd="$1.8B USD"
+    ),
+    HotspotModel(
+        id="rotterdam-delta",
+        name="Rotterdam — Rhine-Meuse Delta & Maeslantkering Corridor",
+        state="South Holland",
+        country="Netherlands",
+        flag="🇳🇱",
+        region="EUROPE",
+        lat=51.9244,
+        lon=4.4777,
+        risk_profile="MEDIUM",
+        description="Sub-sea level European economic gateway protected by storm surge barriers, evaluated via Deltares HydroMT computational flood models.",
+        typical_annual_loss_inr="₹2,570 Crores",
+        typical_annual_loss_usd="$310M USD"
+    ),
+    HotspotModel(
+        id="tokyo-arakawa",
+        name="Tokyo — Arakawa River Basin & Edogawa Lowland",
+        state="Kanto",
+        country="Japan",
+        flag="🇯🇵",
+        region="ASIA",
+        lat=35.6762,
+        lon=139.6503,
+        risk_profile="HIGH",
+        description="Super-typhoon storm surge risk across eastern lowlands below high-tide sea level, reliant on G-Cans underground diversion discharge channels.",
+        typical_annual_loss_inr="₹9,960 Crores",
+        typical_annual_loss_usd="$1.2B USD"
+    ),
+    HotspotModel(
+        id="newyork-manhattan",
+        name="New York — Lower Manhattan & Jamaica Bay Corridor",
+        state="New York",
+        country="United States",
+        flag="🇺🇸",
+        region="AMERICAS",
+        lat=40.7128,
+        lon=-74.0060,
+        risk_profile="HIGH",
+        description="Vulnerable financial center infrastructure facing Atlantic hurricane storm surges, sub-grade transit inundation, and FEMA flood zone mandates.",
+        typical_annual_loss_inr="₹19,920 Crores",
+        typical_annual_loss_usd="$2.4B USD"
+    ),
+    HotspotModel(
+        id="accra-odaw",
+        name="Accra — Korle Lagoon & Odaw River Basin",
+        state="Greater Accra",
+        country="Ghana",
+        flag="🇬🇭",
+        region="AFRICA",
+        lat=5.6037,
+        lon=-0.1870,
+        risk_profile="CRITICAL",
+        description="Rapidly urbanizing West African coastal basin monitored by Sentinel Flood-Watch for wetland encroachment, plastic-choked canals, and flash floods.",
+        typical_annual_loss_inr="₹1,490 Crores",
+        typical_annual_loss_usd="$180M USD"
+    ),
+    HotspotModel(
+        id="sindh-indus",
+        name="Sindh — Indus River Basin & Murree Hills",
+        state="Sindh / Punjab",
+        country="Pakistan",
+        flag="🇵🇰",
+        region="ASIA",
+        lat=27.5590,
+        lon=68.2120,
+        risk_profile="CRITICAL",
+        description="Glacial melt compound flood corridor and steep Himalayan slope susceptibility evaluated via SailabAlert AI early warning.",
+        typical_annual_loss_inr="₹24,000 Crores",
+        typical_annual_loss_usd="$2.9B USD"
+    ),
     HotspotModel(
         id="mumbai-mithi",
         name="Mumbai — Mithi River & Kurla Basin",
         state="Maharashtra",
+        country="India",
+        flag="🇮🇳",
+        region="ASIA",
         lat=19.0728,
         lon=72.8797,
         risk_profile="CRITICAL",
         description="High-density urban basin prone to severe monsoon cloudburst overflow, tidal lock, and suburban transit standstill.",
-        typical_annual_loss_inr="₹1,200 Crores"
+        typical_annual_loss_inr="₹1,200 Crores",
+        typical_annual_loss_usd="$145M USD"
     ),
     HotspotModel(
         id="bengaluru-bellandur",
         name="Bengaluru — Bellandur & Outer Ring Road Tech Corridor",
         state="Karnataka",
+        country="India",
+        flag="🇮🇳",
+        region="ASIA",
         lat=12.9352,
         lon=77.6775,
         risk_profile="HIGH",
-        description="Major tech corridor affected by lake interconnect encroachment, impervious surface runoff, and rapid road inundation.",
-        typical_annual_loss_inr="₹450 Crores"
+        description="Major global tech corridor affected by lake interconnect encroachment, impervious surface runoff, and rapid road inundation.",
+        typical_annual_loss_inr="₹450 Crores",
+        typical_annual_loss_usd="$55M USD"
     ),
     HotspotModel(
         id="assam-kaziranga",
         name="Assam — Brahmaputra Basin & Kaziranga Eco-Corridor",
         state="Assam",
+        country="India",
+        flag="🇮🇳",
+        region="ASIA",
         lat=26.5775,
         lon=93.1711,
         risk_profile="CRITICAL",
         description="Annual Brahmaputra riverine surge causing catastrophic agricultural submergence and habitat displacement.",
-        typical_annual_loss_inr="₹850 Crores"
+        typical_annual_loss_inr="₹850 Crores",
+        typical_annual_loss_usd="$102M USD"
     ),
     HotspotModel(
         id="chennai-velachery",
         name="Chennai — Velachery & Pallikaranai Wetland Basin",
         state="Tamil Nadu",
+        country="India",
+        flag="🇮🇳",
+        region="ASIA",
         lat=12.9759,
         lon=80.2212,
         risk_profile="HIGH",
         description="Coastal low-lying urban depression prone to northeast monsoon depressions and slow stormwater drainage.",
-        typical_annual_loss_inr="₹680 Crores"
+        typical_annual_loss_inr="₹680 Crores",
+        typical_annual_loss_usd="$82M USD"
     ),
     HotspotModel(
         id="mundra-industrial",
         name="Gujarat — Mundra Port & Industrial Corridor",
         state="Gujarat",
+        country="India",
+        flag="🇮🇳",
+        region="ASIA",
         lat=22.8395,
         lon=69.7042,
         risk_profile="MEDIUM",
         description="Heavy coastal logistics and thermal infrastructure exposed to Arabian Sea cyclones and carbon emission transition audits.",
-        typical_annual_loss_inr="₹320 Crores"
+        typical_annual_loss_inr="₹320 Crores",
+        typical_annual_loss_usd="$38M USD"
     )
 ]
 
 
 @router.get("/hotspots", response_model=List[HotspotModel])
-async def list_bharat_hotspots():
-    """Retrieve pre-configured Indian climate vulnerability hotspots for instant one-click analysis."""
-    return BHARAT_HOTSPOTS
+async def list_global_hotspots():
+    """Retrieve pre-configured planetary and regional climate vulnerability hotspots for instant one-click analysis."""
+    return GLOBAL_HOTSPOTS

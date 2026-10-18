@@ -103,11 +103,15 @@ class HotspotModel(BaseModel):
     id: str
     name: str
     state: str
+    country: str = Field(default="Global", description="Country name")
+    flag: str = Field(default="🌐", description="Country flag emoji")
+    region: str = Field(default="GLOBAL", description="Geographic region (ASEAN, ASIA, EUROPE, AMERICAS, AFRICA)")
     lat: float
     lon: float
     risk_profile: str
     description: str
     typical_annual_loss_inr: str
+    typical_annual_loss_usd: Optional[str] = Field(default=None, description="Typical annual loss in USD")
 
 
 class HealthResponse(BaseModel):
