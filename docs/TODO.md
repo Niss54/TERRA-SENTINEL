@@ -39,7 +39,7 @@ Phase 25: 10-Slide Executive VC Pitch Deck ██████████ 100% �
 Phase 26: Google Research & Open Climate Fix Architecture Synthesis ██████████ 100% ✅
 Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) ██████████ 100% ✅
 Phase 28: Autonomous Evacuation Routing, Parametric Oracle & Rescue Fleet ██████████ 100% ✅
-Phase 29: Humanitarian Triage (Ushahidi), 4R Mutual Aid (Crisis Cleanup), GloFAS & Toucan ██░░░░░░░░ 20% ⏳
+Phase 29: Humanitarian Triage (Ushahidi), 4R Mutual Aid (Crisis Cleanup), GloFAS & Toucan ████░░░░░░ 40% ⏳
 ```
 
 ---
@@ -281,7 +281,7 @@ Phase 29: Humanitarian Triage (Ushahidi), 4R Mutual Aid (Crisis Cleanup), GloFAS
 
 ## 🤝 Phase 29: Deep Synthesis: Ushahidi, Crisis Cleanup, Toucan Protocol & Open-Meteo GloFAS — IN PROGRESS ⏳
 - [x] **Phase 29.1: Open-Meteo GloFAS Hydrological River Discharge & Ensemble Flood Engine:** LISFLOOD channel routing, daily river discharge ($m^3/s$) forecasts, return-period threshold classification ($Q_{2\text{yr}}, Q_{5\text{yr}}, Q_{20\text{yr}}$), lapse-rate elevation correction, and Indian river basin profiles (Mithi, Brahmaputra, Yamuna, Cauvery, Vrishabhavathi) (`backend/app/openmeteo_glofas.py`, `/api/v1/forecast/glofas`). 7/7 backend unit tests passing in `tests/test_phase29_openmeteo_glofas.py`.
-- [ ] **Phase 29.2: Ushahidi Multi-Channel Citizen Crisis Crowdsourcing & Verification Pipeline:** Dynamic incident reporting form schema, multi-source credibility calculation ($C_{\text{post}}$), real-time cross-correlation with ClusterDuck LoRa water depth & Sentinel-1 SAR backscatter, HMAC non-repudiation, and Vertex AI Gemini multilingual categorization (`backend/app/ushahidi_crisis.py`, `/api/v1/crisis/incidents`).
+- [x] **Phase 29.2: Ushahidi Multi-Channel Citizen Crisis Crowdsourcing & Verification Pipeline:** Dynamic incident reporting form schema, multi-source credibility calculation ($C_{\text{post}}$), real-time cross-correlation with ClusterDuck LoRa water depth & Sentinel-1 SAR backscatter, HMAC non-repudiation, and Vertex AI Gemini multilingual categorization (`backend/app/ushahidi_crisis.py`, `/api/v1/crisis/incidents`). 7/7 backend unit tests passing in `tests/test_phase29_ushahidi_crisis.py`.
 - [ ] **Phase 29.3: Crisis Cleanup 4R Inter-Agency Collaborative Disaster Relief Engine:** 4R workflow (Report $\to$ Claim $\to$ Work $\to$ Close), work order taxonomy (Muck out, Tarping, Biohazard, Medical, Elderly), multi-agency claim lease locks (24h timeout), vulnerability priority scoring ($P_{\text{priority}}$), and automatic safe evacuation route attachment (`backend/app/crisis_cleanup.py`, `/api/v1/relief/cases`).
 - [ ] **Phase 29.4: Toucan Protocol On-Chain Carbon Resilience Bridge & Retirement Registry:** On-chain carbon pool interaction (BCT, NCT, TCO2), programmatic retirement (`retire()`, `autoOffsetPoolToken()`), cryptographic Keccak-256 certificate hashing, IPFS CIDv1 metadata pinning, and corporate ESG resilience ledger on Polygon Amoy (`backend/app/toucan_bridge.py`, `/api/v1/carbon/retire`).
 - [ ] **Phase 29.5: React 19 Unified Humanitarian & Carbon Operations Cockpit:** Interactive Mission Control panel with live GloFAS river hydrograph, Ushahidi crowdsourced SOS map/cards, Crisis Cleanup 4R case claim/status manager, and 1-click Toucan carbon offset retirement modal (`frontend/src/components/HumanitarianCarbonCockpit.tsx`, `frontend/src/App.tsx`).

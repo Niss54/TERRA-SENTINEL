@@ -61,5 +61,5 @@ EXPOSE 8080 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD curl -f http://localhost:${PORT:-8080}/health || exit 1
 
-# Launch production server with Uvicorn respecting dynamic Cloud Run $PORT
-CMD ["sh", "-c", "uvicorn backend.app.main:app --host 0.0.0.0 --port ${PORT:-8080} --workers 2 --timeout-keep-alive 65"]
+# Launch production server with robust port-aware launcher
+CMD ["python", "backend/run.py"]
