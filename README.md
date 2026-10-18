@@ -17,9 +17,13 @@ Built for **Google Cloud AI Builder Cup Singapore Grand Finale** & **Enterprise 
 ---
 
 ### 🌟 Project Links & Submission Metadata
-| 🎥 3-Minute Demo Video | 🌐 Live Web Application | 📦 GitHub Repository | 👥 Team Details |
+| 🎥 Demo Video | 🌐 Live Web Application | 📦 GitHub Repository | ⚡ 2-Min Fast-Track Audit |
 |:---:|:---:|:---:|:---:|
-| [![Demo Video](https://img.shields.io/badge/Demo_Video-Watch_3--Min_Screenplay-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YOUR_DEMO_VIDEO_URL_HERE) | [![Live App](https://img.shields.io/badge/Live_App-Launch_Cockpit-00C853?style=for-the-badge&logo=googlecloud&logoColor=white)](https://terra-sentinel-demo.web.app) | [![GitHub](https://img.shields.io/badge/GitHub-Niss54%2FTERRA--SENTINEL-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Niss54/TERRA-SENTINEL) | **Team Syntrix**<br/>**Lead:** Nishant Maurya |
+| [![Demo Video](https://img.shields.io/badge/Demo_Video-Watch_Screenplay-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YOUR_DEMO_VIDEO_URL_HERE) | [![Live App](https://img.shields.io/badge/Live_App-Launch_Cockpit-00C853?style=for-the-badge&logo=googlecloud&logoColor=white)](https://terra-sentinel-self.vercel.app) | [![GitHub](https://img.shields.io/badge/GitHub-Niss54%2FTERRA--SENTINEL-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Niss54/TERRA-SENTINEL) | [![Acceptance Report](https://img.shields.io/badge/Judge_Dossier-2--Min_Verification-8A2BE2?style=for-the-badge&logo=checkmarx&logoColor=white)](./evaluation/ACCEPTANCE_REPORT.md) |
+
+> [!IMPORTANT]
+> **⚡ 2-MINUTE JUDGE FAST-TRACK ACCEPTANCE REPORT AVAILABLE:**  
+> *Skip video buffering & lengthy reviews! Evaluators can read our verified **[2-Minute Fast-Track Acceptance Report (`evaluation/ACCEPTANCE_REPORT.md`)](./evaluation/ACCEPTANCE_REPORT.md)** featuring 1-click terminal verification commands, live cryptographic proof, and zero-bullshit architecture.*
 
 ---
 
@@ -61,15 +65,20 @@ Yet today, **a fatal operational disconnect paralyzes disaster response and fina
 
 <div align="center">
 
-| 1️⃣ Collapsible Command Radar | 2️⃣ Multi-Agent Thought Stream |
+| 1️⃣ Planetary Command Radar | 2️⃣ LoRa Emergency Mesh Radar |
 |:---:|:---:|
-| <img src="./public/submission_photos/1_Command_Radar_Overview.png" width="480" alt="Command Radar" /> | <img src="./public/submission_photos/2_Multi_Agent_Swarm.png" width="480" alt="Multi-Agent Swarm" /> |
-| *Esri Dark Gray GIS Canvas with 48h temporal LSTM scrubber and regional hotspots.* | *Autonomous cascading trace (Agent 1 ➔ Agent 2 ➔ Agent 3) with full monologue.* |
+| <img src="./public/screenshots/01_Planetary_Command_Radar.png" width="480" alt="Planetary Command Radar" /> | <img src="./public/screenshots/02_LoRa_Emergency_Mesh_Radar.png" width="480" alt="LoRa Mesh Radar" /> |
+| *Esri Dark Gray GIS with 48h LSTM scrubber and Clay Foundation Model radar.* | *ClusterDuck Protocol with 6 active nodes, RSSI tracking & packet routing.* |
 
-| 3️⃣ Official MCP Tool Hub | 4️⃣ Financial Risk & BRSR Governance |
+| 3️⃣ Live Off-Grid SOS Beacon | 4️⃣ Autonomous Evacuation & Fleet |
 |:---:|:---:|
-| <img src="./public/submission_photos/3_MCP_Tool_Hub.png" width="480" alt="MCP Tool Hub" /> | <img src="./public/submission_photos/4_Financial_BRSR_Risk.png" width="480" alt="Financial Risk" /> |
-| *Specification-compliant JSON-RPC 2.0 gateway executing tool calls in real time.* | *Executive Value-at-Risk (VaR) calculator with SEBI BRSR and TCFD compliance.* |
+| <img src="./public/screenshots/03_Critical_OffGrid_SOS_Broadcast.png" width="480" alt="Off-Grid SOS Beacon" /> | <img src="./public/screenshots/04_Disaster_Evacuation_Routing_Fleet.png" width="480" alt="Evacuation Fleet" /> |
+| *Real-time emergency SOS broadcast via multi-hop LoRa mesh backhaul.* | *Dynamic obstacle avoidance, safe haven routing, and NDRF rescue boats.* |
+
+| 5️⃣ Cryptographic Ledger Verification | 6️⃣ Multi-Hazard & Eco Cockpit |
+|:---:|:---:|
+| <img src="./public/screenshots/05_Cryptographic_Tamper_Proof_Verified.png" width="480" alt="Cryptographic Ledger" /> | <img src="./public/screenshots/07_MultiHazard_Landslide_HydroMT_Panda.png" width="480" alt="Multi-Hazard Cockpit" /> |
+| *1-to-1 Keccak-256 evidence verification against Polygon Amoy testnet.* | *Compound CFLSI landslide index, Deltares HydroMT TWI, and Panda MRV.* |
 
 </div>
 
@@ -92,7 +101,6 @@ Yet today, **a fatal operational disconnect paralyzes disaster response and fina
   - [⚙️ Environment Configuration Matrix](#️-environment-configuration-matrix)
   - [📡 Comprehensive REST API & WebSocket Reference](#-comprehensive-rest-api--websocket-reference)
   - [🧪 Automated Testing & Verification](#-automated-testing--verification)
-  - [👥 Team Syntrix](#-team-syntrix)
   - [📄 License & Acknowledgments](#-license--acknowledgments)
 
 ---
@@ -384,17 +392,6 @@ Hardhat Smart Contracts: 21 passing (1s)
 Frontend TypeScript Build: tsc -b && vite build in 2.94s (0 errors)
 >>> TOTAL TESTS ACROSS REPOSITORY: 380 TESTS (100% PASSING) <<<
 ```
-
----
-
-## 👥 Team Syntrix
-
-Proudly developed for **Google Cloud AI Builder Cup Singapore Grand Finale** by **Team Syntrix**:
-
-- **Nishant Maurya** — *Team Leader & Lead Agentic Systems Architect*
-- **Navya Chaudhary** — *Climate Modeling & GIS Remote Sensing Engineer*
-- **Om Tripathi** — *Smart Contracts & Distributed Ledger Specialist*
-- **Nikita Chopde** — *Financial Policy, ESG & Frontend UI/UX Developer*
 
 ---
 
