@@ -37,7 +37,7 @@ Phase 23: End-to-End Regression Verification ██████████ 100%
 Phase 24: AI Builder Cup 3-Minute Video Demo Screenplay ██████████ 100% ✅
 Phase 25: 10-Slide Executive VC Pitch Deck ██████████ 100% ✅
 Phase 26: Google Research & Open Climate Fix Architecture Synthesis ██████████ 100% ✅
-Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) ░░░░░░░░░░ 0% 🔄
+Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) █░░░░░░░░░ 17% 🔄
 ```
 
 ---
@@ -259,7 +259,7 @@ Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (Clust
 ---
 
 ## 🛰️ Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) — IN PROGRESS 🔄
-- [ ] **Phase 27.1: Clay Earth Foundation Model (ViT-MAE) Multi-Sensor Inference Engine:** Vision Transformer patch projection, spatial/temporal positional encodings, zero-shot flood probe (`backend/app/clay_foundation.py`, `/api/v1/clay/embeddings`, `/api/v1/clay/flood-prob`).
+- [x] **Phase 27.1: Clay Earth Foundation Model (ViT-MAE) Multi-Sensor Inference Engine:** Vision Transformer patch projection, spatial/temporal positional encodings, zero-shot flood probe (`backend/app/clay_foundation.py`, `/api/v1/clay/embeddings`, `/api/v1/clay/flood-prob`).
 - [ ] **Phase 27.2: NASA VEDA Backend STAC & Dynamic COG Raster Service:** Standard STAC collections (`/api/v1/stac/collections`), dynamic raster tiler (`/api/v1/raster/tile/{z}/{x}/{y}`), and zonal statistics (`backend/app/veda_raster.py`).
 - [ ] **Phase 27.3: ClusterDuck Protocol LoRa Ad-Hoc Mesh Gateway:** DuckPacket binary/JSON decoder, node hierarchy (`DuckLink`, `MamaDuck`, `PapaDuck`), and hop routing (`backend/app/cluster_duck.py`, `/api/v1/telemetry/duckpacket`).
 - [ ] **Phase 27.4: NASA VEDA-UI Dual-View Swipe Comparator:** Interactive before-and-after flood inundation split-screen slider (`frontend/src/components/VedaRasterComparator.tsx`).
