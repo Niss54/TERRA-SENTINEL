@@ -74,7 +74,11 @@
 19. [Competition Scorecard & Winning Criteria Mapping](#19-competition-scorecard--winning-criteria-mapping)
 20. [AI Builder Cup 3-Minute Video Demo Screenplay](#20-ai-builder-cup-3-minute-video-demo-screenplay)
 21. [10-Slide Executive VC Pitch Deck & Business Model](#21-10-slide-executive-vc-pitch-deck--business-model)
-22. [Conclusion & Grand Finale Deliverables](#22-conclusion--grand-finale-deliverables)
+22. [The Ask & Singapore Finale Vision](#slide-10-the-ask--singapore-finale-vision)
+23. [Phase 26: Google Research & Open Climate Fix Architecture Synthesis](#23-phase-26-google-research--open-climate-fix-architecture-synthesis-the-winning-moat)
+24. [End-to-End Build, Test, MCP DevTools Verification & Multi-Cloud Deployment Guide](#24-end-to-end-build-test-mcp-devtools-verification--multi-cloud-deployment-guide-vercel--railway)
+25. [Phase 27: Planetary Foundation Model, NASA Earth Science STAC & Off-Grid LoRa Mesh Protocol Synthesis](#25-phase-27-planetary-foundation-model-nasa-earth-science-stac--off-grid-lora-mesh-protocol-synthesis-the-singapore-grand-finale-winning-moat)
+26. [Conclusion & Grand Finale Deliverables](#26-conclusion--grand-finale-deliverables)
 
 ---
 
@@ -4084,16 +4088,150 @@ where $P(Y \le \hat{Y}_\alpha) = \alpha$, giving decision-makers clear worst-cas
 
 ---
 
-## 25. Conclusion & Grand Finale Deliverables
+---
+
+## 25. Phase 27: Planetary Foundation Model, NASA Earth Science STAC & Off-Grid LoRa Mesh Protocol Synthesis (The Singapore Grand Finale Winning Moat)
+
+### 25.1 Strategic Benchmark & Architectural Extraction
+To decisively secure victory at the **Google Cloud AI Builder Cup Singapore Grand Finale**, TERRA-SENTINEL undergoes its most profound architectural evolution. We benchmark and extract proven modules from four planetary-scale open-source repositories:
+1. **NASA VEDA UI (`NASA-IMPACT/veda-ui`)**: NASA's flagship Earth Science visualization dashboard.
+2. **NASA VEDA Backend (`NASA-IMPACT/veda-backend`)**: NASA's cloud-native STAC and dynamic raster tiling engine (TiTiler + PgSTAC).
+3. **Clay Foundation Model (`Clay-foundation/model`)**: The state-of-the-art open-source Vision Transformer (ViT-MAE) Earth Foundation Model.
+4. **ClusterDuck Protocol (`ClusterDuck-Protocol/ClusterDuck-Protocol`)**: Project OWL's ad-hoc LoRa mesh network firmware for off-grid disaster telemetry.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│             TERRA-SENTINEL v3.0 PLANETARY FOUNDATION & MESH ARCHITECTURE               │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                        │
+│  [Clay Foundation Model: ViT-MAE]         [ClusterDuck Protocol: LoRa Mesh]            │
+│  - 768-dim Multi-Sensor Latent Space      - Ad-Hoc Decentralized Telemetry Nodes       │
+│  - Sentinel-1 SAR + Sentinel-2 Optical    - DuckLink (Sensor) -> MamaDuck (Relays)    │
+│  - Zero-Shot Inundation Representation    - PapaDuck (Edge Gateway -> Backend API)    │
+│                 │                                             │                        │
+│                 ▼                                             ▼                        │
+│  ┌───────────────────────────────┐          ┌────────────────────────────────┐         │
+│  │ Agent 1: Foundation Hydrology │          │ Off-Grid Telemetry Decoupler   │         │
+│  │ (ViT Spatial Embeddings +     │          │ (Zero Cellular/Internet Fallback│        │
+│  │  Multi-Spectral Flood Probe)  │          │  Hop-Decay & Dead-Zone Matrix) │         │
+│  └──────────────┬────────────────┘          └───────────────┬────────────────┘         │
+│                 │                                           │                          │
+│                 └─────────────────────┬─────────────────────┘                          │
+│                                       ▼                                                │
+│                 ┌───────────────────────────────────────────┐                          │
+│                 │ NASA VEDA Backend: STAC & Dynamic Tiler   │                          │
+│                 │ - Cloud-Optimized GeoTIFF (COG) Streaming │                          │
+│                 │ - Dynamic On-The-Fly MNDWI & SAR Ratios   │                          │
+│                 │ - Sub-50ms Polygon Zonal Statistics       │                          │
+│                 └─────────────────────┬─────────────────────┘                          │
+│                                       ▼                                                │
+│                 ┌───────────────────────────────────────────┐                          │
+│                 │ NASA VEDA UI: Planetary Dual-View Cockpit │                          │
+│                 │ - Swipe / Split-Screen Before & Peak Inun │                          │
+│                 │ - In-Browser Color-Ramp & Zonal Tooltips  │                          │
+│                 │ - LoRa Mesh Topology & Signal RSSI Radar  │                          │
+│                 └───────────────────────────────────────────┘                          │
+│                                                                                        │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 25.2 Deep Technical Extraction & Replacement Matrix
+
+| Source Repository | Core Module Extracted | What to Retain & Integrate | What to Discard (Avoid Bloat) | Impact on TERRA-SENTINEL |
+| :--- | :--- | :--- | :--- | :--- |
+| **`Clay-foundation/model`** | **Earth Foundation Model (ViT-MAE)** | - Vision Transformer (ViT-B/16) backbone with dynamic patch projection.<br>- Spatiotemporal positional encodings (Sinusoidal $\text{lat}, \text{lon}$ and Day-of-Year DOY).<br>- Multi-sensor fusion: Optical (Sentinel-2 10m) + SAR (Sentinel-1 cloud-penetrating radar) + DEM.<br>- Zero-shot flood probability linear probe head. | - Multi-terabyte pre-training datasets.<br>- Slurm multi-GPU distributed MAE pretraining loops.<br>- Heavy self-attention mask-token decoders. | **Replaces toy tabular ML** with a 100M+ parameter planetary Foundation Model. Inundation classification works through thick monsoon clouds where optical satellites are blinded. |
+| **`NASA-IMPACT/veda-backend`** | **STAC & Dynamic Raster Tile Engine** | - Standard OGC/STAC API endpoints: `/api/v1/stac/collections` and `/api/v1/stac/search`.<br>- Dynamic Cloud-Optimized GeoTIFF (COG) tiler (`/api/v1/raster/tile/{z}/{x}/{y}`).<br>- Dynamic on-the-fly raster band arithmetic (MNDWI and SAR decibel ratio $\Delta \sigma^0$).<br>- Rapid zonal statistics over arbitrary municipal GeoJSON polygons. | - Heavy multi-stack AWS CDK CloudFormation templates.<br>- Complex PgSTAC multi-container orchestrations.<br>- AWS ECS/Batch ingestion pipelines. | **Replaces static mock GIS polygons** with real-time dynamic Cloud-Native STAC imagery and sub-50ms zonal flood extent calculations. |
+| **`NASA-IMPACT/veda-ui`** | **Dual-View Swipe Comparator & STAC Explorer** | - Dual-layer swipe/split-screen slider comparing Pre-Disaster Baseline vs Peak Cloudburst Inundation.<br>- Dynamic color ramp selector (Inundation Depth, NDWI water gradient, Hazard thermal scale).<br>- Interactive point and zonal statistics tooltip. | - VEDA stories MDX content compiler.<br>- Agency-specific branding overrides. | Transforms the cockpit into the exact planetary disaster exploration suite used by NASA and international crisis teams. |
+| **`ClusterDuck-Protocol/ClusterDuck-Protocol`** | **Ad-Hoc LoRa Mesh Network & Telemetry Gateway** | - DuckPacket binary/JSON serialization and deserialization.<br>- Node hierarchy: `DuckLink` (sensor), `MamaDuck` (relay), `PapaDuck` (gateway).<br>- Ingestion endpoint: `POST /api/v1/telemetry/duckpacket`.<br>- Hop count tracking, RSSI signal metrics, and mesh dead-zone detection. | - C++/Arduino firmware compiling toolchains.<br>- Specific ESP32 LoRa radio pin definitions.<br>- Non-geospatial utility routines. | **Solves total telecommunications blackout**. When cell towers and fiber backhauls collapse under floodwaters, TERRA-SENTINEL continues ingesting physical flood sensor telemetry via LoRa mesh radio. |
+
+---
+
+### 25.3 Mathematical Formulation of Extracted Logic
+
+#### 1. Clay Earth Foundation Model ViT-MAE Embeddings
+For input multi-spectral satellite chip $\mathbf{X} \in \mathbb{R}^{B \times H \times W}$ (where $B$ spans Sentinel-2 optical bands, Sentinel-1 SAR VV/VH polarizations, and DEM elevation), the patch projection and spatiotemporal conditioning are formulated as:
+$$\mathbf{z}_0 = [\mathbf{x}_1 \mathbf{W}_p; \mathbf{x}_2 \mathbf{W}_p; \dots; \mathbf{x}_N \mathbf{W}_p; \mathbf{x}_{\text{cls}}] + \mathbf{E}_{\text{spatial}}(\text{lat}, \text{lon}) + \mathbf{E}_{\text{temporal}}(\text{DOY}, \text{hour}) + \mathbf{E}_{\text{sensor}}(\text{GSD}, \boldsymbol{\lambda})$$
+where:
+- $\mathbf{W}_p \in \mathbb{R}^{(P^2 \cdot B) \times d}$ is the linear patch projection matrix ($d=768$).
+- $\mathbf{E}_{\text{spatial}} = [\sin(\omega_k \text{lat}), \cos(\omega_k \text{lat}), \sin(\omega_k \text{lon}), \cos(\omega_k \text{lon})]$ encodes geographic coordinates.
+- $\mathbf{E}_{\text{temporal}} = [\sin(2\pi \frac{\text{DOY}}{365}), \cos(2\pi \frac{\text{DOY}}{365})]$ encodes seasonal hydrological baseline.
+The latent feature vector $\mathbf{h} = \text{Encoder}(\mathbf{z}_0)$ feeds into the zero-shot flood probe:
+$$P(\text{Flooded} \mid \mathbf{X}) = \sigma(\mathbf{W}_{\text{flood}} \cdot \mathbf{h}_{\text{cls}} + b_{\text{flood}})$$
+
+#### 2. NASA VEDA Dynamic Raster Math & SAR Backscatter Ratio
+Dynamic water segmentation over cloud-penetrating Sentinel-1 SAR imagery calculates the backscatter decibel ratio between baseline dry state $\sigma^0_{\text{pre}}$ and flood state $\sigma^0_{\text{post}}$:
+$$\Delta \sigma^0 = 10 \log_{10}\left(\frac{\sigma^0_{\text{post}}}{\sigma^0_{\text{pre}}}\right)$$
+Inundation is classified when smooth standing water induces specular reflection:
+$$\text{FloodMask}(x, y) = \mathbb{I}\left(\Delta \sigma^0(x, y) \le \tau_{\text{SAR}} \land \text{DEM}(x, y) \le \text{DEM}_{\text{basin}} + \delta\right)$$
+where $\tau_{\text{SAR}} = -3.5\text{ dB}$. Concurrently, for cloud-free optical imagery, the Modified Normalized Difference Water Index (MNDWI) is dynamically computed on-the-fly:
+$$\text{MNDWI} = \frac{\rho_{\text{Green}} - \rho_{\text{SWIR}}}{\rho_{\text{Green}} + \rho_{\text{SWIR}}}$$
+
+#### 3. ClusterDuck Protocol Ad-Hoc LoRa Mesh Delivery
+For a mesh packet routed across $H$ hops from origin `DuckLink` through intermediate `MamaDuck` relays to `PapaDuck`:
+$$P_{\text{delivery}} = \prod_{i=1}^H (1 - \text{PER}_i) \cdot \mathbb{I}(H \le H_{\text{max}})$$
+where $\text{PER}_i$ is the Packet Error Rate determined by LoRa Spreading Factor (SF7 to SF12) and Signal-to-Noise Ratio (SNR):
+$$\text{PER}_i \approx Q\left(\sqrt{2 \cdot \frac{E_b}{N_0}}\right)$$
+Dead zones are identified when $\sum_{k=1}^K \text{DuckPackets}_k(t) = 0$ for node $j$ over rolling interval $\Delta t = 600\text{s}$.
+
+---
+
+### 25.4 6-Phase Master Implementation & Quality Gate Roadmap
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        6-PHASE MASTER SYNTHESIS ROADMAP                                │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                        │
+│  Phase 1: Clay Earth Foundation Model Multi-Sensor ViT Inference Engine                │
+│  - backend/app/clay_foundation.py                                                      │
+│  - Endpoints: POST /api/v1/clay/embeddings, POST /api/v1/clay/flood-prob               │
+│  - Tests: tests/test_phase27_clay_foundation.py                                       │
+│                                                                                        │
+│  Phase 2: NASA VEDA Backend STAC & Dynamic COG Raster Service                          │
+│  - backend/app/veda_raster.py                                                          │
+│  - Endpoints: GET /api/v1/stac/collections, GET /api/v1/raster/tile/{z}/{x}/{y}        │
+│  - POST /api/v1/raster/statistics (Zonal flood parcel aggregation)                     │
+│  - Tests: tests/test_phase27_veda_backend.py                                          │
+│                                                                                        │
+│  Phase 3: ClusterDuck Protocol LoRa Ad-Hoc Mesh Gateway & Off-Grid Telemetry           │
+│  - backend/app/cluster_duck.py                                                         │
+│  - Endpoints: POST /api/v1/telemetry/duckpacket, GET /api/v1/mesh/topology             │
+│  - Tests: tests/test_phase27_cluster_duck.py                                           │
+│                                                                                        │
+│  Phase 4: NASA VEDA-UI Dual-View Swipe Comparator & Planetary STAC Explorer           │
+│  - frontend/src/components/VedaRasterComparator.tsx                                    │
+│  - Interactive before-and-after flood inundation split-screen slider                   │
+│                                                                                        │
+│  Phase 5: ClusterDuck Mesh Network Topology & Dead-Zone Visualizer                     │
+│  - frontend/src/components/MeshTopologyRadar.tsx                                       │
+│  - Live LoRa mesh hop graph, signal RSSI quality & broken relay detection              │
+│                                                                                        │
+│  Phase 6: Unified Multi-Cloud Preflight & Chrome DevTools MCP Live Quality Gate        │
+│  - 100% pytest regression across all test suites                                       │
+│  - npm run build verified cleanly in frontend/                                         │
+│  - Chrome DevTools MCP verification: console 0 errors, DOM check, visual screenshot    │
+│  - Atomic conventional git commits                                                     │
+│                                                                                        │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 26. Conclusion & Grand Finale Deliverables
 
 **TERRA-SENTINEL** represents the gold standard of what an **AI Builder Cup & ClimateTech** winning project must be:
 - It addresses a massive, high-urgency societal and economic crisis across the JAPAC region.
 - It leverages the full power of Google Cloud: **Vertex AI Gemini multimodal reasoning**, **Cloud Run serverless containers**, and **Cloud Build CI/CD**.
 - It incorporates verified hydrological deep sequence architectures from **Google Research (`flood-forecasting`)** and state-of-the-art nowcasting from **DeepMind (`skillful_nowcasting`)**.
 - It delivers a control-room grade mission cockpit inspired by **Open Climate Fix (`quartz-frontend`)**.
+- It integrates the **Clay Earth Foundation Model (ViT-MAE)** for zero-shot cloud-penetrating flood classification.
+- It provides **NASA VEDA STAC dynamic raster tiling** and before-and-after comparative analysis.
+- It guarantees complete operational uptime during telecommunications collapse via **ClusterDuck Protocol ad-hoc LoRa mesh networking**.
 - It provides uncompromised cybersecurity, zero-trust telemetry verification, and tamper-evident cryptographic blockchain anchoring on Polygon Amoy.
 
 With this Master PRD as the governing blueprint, TERRA-SENTINEL stands fully prepared to secure its place in the **Top 50** and advance to the **Singapore Grand Finale**.
 
 ---
-*Document Version: 2.6.0-ENTERPRISE · Revision Date: October 18, 2026 · Author: Team Syntrix (Lead: Nishant Maurya)*
+*Document Version: 3.0.0-ENTERPRISE · Revision Date: October 18, 2026 · Author: Team Syntrix (Lead: Nishant Maurya)*
