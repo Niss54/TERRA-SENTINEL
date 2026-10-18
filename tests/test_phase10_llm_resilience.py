@@ -122,8 +122,16 @@ def test_tier_circuit_breaker_half_open_failure_reversion():
 # 3. 5-Tier Hierarchical Resilience & Graceful Degradation
 # ============================================================================
 
-def test_route_prompt_primary_tier(controller):
+def test_route_prompt_primary_tier(controller, monkeypatch):
     """Verifies default routing to Tier 1 when all tiers are healthy."""
+    class MockResponse:
+        status_code = 200
+        def json(self):
+            return {"candidates": [{"content": {"parts": [{"text": "Synthetic Gemini Alert Assessment"}]}}]}
+
+    import httpx
+    monkeypatch.setattr(httpx, "post", lambda *args, **kwargs: MockResponse())
+
     res = controller.route_prompt("Evaluate flood warning for Mumbai Kurla")
     assert res["active_tier"] == 1
     assert "Google Vertex AI" in res["provider"] or "Google Cloud" in res["provider"]
