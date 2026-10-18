@@ -17,9 +17,9 @@ Built for **Google Cloud AI Builder Cup Singapore Grand Finale** & **Enterprise 
 ---
 
 ### 🌟 Project Links & Submission Metadata
-| 🎥 Demo Video | 🌐 Live Web Application | 📦 GitHub Repository | ⚡ 2-Min Fast-Track Audit |
-|:---:|:---:|:---:|:---:|
-| [![Demo Video](https://img.shields.io/badge/Demo_Video-Watch_Screenplay-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YOUR_DEMO_VIDEO_URL_HERE) | [![Live App](https://img.shields.io/badge/Live_App-Launch_Cockpit-00C853?style=for-the-badge&logo=googlecloud&logoColor=white)](https://terra-sentinel-self.vercel.app) | [![GitHub](https://img.shields.io/badge/GitHub-Niss54%2FTERRA--SENTINEL-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Niss54/TERRA-SENTINEL) | [![Acceptance Report](https://img.shields.io/badge/Judge_Dossier-2--Min_Verification-8A2BE2?style=for-the-badge&logo=checkmarx&logoColor=white)](./evaluation/ACCEPTANCE_REPORT.md) |
+| 🌐 Live Web Application | 📦 GitHub Repository | ⚡ 2-Min Fast-Track Audit |
+|:---:|:---:|:---:|
+| [![Live App](https://img.shields.io/badge/Live_App-Launch_Cockpit-00C853?style=for-the-badge&logo=googlecloud&logoColor=white)](https://terra-sentinel-self.vercel.app) | [![GitHub](https://img.shields.io/badge/GitHub-Niss54%2FTERRA--SENTINEL-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Niss54/TERRA-SENTINEL) | [![Acceptance Report](https://img.shields.io/badge/Judge_Dossier-2--Min_Verification-8A2BE2?style=for-the-badge&logo=checkmarx&logoColor=white)](./evaluation/ACCEPTANCE_REPORT.md) |
 
 > [!IMPORTANT]
 > **⚡ 2-MINUTE JUDGE FAST-TRACK ACCEPTANCE REPORT AVAILABLE:**  
@@ -39,7 +39,7 @@ Built for **Google Cloud AI Builder Cup Singapore Grand Finale** & **Enterprise 
 
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" width="100%" alt="divider"/>
 
-[📑 Master PRD](./PRD.md) · [⏱️ Engineering Task Tracker](./docs/TODO.md) · [📊 Pitch Deck](./docs/PITCH_DECK.md) · [🎬 Demo Script](./docs/DEMO_SCRIPT.md) · [🤖 Agent Manifest](./agent_manifest.yaml)
+[📑 Master PRD](./PRD.md) · [⏱️ Engineering Task Tracker](./docs/TODO.md) · [📊 Pitch Deck](./docs/PITCH_DECK.md) · [📋 Evaluation Dossier](./evaluation/ACCEPTANCE_REPORT.md) · [🤖 Agent Manifest](./agent_manifest.yaml)
 
 </div>
 
