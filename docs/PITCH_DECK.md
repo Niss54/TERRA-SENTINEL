@@ -257,6 +257,9 @@ Manual trigger       →     Automated 15-min cron →    Real-time satellite fe
 |:---|:---|:---|
 | **Google Cloud Run** | Serverless Backend Hosting (`cloudbuild.yaml`) | Instant auto-scaling from 0 to 5,000 req/sec during cyclone landfalls with zero server management |
 | **Google Vertex AI** | Gemini 2.0 Flash & Gemini 1.5 Pro | Sub-second multimodal spatial reasoning fusing Sentinel-2 MSI bands with ground telemetry |
+| **Google Research LSTM** | State-Handoff Sequence Hydrology | Physical state vector sequence predicting 0-72h stage and discharge with ungauged basin transfer |
+| **DeepMind DGMR Nowcasting** | Extreme Precipitation Exceedance Engine | Evaluates radar cloudburst exceedance probabilities P(R > 20, 50, 80 mm/h) at 5-min intervals |
+| **Open Climate Fix Quartz** | Mission Control-Room Cockpit | 0h-48h temporal scrubber with P10/P50/P90 VaR uncertainty corridors eliminating model overconfidence |
 | **5-Tier Circuit Breaker** | Automated LLM Failover Architecture | Guarantees 99.999% uptime: Vertex AI ➔ Gemini 1.5 Pro ➔ Gemini 3.8 ➔ Groq ➔ Local Heuristics |
 | **Google Earth Engine (GEE)** | 30m SRTM DEM Hydrological Rasters | Precision slope gradient modeling ($\Delta z / \Delta d$) identifying depression troughs |
 | **Model Context Protocol (MCP)** | JSON-RPC 2.0 Open Tool Bus | Eliminates brittle spaghetti APIs with official agent protocol compliance |

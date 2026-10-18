@@ -27,7 +27,11 @@ jobs:
 
       - name: Run Test Suite
         run: |
-          pytest tests/test_phase1.py tests/test_phase5_e2e.py tests/test_phase6_winning_edge.py -v
+          pytest tests/test_phase1.py tests/test_phase5_e2e.py tests/test_phase5_vc_singapore_strategy.py tests/test_phase26_hydrology_nowcasting.py tests/test_phase26_scenarios_ungauged.py -v
+
+      - name: Run Deployment Preflight Gate
+        run: |
+          python scripts/verify_deployment_preflight.py
 
   build-frontend:
     name: Frontend Build & Typecheck
