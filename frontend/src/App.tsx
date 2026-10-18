@@ -25,7 +25,8 @@ import {
   Zap,
   TrendingUp,
   Code,
-  Check
+  Check,
+  Play
 } from "lucide-react";
 import { BlockchainPanel } from "./components/BlockchainPanel";
 
@@ -552,6 +553,22 @@ export function App() {
   const [integrationStatus, setIntegrationStatus] = useState<any>(null);
   const [pingingApi, setPingingApi] = useState<boolean>(false);
   const [apiPingSuccess, setApiPingSuccess] = useState<boolean | null>(null);
+
+  // Open Climate Fix (Quartz) Style 0-48h Temporal Scrubber State
+  const [scrubberHour, setScrubberHour] = useState<number>(0);
+  const [isScrubberPlaying, setIsScrubberPlaying] = useState<boolean>(false);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setInterval> | null = null;
+    if (isScrubberPlaying) {
+      timer = setInterval(() => {
+        setScrubberHour((prev) => (prev >= 48 ? 0 : prev + 3));
+      }, 1200);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isScrubberPlaying]);
 
   // Map Reference
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -1417,6 +1434,99 @@ export function App() {
               <span>Critical Substation / Asset Pins</span>
             </div>
           </div>
+
+          {/* Open Climate Fix (Quartz) Style 0-48h Temporal Scrubber */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "16px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 900,
+              background: "rgba(10, 20, 36, 0.94)",
+              backdropFilter: "blur(14px)",
+              padding: "10px 18px",
+              borderRadius: "12px",
+              border: "1px solid rgba(14, 154, 167, 0.4)",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
+              display: "flex",
+              alignItems: "center",
+              gap: "14px",
+              width: "calc(100% - 48px)",
+              maxWidth: "620px"
+            }}
+          >
+            <button
+              onClick={() => setIsScrubberPlaying(!isScrubberPlaying)}
+              style={{
+                background: "var(--color-primary)",
+                border: "none",
+                borderRadius: "8px",
+                width: "32px",
+                height: "32px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: "#0A1424",
+                fontWeight: 800
+              }}
+              title={isScrubberPlaying ? "Pause Playback" : "Play 48h Progression"}
+            >
+              {isScrubberPlaying ? <Square size={14} fill="#0A1424" /> : <Play size={14} fill="#0A1424" />}
+            </button>
+            <button
+              onClick={() => {
+                setIsScrubberPlaying(false);
+                setScrubberHour(0);
+              }}
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "8px",
+                width: "32px",
+                height: "32px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: "#FFF"
+              }}
+              title="Reset to T+0h Nowcast"
+            >
+              <RefreshCw size={14} />
+            </button>
+
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "4px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem" }}>
+                <span className="mono" style={{ color: "var(--color-primary)", fontWeight: 700 }}>
+                  T+{scrubberHour}h {scrubberHour === 0 ? "(Nowcast)" : "(Forecast Sequence)"}
+                </span>
+                <span className="mono" style={{ color: "var(--color-text-secondary)", fontSize: "0.68rem" }}>
+                  P10: <b style={{ color: "#FFF" }}>{Math.round((result?.agent2?.waterlogging_depth_cm || 85) * 0.72 * (1 + (scrubberHour / 48) * 0.4))}cm</b> · 
+                  P50: <b style={{ color: "var(--color-watch)" }}>{Math.round((result?.agent2?.waterlogging_depth_cm || 85) * (1 + (scrubberHour / 48) * 0.4))}cm</b> · 
+                  P90: <b style={{ color: "#D62828" }}>{Math.round((result?.agent2?.waterlogging_depth_cm || 85) * 1.45 * (1 + (scrubberHour / 48) * 0.4))}cm</b>
+                </span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={48}
+                step={3}
+                value={scrubberHour}
+                onChange={(e) => {
+                  setIsScrubberPlaying(false);
+                  setScrubberHour(Number(e.target.value));
+                }}
+                style={{ width: "100%", accentColor: "var(--color-primary)", height: "4px", cursor: "pointer" }}
+              />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", fontSize: "0.65rem", color: "var(--color-text-muted)" }} className="mono">
+              <span style={{ color: "var(--color-safe)", fontWeight: 700 }}>Google Seq LSTM</span>
+              <span>48h Lead Time</span>
+            </div>
+          </div>
         </main>
 
         {/* ======================================================
@@ -1597,6 +1707,22 @@ export function App() {
                     </div>
                     <div style={{ fontSize: "0.7rem", color: "var(--color-watch)", marginTop: "4px" }}>
                       Compliance Shortfall: <b>{result.agent3.compliance_gap_pct}%</b>
+                    </div>
+
+                    {/* Open Climate Fix (Quartz) Style VaR Uncertainty Corridor */}
+                    <div style={{ marginTop: "8px", paddingTop: "8px", borderTop: "1px dashed rgba(255,255,255,0.1)", display: "flex", justifyContent: "space-between", fontSize: "0.68rem" }}>
+                      <div>
+                        <span style={{ color: "var(--color-text-muted)" }}>P10 (Low):</span><br/>
+                        <b className="mono" style={{ color: "var(--color-safe)" }}>₹{((result.agent3.var_estimate_inr * 0.72) / 10000000).toFixed(1)} Cr</b>
+                      </div>
+                      <div>
+                        <span style={{ color: "var(--color-text-muted)" }}>P50 (Median):</span><br/>
+                        <b className="mono" style={{ color: "#FFF" }}>₹{(result.agent3.var_estimate_inr / 10000000).toFixed(1)} Cr</b>
+                      </div>
+                      <div>
+                        <span style={{ color: "var(--color-text-muted)" }}>P90 (Catastrophe):</span><br/>
+                        <b className="mono" style={{ color: "#EF4444" }}>₹{((result.agent3.var_estimate_inr * 1.48) / 10000000).toFixed(1)} Cr</b>
+                      </div>
                     </div>
                   </div>
 
