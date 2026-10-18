@@ -762,6 +762,22 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": []
         },
         "target_agent": "finale-strategy-controller"
+    },
+    "predict_compound_landslide_flood_hazard": {
+        "name": "predict_compound_landslide_flood_hazard",
+        "description": "Evaluates Compound Flood & Landslide Susceptibility Index (CFLSI) coupling rainfall, river level, soil saturation, and DEM slope gradient, returning trilingual public safety guidance in English, Urdu (اردو), and Hindi (देवनागरी).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "rainfall_mm": {"type": "number", "description": "24-hour rainfall in mm"},
+                "river_level_m": {"type": "number", "description": "River stage in meters"},
+                "soil_moisture_pct": {"type": "number", "description": "Soil saturation percentage"},
+                "slope_deg": {"type": "number", "description": "Terrain slope in degrees"},
+                "location_name": {"type": "string", "description": "Target corridor or station name", "default": "Western Ghats Slope Corridor"}
+            },
+            "required": ["rainfall_mm", "river_level_m", "soil_moisture_pct", "slope_deg"]
+        },
+        "target_agent": "sailab-landslide-agent"
     }
 }
 

@@ -715,6 +715,17 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         e_name = params.get("event_name") or "Google Cloud AI Builder Cup — JAPAC Grand Finale"
         return generate_singapore_grand_finale_playbook(event_name=e_name)
 
+    elif tool_name == "predict_compound_landslide_flood_hazard":
+        from backend.app.sailab_landslide import sailab_engine, LandslidePredictRequest
+        req = LandslidePredictRequest(
+            rainfall_mm=float(params.get("rainfall_mm", 85.0)),
+            river_level_m=float(params.get("river_level_m", 3.5)),
+            soil_moisture_pct=float(params.get("soil_moisture_pct", 75.0)),
+            slope_deg=float(params.get("slope_deg", 25.0)),
+            location_name=str(params.get("location_name", "Western Ghats Slope Corridor"))
+        )
+        return sailab_engine.predict_hazard(req).model_dump()
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
