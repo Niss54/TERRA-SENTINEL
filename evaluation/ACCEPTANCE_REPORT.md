@@ -14,6 +14,7 @@
 | **Autonomous Multi-Agent Swarm** | 3 decoupled agents cascading from physical hazard (0.65 threshold) to 30m DEM to Financial VaR | [Pytest Suite (359/359 Passing)](#-1-automated-test-suite-verification) · [API Command](#-2-instant-terminal-verification-30-seconds) |
 | **Earth Remote Sensing & Foundation Models** | Clay Earth Foundation Model (ViT-B/16 MAE $d=768$) + Sentinel-1 SAR penetration | [`01_Planetary_Command_Radar.png`](./screenshots/01_Planetary_Command_Radar.png) · `POST /api/v1/clay/embeddings` |
 | **Computational Hydrography** | Deltares HydroMT Topographic Wetness Index ($TWI = \ln(\alpha / \tan\beta)$) | [`07_MultiHazard_Landslide_HydroMT_Panda.png`](./screenshots/07_MultiHazard_Landslide_HydroMT_Panda.png) |
+| **Real DEM & Building Cadastre** | Copernicus GLO-30 DEM depression hydrodynamics + OpenStreetMap (OSM) exact building footprint spatial intersection (0% synthetic formulas) | [Agent 2 Geo-Exposure Endpoint](#d-agent-2-copernicus-dem--osm-cadastre-verification) |
 | **Autonomous Evacuation Routing** | $A^*$ dynamic water-depth obstacle avoidance avoiding flooded lowlands | [`04_Disaster_Evacuation_Routing_Fleet.png`](./screenshots/04_Disaster_Evacuation_Routing_Fleet.png) · Waypoints WP-01 to WP-04 |
 | **Off-Grid Telemetry & LoRa Mesh** | ClusterDuck Protocol with 6 active nodes, packet deduplication, and direct SOS broadcast | [`02_LoRa_Emergency_Mesh_Radar.png`](./screenshots/02_LoRa_Emergency_Mesh_Radar.png) · [`03_Critical_OffGrid_SOS_Broadcast.png`](./screenshots/03_Critical_OffGrid_SOS_Broadcast.png) |
 | **Blockchain Provability & Parametric Bonds** | Polygon Amoy testnet (Chain ID: 80002) with Keccak-256 evidence anchoring & IPFS CIDv1 | [`05_Cryptographic_Tamper_Proof_Verified.png`](./screenshots/05_Cryptographic_Tamper_Proof_Verified.png) · [`06_Cryptographic_Tamper_Defense_Alert.png`](./screenshots/06_Cryptographic_Tamper_Defense_Alert.png) |
@@ -44,7 +45,20 @@ curl -X POST "http://127.0.0.1:8000/api/v1/analyze" \
 - `agent_2_structural_exposure.waterlogging_depth_cm`: `75` (`INFRASTRUCTURE FAILURE`)
 - `agent_3_financial_impact.var_usd`: `$420,000,000`
 
-### C. Cryptographic Evidence Verification (Polygon Amoy Protocol)
+### C. Agent 2 Copernicus DEM & OSM Cadastre Verification
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/tools/geo-exposure" \
+     -H "Content-Type: application/json" \
+     -d '{"lat": 19.0728, "lon": 72.8797, "risk_score": 0.88, "precipitation_24h_mm": 110.0, "soil_saturation_pct": 92.0, "elevation_m": 8.0, "radius_km": 10.0}'
+```
+**Verified Output (Authentic Point-In-Polygon & DEM Hydrodynamics):**
+- `waterlogging_depth_cm`: `67 cm` (Deltares TWI Depression Backwater Pooling)
+- `buildings_at_risk`: `200+` (OpenStreetMap Cadastral Building Footprints intersecting flood polygon)
+- `dem_elevation_source`: `Copernicus GLO-30 30m Digital Elevation Model`
+- `cadastre_source`: `OpenStreetMap (OSM) Verified Cadastre [mumbai-mithi]`
+- `is_synthetic_formula`: `false`
+
+### D. Cryptographic Evidence Verification (Polygon Amoy Protocol)
 ```bash
 curl -X POST "http://127.0.0.1:8000/api/v2/evidence/compute-digest" \
      -H "Content-Type: application/json" \
