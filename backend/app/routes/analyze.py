@@ -20,6 +20,7 @@ from backend.app.websocket import manager
 from backend.app.agent1_ml import flood_ml_engine
 from backend.app.agent2_geo import chronic_geo_engine
 from backend.app.agent3_financial import financial_risk_engine
+from backend.app.hydrology_sequence import hydrology_sequence_engine, CatchmentDescriptors
 
 router = APIRouter(tags=["Analysis & Agent Orchestration"])
 
@@ -766,5 +767,68 @@ async def get_executive_briefing_html(event_id: str):
 </body>
 </html>"""
     return HTMLResponse(content=html)
+
+
+class ForecastProgressionRequest(BaseModel):
+    lat: float = Field(19.0760, description="Latitude coordinate")
+    lon: float = Field(72.8777, description="Longitude coordinate")
+    location_name: str = Field("Target Basin", description="Location identifier")
+    precipitation_24h_mm: float = Field(90.0, ge=0.0)
+    soil_saturation_pct: float = Field(80.0, ge=0.0, le=100.0)
+    elevation_m: float = Field(12.0)
+    drainage_capacity_index: float = Field(55.0, ge=0.0, le=100.0)
+    basin_area_km2: Optional[float] = Field(15.0, gt=0.0)
+    slope_gradient: Optional[float] = Field(0.025, ge=0.0, le=1.0)
+    curve_number_cn: Optional[float] = Field(78.0, ge=30.0, le=100.0)
+
+
+@router.post("/forecast/progression")
+async def get_forecast_progression_post(req: ForecastProgressionRequest):
+    """
+    Executes Google Research State-Handoff LSTM Hydrology & DeepMind DGMR Nowcasting.
+    Returns 0-72h lead-time discharge (Q), river stage (H), and 0-120m exceedance probabilities.
+    """
+    catchment = CatchmentDescriptors(
+        basin_area_km2=req.basin_area_km2 or 15.0,
+        slope_gradient=req.slope_gradient or 0.025,
+        curve_number_cn=req.curve_number_cn or 78.0
+    )
+    res = hydrology_sequence_engine.predict_lead_time_progression(
+        lat=req.lat,
+        lon=req.lon,
+        location_name=req.location_name,
+        precipitation_24h_mm=req.precipitation_24h_mm,
+        soil_saturation_pct=req.soil_saturation_pct,
+        elevation_m=req.elevation_m,
+        drainage_capacity_index=req.drainage_capacity_index,
+        catchment=catchment
+    )
+    return res.model_dump()
+
+
+@router.get("/forecast/progression")
+async def get_forecast_progression_get(
+    lat: float = 19.0760,
+    lon: float = 72.8777,
+    location_name: str = "Mumbai Mithi River Basin",
+    precipitation_24h_mm: float = 90.0,
+    soil_saturation_pct: float = 80.0,
+    elevation_m: float = 12.0,
+    drainage_capacity_index: float = 55.0
+):
+    """
+    GET query interface for 0-72h lead-time hydrology and DeepMind DGMR precipitation exceedance.
+    """
+    res = hydrology_sequence_engine.predict_lead_time_progression(
+        lat=lat,
+        lon=lon,
+        location_name=location_name,
+        precipitation_24h_mm=precipitation_24h_mm,
+        soil_saturation_pct=soil_saturation_pct,
+        elevation_m=elevation_m,
+        drainage_capacity_index=drainage_capacity_index
+    )
+    return res.model_dump()
+
 
 
