@@ -64,35 +64,54 @@ interface UshahidiIncident {
   latitude: number;
   longitude: number;
   location_name: string;
-  submitter_trust: number;
+  submitter_trust?: number;
   credibility_score: number;
-  corroboration_count: number;
-  sar_confirmed: boolean;
-  lora_depth_confirmed: boolean;
-  lora_water_depth_cm: number;
-  sar_backscatter_db: number;
+  corroboration_count?: number;
+  witness_count?: number;
+  sar_confirmed?: boolean;
+  lora_depth_confirmed?: boolean;
+  lora_water_depth_cm?: number;
+  sar_backscatter_db?: number;
+  verification_trace?: {
+    credibility_score: number;
+    submitter_trust_score: number;
+    witness_count: number;
+    sar_radar_corroborated: boolean;
+    lora_depth_corroborated: boolean;
+    nearest_lora_depth_cm: number;
+    decision_reason: string;
+    verified_at: string;
+  };
   created_at: string;
 }
 
 interface ReliefCase {
   case_id: string;
-  citizen_name: string;
-  citizen_phone: string;
-  sector_name: string;
+  citizen_name?: string;
+  survivor_name?: string;
+  citizen_phone?: string;
+  survivor_contact?: string;
+  sector_name?: string;
+  location_name?: string;
   latitude: number;
   longitude: number;
   work_types: string[];
-  status: "REPORT" | "CLAIM" | "WORK" | "CLOSE";
+  status: string;
   priority_score: number;
-  is_elderly_present: boolean;
-  is_medical_critical: boolean;
-  is_cut_off_by_water: boolean;
+  is_elderly_present?: boolean;
+  has_special_needs?: boolean;
+  has_elderly_or_infants?: boolean;
+  is_medical_critical?: boolean;
+  has_chronic_medical_needs?: boolean;
+  is_cut_off_by_water?: boolean;
+  road_access_severed?: boolean;
   water_depth_cm: number;
-  required_vehicle_clearance: string;
+  required_vehicle_clearance?: string;
+  recommended_vehicle_type?: string;
   claimed_by_agency: string | null;
   claim_lease_expires_at: string | null;
-  is_lease_active: boolean;
-  shelter_destination: string;
+  is_lease_active?: boolean;
+  shelter_destination?: string;
   created_at: string;
 }
 
@@ -108,14 +127,20 @@ interface CarbonPool {
 
 interface RetirementRecord {
   certificate_id: string;
-  keccak256_hash: string;
-  ipfs_cid_v1: string;
-  beneficiary: string;
-  amount_tons: number;
-  pool_symbol: string;
+  keccak256_hash?: string;
+  certificate_hash?: string;
+  ipfs_cid_v1?: string;
+  ipfs_cid?: string;
+  beneficiary?: string;
+  beneficiary_name?: string;
+  amount_tons?: number;
+  tons_retired?: number;
+  pool_symbol?: string;
+  pool?: string;
   retirement_reason: string;
   timestamp: string;
-  polygon_amoy_tx: string;
+  polygon_amoy_tx?: string;
+  polygon_tx_hash?: string;
   sebi_brsr_compliant: boolean;
 }
 
@@ -338,7 +363,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   credibility_score: result.credibility_score,
                   sar_confirmed: result.sar_confirmed,
                   lora_depth_confirmed: result.lora_depth_confirmed,
-                  corroboration_count: inc.corroboration_count + 1
+                  corroboration_count: (inc.corroboration_count ?? inc.witness_count ?? 1) + 1
                 }
               : inc
           )
@@ -356,7 +381,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   lora_depth_confirmed: true,
                   lora_water_depth_cm: 78.0,
                   sar_backscatter_db: -4.4,
-                  corroboration_count: inc.corroboration_count + 1
+                  corroboration_count: (inc.corroboration_count ?? inc.witness_count ?? 1) + 1
                 }
               : inc
           )
@@ -375,7 +400,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                 lora_depth_confirmed: true,
                 lora_water_depth_cm: 78.0,
                 sar_backscatter_db: -4.4,
-                corroboration_count: inc.corroboration_count + 1
+                corroboration_count: (inc.corroboration_count ?? inc.witness_count ?? 1) + 1
               }
             : inc
         )
@@ -1539,38 +1564,49 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   </p>
 
                   {/* Multi-source corroboration telemetry */}
-                  <div
-                    style={{
-                      background: "rgba(0, 0, 0, 0.25)",
-                      borderRadius: "8px",
-                      padding: "10px 12px",
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: "8px",
-                      fontSize: "11px"
-                    }}
-                  >
-                    <div>
-                      <span style={{ color: "var(--color-text-muted)" }}>Sentinel-1 SAR Radar: </span>
-                      <span style={{ color: inc.sar_confirmed ? "#34D399" : "#EF4444", fontWeight: 600 }}>
-                        {inc.sar_confirmed ? `Confirmed (${inc.sar_backscatter_db} dB)` : "Unconfirmed"}
-                      </span>
-                    </div>
-                    <div>
-                      <span style={{ color: "var(--color-text-muted)" }}>LoRa Duck Depth: </span>
-                      <span style={{ color: inc.lora_depth_confirmed ? "#34D399" : "#F59E0B", fontWeight: 600 }}>
-                        {inc.lora_depth_confirmed ? `${inc.lora_water_depth_cm} cm Verified` : "No Mesh Node"}
-                      </span>
-                    </div>
-                    <div>
-                      <span style={{ color: "var(--color-text-muted)" }}>Citizen Corroborations: </span>
-                      <span style={{ color: "#FFFFFF", fontWeight: 600 }}>{inc.corroboration_count} Reports</span>
-                    </div>
-                    <div>
-                      <span style={{ color: "var(--color-text-muted)" }}>Submitter Trust: </span>
-                      <span style={{ color: "#FFFFFF", fontWeight: 600 }}>{(inc.submitter_trust * 100).toFixed(0)}%</span>
-                    </div>
-                  </div>
+                  {(() => {
+                    const isSar = inc.sar_confirmed || inc.verification_trace?.sar_radar_corroborated || false;
+                    const isLora = inc.lora_depth_confirmed || inc.verification_trace?.lora_depth_corroborated || false;
+                    const depth = inc.lora_water_depth_cm ?? inc.verification_trace?.nearest_lora_depth_cm ?? 85.0;
+                    const sarDb = inc.sar_backscatter_db ?? -3.8;
+                    const corroborations = inc.witness_count ?? inc.corroboration_count ?? 1;
+                    const trust = inc.submitter_trust ?? inc.verification_trace?.submitter_trust_score ?? 0.85;
+
+                    return (
+                      <div
+                        style={{
+                          background: "rgba(0, 0, 0, 0.25)",
+                          borderRadius: "8px",
+                          padding: "10px 12px",
+                          display: "grid",
+                          gridTemplateColumns: "1fr 1fr",
+                          gap: "8px",
+                          fontSize: "11px"
+                        }}
+                      >
+                        <div>
+                          <span style={{ color: "var(--color-text-muted)" }}>Sentinel-1 SAR Radar: </span>
+                          <span style={{ color: isSar ? "#34D399" : "#EF4444", fontWeight: 600 }}>
+                            {isSar ? `Confirmed (${sarDb} dB)` : "Unconfirmed"}
+                          </span>
+                        </div>
+                        <div>
+                          <span style={{ color: "var(--color-text-muted)" }}>LoRa Duck Depth: </span>
+                          <span style={{ color: isLora ? "#34D399" : "#F59E0B", fontWeight: 600 }}>
+                            {isLora ? `${depth} cm Verified` : "No Mesh Node"}
+                          </span>
+                        </div>
+                        <div>
+                          <span style={{ color: "var(--color-text-muted)" }}>Citizen Corroborations: </span>
+                          <span style={{ color: "#FFFFFF", fontWeight: 600 }}>{corroborations} Reports</span>
+                        </div>
+                        <div>
+                          <span style={{ color: "var(--color-text-muted)" }}>Submitter Trust: </span>
+                          <span style={{ color: "#FFFFFF", fontWeight: 600 }}>{(trust * 100).toFixed(0)}%</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* Action buttons */}
                   <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "4px" }}>
@@ -1746,9 +1782,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                         </span>
                       </div>
                       <h4 style={{ fontSize: "16px", fontWeight: 700, color: "#FFFFFF", marginTop: "4px" }}>
-                        {cs.citizen_name} ({cs.citizen_phone})
+                        {cs.survivor_name || cs.citizen_name || "Displaced Resident"} ({cs.survivor_contact || cs.citizen_phone || "+91 98XXX XXXXX"})
                       </h4>
-                      <p style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>{cs.sector_name}</p>
+                      <p style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>{cs.location_name || cs.sector_name || "Evacuation Sector"}</p>
                     </div>
 
                     <div style={{ textAlign: "right" }}>
@@ -1797,15 +1833,15 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <span style={{ color: "var(--color-text-muted)" }}>Required Vehicle:</span>
-                      <span style={{ color: "#FFFFFF", fontWeight: 600 }}>{cs.required_vehicle_clearance.replace("_", " ")}</span>
+                      <span style={{ color: "#FFFFFF", fontWeight: 600 }}>{(cs.recommended_vehicle_type || cs.required_vehicle_clearance || "RESCUE_BOAT").replace("_", " ")}</span>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <span style={{ color: "var(--color-text-muted)" }}>Vulnerability Flags:</span>
                       <span style={{ color: "#EF4444", fontWeight: 600 }}>
                         {[
-                          cs.is_elderly_present && "Elderly",
-                          cs.is_medical_critical && "Critical Medical",
-                          cs.is_cut_off_by_water && "Water Cut-Off"
+                          (cs.is_elderly_present || cs.has_special_needs || cs.has_elderly_or_infants) && "Elderly/Infants",
+                          (cs.is_medical_critical || cs.has_chronic_medical_needs) && "Critical Medical",
+                          (cs.is_cut_off_by_water || cs.road_access_severed) && "Water Cut-Off"
                         ]
                           .filter(Boolean)
                           .join(" • ") || "Standard"}
@@ -1813,7 +1849,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <span style={{ color: "var(--color-text-muted)" }}>Safe Haven Destination:</span>
-                      <span style={{ color: "#34D399", fontWeight: 600 }}>{cs.shelter_destination}</span>
+                      <span style={{ color: "#34D399", fontWeight: 600 }}>{cs.shelter_destination || "BKC Multi-Modal Emergency Shelter"}</span>
                     </div>
                   </div>
 
@@ -1846,7 +1882,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                     )}
 
                     <div style={{ display: "flex", gap: "6px" }}>
-                      {cs.status === "REPORT" && (
+                      {(cs.status === "REPORT" || cs.status === "OPEN" || cs.status === "REPORTED") && (
                         <button
                           onClick={() => handleClaimCase(cs.case_id)}
                           style={{
@@ -1864,7 +1900,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                         </button>
                       )}
 
-                      {isClaimedByMe && cs.status === "CLAIM" && (
+                      {isClaimedByMe && (cs.status === "CLAIM" || cs.status === "CLAIMED") && (
                         <button
                           onClick={() => handleAdvanceStatus(cs.case_id, "WORK")}
                           style={{
@@ -1882,7 +1918,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                         </button>
                       )}
 
-                      {isClaimedByMe && cs.status === "WORK" && (
+                      {isClaimedByMe && (cs.status === "WORK" || cs.status === "IN_PROGRESS") && (
                         <button
                           onClick={() => handleAdvanceStatus(cs.case_id, "CLOSE")}
                           style={{
@@ -2115,19 +2151,19 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   <div>
                     <span style={{ color: "var(--color-text-muted)" }}>Keccak-256 Digest: </span>
                     <span style={{ fontFamily: "var(--font-mono)", color: "#FFFFFF" }}>
-                      {latestCert.keccak256_hash.slice(0, 18)}...{latestCert.keccak256_hash.slice(-8)}
+                      {(latestCert.certificate_hash || latestCert.keccak256_hash || "").slice(0, 18)}...{(latestCert.certificate_hash || latestCert.keccak256_hash || "").slice(-8)}
                     </span>
                     <button
-                      onClick={() => copyToClipboard(latestCert.keccak256_hash)}
+                      onClick={() => copyToClipboard(latestCert.certificate_hash || latestCert.keccak256_hash || "")}
                       style={{ background: "none", border: "none", cursor: "pointer", marginLeft: "6px", color: "#38BDF8" }}
                     >
-                      {copiedHash === latestCert.keccak256_hash ? <Check size={11} /> : <Copy size={11} />}
+                      {copiedHash === (latestCert.certificate_hash || latestCert.keccak256_hash) ? <Check size={11} /> : <Copy size={11} />}
                     </button>
                   </div>
                   <div>
                     <span style={{ color: "var(--color-text-muted)" }}>IPFS CIDv1 Metadata: </span>
                     <span style={{ fontFamily: "var(--font-mono)", color: "#38BDF8" }}>
-                      {latestCert.ipfs_cid_v1.slice(0, 22)}...
+                      {(latestCert.ipfs_cid || latestCert.ipfs_cid_v1 || "").slice(0, 22)}...
                     </span>
                   </div>
                 </div>
@@ -2154,42 +2190,51 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   </tr>
                 </thead>
                 <tbody>
-                  {retirementLedger.map((cert) => (
-                    <tr key={cert.certificate_id} style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.04)" }}>
-                      <td style={{ padding: "10px", fontWeight: 600, color: "#FFFFFF" }}>{cert.certificate_id}</td>
-                      <td style={{ padding: "10px", color: "var(--color-text-secondary)" }}>{cert.beneficiary}</td>
-                      <td style={{ padding: "10px" }}>
-                        <span
-                          style={{
-                            padding: "2px 6px",
-                            borderRadius: "4px",
-                            background: "rgba(52, 211, 153, 0.12)",
-                            color: "#34D399",
-                            fontSize: "11px",
-                            fontWeight: 700
-                          }}
-                        >
-                          {cert.pool_symbol}
-                        </span>
-                      </td>
-                      <td style={{ padding: "10px", fontWeight: 700, color: "#34D399" }}>{cert.amount_tons} tons</td>
-                      <td style={{ padding: "10px", fontFamily: "var(--font-mono)", color: "var(--color-text-muted)" }}>
-                        {cert.keccak256_hash.slice(0, 10)}...{cert.keccak256_hash.slice(-6)}
-                        <button
-                          onClick={() => copyToClipboard(cert.keccak256_hash)}
-                          style={{ background: "none", border: "none", cursor: "pointer", marginLeft: "4px", color: "#38BDF8" }}
-                        >
-                          {copiedHash === cert.keccak256_hash ? <Check size={11} /> : <Copy size={11} />}
-                        </button>
-                      </td>
-                      <td style={{ padding: "10px" }}>
-                        <span style={{ color: "#34D399", fontSize: "11px", fontWeight: 600 }}>Compliant</span>
-                      </td>
-                      <td style={{ padding: "10px", color: "var(--color-text-muted)", fontSize: "11px" }}>
-                        {new Date(cert.timestamp).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
+                  {retirementLedger.map((cert) => {
+                    const cHash = cert.certificate_hash || cert.keccak256_hash || "";
+                    const beneficiary = cert.beneficiary_name || cert.beneficiary || "Enterprise Beneficiary";
+                    const pool = cert.pool || cert.pool_symbol || "NCT";
+                    const tons = cert.tons_retired ?? cert.amount_tons ?? 0;
+
+                    return (
+                      <tr key={cert.certificate_id} style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.04)" }}>
+                        <td style={{ padding: "10px", fontWeight: 600, color: "#FFFFFF" }}>{cert.certificate_id}</td>
+                        <td style={{ padding: "10px", color: "var(--color-text-secondary)" }}>{beneficiary}</td>
+                        <td style={{ padding: "10px" }}>
+                          <span
+                            style={{
+                              padding: "2px 6px",
+                              borderRadius: "4px",
+                              background: "rgba(52, 211, 153, 0.12)",
+                              color: "#34D399",
+                              fontSize: "11px",
+                              fontWeight: 700
+                            }}
+                          >
+                            {pool}
+                          </span>
+                        </td>
+                        <td style={{ padding: "10px", fontWeight: 700, color: "#34D399" }}>{tons} tons</td>
+                        <td style={{ padding: "10px", fontFamily: "var(--font-mono)", color: "var(--color-text-muted)" }}>
+                          {cHash ? `${cHash.slice(0, 10)}...${cHash.slice(-6)}` : "0xPending..."}
+                          {cHash && (
+                            <button
+                              onClick={() => copyToClipboard(cHash)}
+                              style={{ background: "none", border: "none", cursor: "pointer", marginLeft: "4px", color: "#38BDF8" }}
+                            >
+                              {copiedHash === cHash ? <Check size={11} /> : <Copy size={11} />}
+                            </button>
+                          )}
+                        </td>
+                        <td style={{ padding: "10px" }}>
+                          <span style={{ color: "#34D399", fontSize: "11px", fontWeight: 600 }}>Compliant</span>
+                        </td>
+                        <td style={{ padding: "10px", color: "var(--color-text-muted)", fontSize: "11px" }}>
+                          {new Date(cert.timestamp).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

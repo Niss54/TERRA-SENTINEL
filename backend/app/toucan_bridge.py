@@ -43,16 +43,20 @@ class CarbonProject(BaseModel):
 
 
 class RetirementRequest(BaseModel):
-    beneficiary_name: str = Field(..., example="Reliance Industries Green Energy Ltd")
-    beneficiary_wallet: str = Field(..., example="0x742d35Cc6634C0532925a3b844Bc454e4438f44e")
-    pool: CarbonPool = Field(default=CarbonPool.NCT)
-    tons_to_retire: float = Field(..., gt=0.0, le=100000.0, example=50.0)
+    beneficiary_name: Optional[str] = Field(default=None, example="Reliance Industries Green Energy Ltd")
+    beneficiary: Optional[str] = Field(default=None)
+    beneficiary_wallet: Optional[str] = Field(default="0x742d35Cc6634C0532925a3b844Bc454e4438f44e")
+    pool: Optional[CarbonPool] = Field(default=CarbonPool.NCT)
+    pool_symbol: Optional[str] = Field(default=None)
+    tons_to_retire: Optional[float] = Field(default=None, gt=0.0, le=100000.0, example=50.0)
+    amount_tons: Optional[float] = Field(default=None, gt=0.0, le=100000.0)
     project_id: Optional[str] = Field(default=None, example="PRJ-SUNDARBANS-01")
     retirement_reason: str = Field(
         default="SEBI BRSR Principle 6 Climate Resilience & Coastal Mangrove Restoration",
         example="Offsetting Scope 1 Logistics Emissions via Coastal Bio-Shield"
     )
     corporate_lei_or_cin: Optional[str] = Field(default=None, example="L17110MH1973PLC019786")
+    redeem_to_tco2: Optional[bool] = Field(default=False)
 
 
 class AutoOffsetRequest(BaseModel):
@@ -198,22 +202,33 @@ class ToucanCarbonBridgeEngine:
         now_iso = now.strftime("%Y-%m-%dT%H:%M:%SZ")
         timestamp_int = int(now.timestamp())
 
+        tons = req.tons_to_retire if req.tons_to_retire is not None else (req.amount_tons if req.amount_tons is not None else 50.0)
+        beneficiary = req.beneficiary_name or req.beneficiary or "Reliance Industries Green Energy Ltd"
+        wallet = req.beneficiary_wallet or "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+        pool = req.pool
+        if not pool and req.pool_symbol:
+            try:
+                pool = CarbonPool(req.pool_symbol.upper())
+            except Exception:
+                pool = CarbonPool.NCT
+        pool = pool or CarbonPool.NCT
+
         # Select matching project
         if req.project_id and req.project_id in self._projects:
             project = self._projects[req.project_id]
         else:
-            matching = [p for p in self._projects.values() if p.pool == req.pool]
+            matching = [p for p in self._projects.values() if p.pool == pool]
             project = matching[0] if matching else self._projects["PRJ-SUNDARBANS-01"]
 
         # Calculate physical avoided flood VaR
-        avoided_var_usd = round(req.tons_to_retire * project.avoided_var_usd_per_ton, 2)
+        avoided_var_usd = round(tons * project.avoided_var_usd_per_ton, 2)
         avoided_var_inr_cr = round((avoided_var_usd * 83.5) / 10000000.0, 4)
 
         # Mock Polygon Amoy block number (starts around 18.5M on Amoy testnet)
         block_number = 18500000 + (timestamp_int % 100000)
 
         # Deterministic Keccak-256 Hash
-        raw_preimage = f"{req.beneficiary_wallet.lower()}:{project.tco2_address.lower()}:{req.tons_to_retire}:{avoided_var_usd}:{block_number}"
+        raw_preimage = f"{wallet.lower()}:{project.tco2_address.lower()}:{tons}:{avoided_var_usd}:{block_number}"
         cert_hash = "0x" + hashlib.sha256(raw_preimage.encode("utf-8")).hexdigest()
 
         # Simulated on-chain tx hash
@@ -228,10 +243,10 @@ class ToucanCarbonBridgeEngine:
         certificate = RetirementCertificate(
             certificate_id=cert_id,
             certificate_hash=cert_hash,
-            beneficiary_name=req.beneficiary_name,
-            beneficiary_wallet=req.beneficiary_wallet,
-            pool=req.pool,
-            tons_retired=req.tons_to_retire,
+            beneficiary_name=beneficiary,
+            beneficiary_wallet=wallet,
+            pool=pool,
+            tons_retired=tons,
             avoided_flood_var_usd=avoided_var_usd,
             avoided_flood_var_inr_cr=avoided_var_inr_cr,
             project_name=project.project_name,
@@ -247,7 +262,7 @@ class ToucanCarbonBridgeEngine:
 
         self._certificates[cert_id] = certificate
         logger.info(
-            f"Retired {req.tons_to_retire} tons {req.pool} for {req.beneficiary_name}. "
+            f"Retired {tons} tons {pool} for {beneficiary}. "
             f"Cert ID: {cert_id} | Avoided VaR: ${avoided_var_usd:,.2f}"
         )
         return certificate

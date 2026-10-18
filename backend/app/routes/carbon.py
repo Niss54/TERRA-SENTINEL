@@ -80,6 +80,37 @@ async def list_carbon_projects(
     return toucan_engine.list_projects(pool=pool)
 
 
+@router.get("/carbon/pools")
+async def list_carbon_pools():
+    """Returns available Toucan on-chain carbon pools (NCT, BCT)."""
+    return [
+        {
+            "pool_name": "Nature Carbon Tonne",
+            "token_symbol": "NCT",
+            "polygon_address": "0x7BE59100075723ba251432661De6ab1A51581224",
+            "balance_tco2": 24250.0,
+            "avoided_flood_var_per_ton_usd": 450.0,
+            "description": "Nature-based NBS flood buffer credits: Sundarbans Mangrove Blue Carbon & Mithi Sponge Wetlands.",
+            "supported_methodologies": ["VCS-1422 (Blue Carbon)", "VCS-2104 (Wetland Restoration)", "GS-4421 (Riparian Buffer)"]
+        },
+        {
+            "pool_name": "Base Carbon Tonne",
+            "token_symbol": "BCT",
+            "polygon_address": "0x2F800Db0fdb5223b3C3f354886d907A671414A7F",
+            "balance_tco2": 18250.0,
+            "avoided_flood_var_per_ton_usd": 380.0,
+            "description": "Standard Verified Carbon Standard (VCS) vintage verified carbon tonnes for municipal climate resilience.",
+            "supported_methodologies": ["VCS-VM0007 (REDD+)", "VCS-VM0010 (Afforestation)"]
+        }
+    ]
+
+
+@router.get("/carbon/registry", response_model=List[RetirementCertificate])
+async def list_carbon_registry(limit: int = Query(50, ge=1, le=200)):
+    """Alias for /carbon/certificates returning all on-chain retirement certificates."""
+    return toucan_engine.list_certificates(limit=limit)
+
+
 @router.get("/carbon/spec")
 async def get_toucan_bridge_specification():
     """
