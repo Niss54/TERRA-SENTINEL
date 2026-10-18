@@ -237,7 +237,8 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
     setLoadingBasin(true);
     try {
       const resp = await fetch(getApiUrl(`/api/v1/forecast/glofas?basin=${basinId}&days=7`));
-      if (resp.ok) {
+      const ct = resp.headers.get("content-type") || "";
+      if (resp.ok && ct.includes("json")) {
         const data = await resp.json();
         setBasinForecast(data);
         setLoadingBasin(false);
@@ -401,7 +402,8 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
     setLoadingIncidents(true);
     try {
       const resp = await fetch(getApiUrl("/api/v1/crisis/incidents"));
-      if (resp.ok) {
+      const ct = resp.headers.get("content-type") || "";
+      if (resp.ok && ct.includes("json")) {
         const data = await resp.json();
         setIncidents(data);
         setLoadingIncidents(false);
@@ -605,7 +607,8 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
     setLoadingRelief(true);
     try {
       const resp = await fetch(getApiUrl("/api/v1/relief/cases"));
-      if (resp.ok) {
+      const ct = resp.headers.get("content-type") || "";
+      if (resp.ok && ct.includes("json")) {
         const data = await resp.json();
         setReliefCases(data);
         setLoadingRelief(false);
@@ -783,7 +786,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
         fetch(getApiUrl("/api/v1/carbon/pools")),
         fetch(getApiUrl("/api/v1/carbon/registry"))
       ]);
-      if (pResp.ok && rResp.ok) {
+      const pCt = pResp.headers.get("content-type") || "";
+      const rCt = rResp.headers.get("content-type") || "";
+      if (pResp.ok && rResp.ok && pCt.includes("json") && rCt.includes("json")) {
         const pools = await pResp.json();
         const registry = await rResp.json();
         if (pools && pools.length > 0) setCarbonPools(pools);
