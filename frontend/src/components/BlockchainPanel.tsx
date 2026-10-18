@@ -37,9 +37,10 @@ interface BondItem {
 
 export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
   currentAssessment,
-  backendBase = "http://127.0.0.1:8000",
+  backendBase = "",
   activeHotspot
 }) => {
+  const cleanBase = backendBase && !backendBase.includes("0edc4") ? backendBase.replace(/\/$/, "") : "";
   const [stats, setStats] = useState<any>({
     network: "Polygon Amoy Testnet",
     chain_id: 80002,
@@ -116,42 +117,66 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
 
   // Fetch live stats from backend /api/v2
   const refreshStats = async () => {
-    try {
-      const res = await fetch(`${backendBase}/api/v2/blockchain/status`);
-      if (res.ok) {
-        const data = await res.json();
-        setStats((prev: any) => ({
-          ...prev,
-          ...data,
-          total_payout_usdc: data.total_payout_usdc ?? (data.bonds_triggered ? data.bonds_triggered * 50000 : 50000)
-        }));
-      }
-    } catch (e) {
-      console.warn("Using offline stats fallback:", e);
+    const statusEndpoints = [
+      cleanBase ? `${cleanBase}/api/v2/blockchain/status` : null,
+      "/api/v2/blockchain/status",
+      "https://web-production-91f72.up.railway.app/api/v2/blockchain/status"
+    ].filter(Boolean) as string[];
+
+    let statusSuccess = false;
+    for (const url of statusEndpoints) {
+      if (statusSuccess) break;
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setStats((prev: any) => ({
+            ...prev,
+            ...data,
+            total_payout_usdc: data.total_payout_usdc ?? (data.bonds_triggered ? data.bonds_triggered * 50000 : 50000)
+          }));
+          statusSuccess = true;
+        }
+      } catch (e) {}
+    }
+    if (!statusSuccess) {
+      console.warn("Using offline stats fallback");
     }
 
-    try {
-      const resBonds = await fetch(`${backendBase}/api/v2/blockchain/bonds`);
-      if (resBonds.ok) {
-        const dataBonds = await resBonds.json();
-        if (dataBonds.bonds && dataBonds.bonds.length > 0) {
-          const normalized = dataBonds.bonds.map((b: any) => ({
-            id: b.id || b.bond_id,
-            name: b.name || b.location_name,
-            lat: b.lat,
-            lon: b.lon,
-            payout_usdc: b.payout_usdc ?? b.payout_amount ?? 50000,
-            trigger_threshold_bps: b.trigger_threshold_bps ?? 6500,
-            consecutive_required: b.consecutive_required ?? 2,
-            current_consecutive: b.current_consecutive ?? b.consecutive_count ?? 0,
-            triggered: Boolean(b.triggered),
-            beneficiary: b.beneficiary || "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
-          }));
-          setBonds(normalized);
+    const bondEndpoints = [
+      cleanBase ? `${cleanBase}/api/v2/blockchain/bonds` : null,
+      "/api/v2/blockchain/bonds",
+      "https://web-production-91f72.up.railway.app/api/v2/blockchain/bonds"
+    ].filter(Boolean) as string[];
+
+    let bondsSuccess = false;
+    for (const url of bondEndpoints) {
+      if (bondsSuccess) break;
+      try {
+        const resBonds = await fetch(url);
+        if (resBonds.ok) {
+          const dataBonds = await resBonds.json();
+          if (dataBonds.bonds && dataBonds.bonds.length > 0) {
+            const normalized = dataBonds.bonds.map((b: any) => ({
+              id: b.id || b.bond_id,
+              name: b.name || b.location_name,
+              lat: b.lat,
+              lon: b.lon,
+              payout_usdc: b.payout_usdc ?? b.payout_amount ?? 50000,
+              trigger_threshold_bps: b.trigger_threshold_bps ?? 6500,
+              consecutive_required: b.consecutive_required ?? 2,
+              current_consecutive: b.current_consecutive ?? b.consecutive_count ?? 0,
+              triggered: Boolean(b.triggered),
+              beneficiary: b.beneficiary || "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+            }));
+            setBonds(normalized);
+            bondsSuccess = true;
+          }
         }
-      }
-    } catch (e) {
-      console.warn("Using offline bonds fallback:", e);
+      } catch (e) {}
+    }
+    if (!bondsSuccess) {
+      console.warn("Using offline bonds fallback");
     }
   };
 
@@ -284,31 +309,35 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
   const handleRetire = async () => {
     if (retireAmount <= 0 || retireAmount > cfmcBalance) return;
     setIsRetiring(true);
-    try {
-      const res = await fetch(`${backendBase}/api/v2/blockchain/cfmc/retire`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: retireAmount,
-          reason: retireReason
-        })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setRetireReceipt(data);
-        setCfmcBalance(prev => Math.max(0, prev - retireAmount));
-      } else {
-        // Mock success
-        setRetireReceipt({
-          status: "retired",
-          amount: retireAmount,
-          reason: retireReason,
-          tx_hash: "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(""),
-          timestamp: Math.floor(Date.now() / 1000)
+    const retireEndpoints = [
+      cleanBase ? `${cleanBase}/api/v2/blockchain/cfmc/retire` : null,
+      "/api/v2/blockchain/cfmc/retire",
+      "https://web-production-91f72.up.railway.app/api/v2/blockchain/cfmc/retire"
+    ].filter(Boolean) as string[];
+
+    let retireDone = false;
+    for (const url of retireEndpoints) {
+      if (retireDone) break;
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: retireAmount,
+            reason: retireReason
+          })
         });
-        setCfmcBalance(prev => Math.max(0, prev - retireAmount));
-      }
-    } catch {
+        if (res.ok) {
+          const data = await res.json();
+          setRetireReceipt(data);
+          setCfmcBalance(prev => Math.max(0, prev - retireAmount));
+          retireDone = true;
+        }
+      } catch (e) {}
+    }
+
+    if (!retireDone) {
+      // Offline fallback receipt with deterministic local hash
       setRetireReceipt({
         status: "retired",
         amount: retireAmount,
@@ -317,18 +346,18 @@ export const BlockchainPanel: React.FC<BlockchainPanelProps> = ({
         timestamp: Math.floor(Date.now() / 1000)
       });
       setCfmcBalance(prev => Math.max(0, prev - retireAmount));
-    } finally {
-      setIsRetiring(false);
     }
+    setIsRetiring(false);
   };
 
   return (
     <main
+      className="main-content animate-fade-in"
       style={{
         flex: 1,
         minHeight: 0,
         overflowY: "auto",
-        padding: "24px",
+        padding: "20px 24px 60px 24px",
         display: "flex",
         flexDirection: "column",
         gap: "24px"

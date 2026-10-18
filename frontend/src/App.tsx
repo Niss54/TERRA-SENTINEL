@@ -45,19 +45,56 @@ import { MultiHazardEcologicalCockpit } from "./components/MultiHazardEcological
 const getBackendBase = (): string => {
   if (typeof window !== "undefined") {
     const custom = localStorage.getItem("TERRA_SENTINEL_CUSTOM_API_URL");
-    if (custom && custom.trim()) return custom.trim().replace(/\/$/, "");
+    if (custom && custom.includes("0edc4")) {
+      try { localStorage.removeItem("TERRA_SENTINEL_CUSTOM_API_URL"); } catch (e) {}
+    } else if (custom && custom.trim()) {
+      return custom.trim().replace(/\/$/, "");
+    }
     const host = window.location.hostname;
     if (host === "127.0.0.1" || host === "localhost") {
       return `http://${host}:8000`;
     }
+    // On Vercel edge deployments, return "" (relative root) so requests route through
+    // vercel.json serverless rewrites directly to Railway without CORS or preflight overhead
+    if (host.includes("vercel.app")) {
+      return "";
+    }
     const envUrl = (import.meta as any).env?.VITE_BACKEND_URL;
-    if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/$/, "");
-    if (window.location.origin) {
+    if (envUrl && envUrl.trim() && !envUrl.includes("0edc4")) {
+      return envUrl.trim().replace(/\/$/, "");
+    }
+    if (window.location.origin && !window.location.origin.includes("0edc4")) {
       return window.location.origin;
     }
   }
   const envUrl = (import.meta as any).env?.VITE_BACKEND_URL;
-  if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/$/, "");
+  if (envUrl && envUrl.trim() && !envUrl.includes("0edc4")) {
+    return envUrl.trim().replace(/\/$/, "");
+  }
+  return "https://web-production-91f72.up.railway.app";
+};
+
+const getWebSocketUrl = (): string => {
+  if (typeof window !== "undefined") {
+    const custom = localStorage.getItem("TERRA_SENTINEL_CUSTOM_API_URL");
+    if (custom && custom.trim() && !custom.includes("0edc4")) {
+      const clean = custom.trim().replace(/\/$/, "");
+      return clean.startsWith("https://")
+        ? clean.replace("https://", "wss://") + "/ws/events"
+        : clean.replace("http://", "ws://") + "/ws/events";
+    }
+    const host = window.location.hostname;
+    if (host === "127.0.0.1" || host === "localhost") {
+      return `ws://${host}:8000/ws/events`;
+    }
+  }
+  return "wss://web-production-91f72.up.railway.app/ws/events";
+};
+
+const getPublicBackendUrl = (): string => {
+  const base = getBackendBase();
+  if (base) return base;
+  if (typeof window !== "undefined" && window.location.origin) return window.location.origin;
   return "https://web-production-91f72.up.railway.app";
 };
 
@@ -935,23 +972,25 @@ export function App() {
     let ws: WebSocket | null = null;
     let reconnectTimer: any = null;
     let isMounted = true;
+    let retryDelay = 3000;
 
     const connect = () => {
       if (!isMounted) return;
       try {
-        const backendHost = getBackendBase();
-        const wsUrl = backendHost.startsWith("https://")
-          ? backendHost.replace("https://", "wss://") + "/ws/events"
-          : backendHost.replace("http://", "ws://") + "/ws/events";
+        const wsUrl = getWebSocketUrl();
 
         ws = new WebSocket(wsUrl);
         ws.onopen = () => {
-          if (isMounted) setWsConnected(true);
+          if (isMounted) {
+            setWsConnected(true);
+            retryDelay = 3000;
+          }
         };
         ws.onclose = () => {
           if (isMounted) {
             setWsConnected(false);
-            reconnectTimer = setTimeout(connect, 3000);
+            reconnectTimer = setTimeout(connect, retryDelay);
+            retryDelay = Math.min(retryDelay * 1.5, 15000);
           }
         };
         ws.onerror = () => {
@@ -977,7 +1016,8 @@ export function App() {
       } catch (e) {
         if (isMounted) {
           setWsConnected(false);
-          reconnectTimer = setTimeout(connect, 3000);
+          reconnectTimer = setTimeout(connect, retryDelay);
+          retryDelay = Math.min(retryDelay * 1.5, 15000);
         }
       }
     };
@@ -1900,6 +1940,9 @@ export function App() {
                 <span className="mono" style={{ color: "var(--color-primary)", fontWeight: 700 }}>+{simRain} mm</span>
               </div>
               <input
+                id="sim-rain-input"
+                name="sim-rain"
+                aria-label="Simulated Rainfall Cloudburst"
                 type="range"
                 min="0"
                 max="150"
@@ -1916,6 +1959,9 @@ export function App() {
                 <span className="mono" style={{ color: "#F4A261", fontWeight: 700 }}>{simSat}%</span>
               </div>
               <input
+                id="sim-sat-input"
+                name="sim-sat"
+                aria-label="Simulated Soil Saturation Index"
                 type="range"
                 min="20"
                 max="100"
@@ -2076,6 +2122,9 @@ export function App() {
                 </span>
               </div>
               <input
+                id="nowcast-timeline-scrubber"
+                name="nowcast-timeline"
+                aria-label="Flood Forecast Timeline Scrubber"
                 type="range"
                 min={0}
                 max={48}
@@ -2864,11 +2913,11 @@ export function App() {
                   <span style={{ color: "#F4A261" }}># Stdio Command:</span><br/>
                   python -m mcp_hub.stdio_server<br/><br/>
                   <span style={{ color: "var(--color-primary)" }}># HTTP JSON-RPC Endpoint:</span><br/>
-                  POST {getBackendBase()}/mcp/invoke
+                  POST {getPublicBackendUrl()}/mcp/invoke
                 </div>
 
                 <div style={{ fontSize: "0.72rem", color: "var(--color-text-muted)" }}>
-                  Health Endpoint: <code>{getBackendBase()}/mcp/health</code> • Catalog: <code>{getBackendBase()}/mcp/tools</code>
+                  Health Endpoint: <code>{getPublicBackendUrl()}/mcp/health</code> • Catalog: <code>{getPublicBackendUrl()}/mcp/tools</code>
                 </div>
               </div>
             </div>
@@ -3857,7 +3906,7 @@ ANTHROPIC_API_KEY=`;
                       HTTP JSON-RPC 2.0 Endpoint
                     </div>
                     <code className="mono" style={{ color: "var(--color-primary)", fontSize: "0.8rem" }}>
-                      POST {getBackendBase()}/mcp/invoke
+                      POST {getPublicBackendUrl()}/mcp/invoke
                     </code>
                     <p style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", marginTop: "4px" }}>
                       Accepts standard JSON-RPC 2.0 payloads: <code>{`{"method": "tools/call", "params": {"name": "run_flood_classifier", "arguments": {...}}}`}</code>
@@ -3869,7 +3918,7 @@ ANTHROPIC_API_KEY=`;
                       Quick Terminal Verification (Curl)
                     </div>
                     <code className="mono" style={{ color: "#FFF", fontSize: "0.75rem", display: "block", wordBreak: "break-all" }}>
-                      {`curl -X POST ${getBackendBase()}/mcp/invoke -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"tools/list","id":"1"}'`}
+                      {`curl -X POST ${getPublicBackendUrl()}/mcp/invoke -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"tools/list","id":"1"}'`}
                     </code>
                   </div>
                 </div>

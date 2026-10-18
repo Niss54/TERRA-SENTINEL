@@ -295,6 +295,9 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
             <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#93c5fd" }}>SAFE EVACUATION CORRIDOR</span>
             <div style={{ display: "flex", gap: "6px" }}>
               <select
+                id="evac-vehicle-type"
+                name="evacVehicleType"
+                aria-label="Evacuation Vehicle Type"
                 value={vehicleType}
                 onChange={(e) => setVehicleType(e.target.value)}
                 style={{
@@ -312,6 +315,9 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
                 <option value="Pedestrian">Pedestrian Safe Footpath (15cm)</option>
               </select>
               <input
+                id="evac-civilians-count"
+                name="evacCiviliansCount"
+                aria-label="Civilians to Evacuate"
                 type="number"
                 min="5"
                 max="250"
