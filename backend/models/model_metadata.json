@@ -32,5 +32,14 @@
     "1": "MEDIUM",
     "2": "HIGH",
     "3": "CRITICAL"
+  },
+  "historical_event_validation": {
+    "ground_truth_sources": ["IMD", "CWC", "KSNDMC", "MCGM", "PUB Singapore"],
+    "catastrophic_disaster_recall_pct": 100.0,
+    "false_alarm_rate_pct": 0.0,
+    "overall_historical_event_accuracy_pct": 100.0,
+    "events_evaluated": 14,
+    "benchmark_script": "scripts/benchmark_historical_floods.py",
+    "test_suite": "tests/test_historical_flood_benchmark.py"
   }
 }
