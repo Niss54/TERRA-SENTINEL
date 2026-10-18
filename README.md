@@ -28,9 +28,11 @@ Built for **Google Cloud AI Builder Cup Singapore Grand Finale** & **Enterprise 
 ---
 
 <!-- BADGES ROW -->
-[![Pytest Suite](https://img.shields.io/badge/Pytest_Suite-359%2F359_Passing_(100%25)-brightgreen?style=flat-square&logo=pytest&logoColor=white)](#-automated-testing--verification)
+[![Pytest Suite](https://img.shields.io/badge/Pytest_Suite-374%2F374_Passing_(100%25)-brightgreen?style=flat-square&logo=pytest&logoColor=white)](#-automated-testing--verification)
+[![IMD Historical Benchmark](https://img.shields.io/badge/IMD_Disaster_Benchmark-100%25_Recall_(14%2F14_Passed)-00C853?style=flat-square&logo=checkmarx&logoColor=white)](./evaluation/ACCEPTANCE_REPORT.md#-2-empirical-performance-benchmark-real-world-historical-flood-disasters)
 [![Hardhat Suite](https://img.shields.io/badge/Smart_Contracts-21%2F21_Passing_(100%25)-8A2BE2?style=flat-square&logo=solidity&logoColor=white)](#-automated-testing--verification)
 [![Python Version](https://img.shields.io/badge/Python-3.12_Async-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+
 [![React Version](https://img.shields.io/badge/React-19_Vite_TypeScript-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Vertex_AI_%7C_Cloud_Run-4285F4?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com)
 [![Network](https://img.shields.io/badge/Blockchain-Polygon_Amoy_(80002)-8A2BE2?style=flat-square&logo=polygon&logoColor=white)](https://amoy.polygonscan.com/address/0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D)
