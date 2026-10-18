@@ -1,9 +1,12 @@
 # Railway Nixpacks Configuration for TERRA-SENTINEL Backend
+providers = ["python"]
+
 [phases.setup]
-nixPkgs = ["python312", "python312Packages.pip", "curl"]
+nixPkgs = ["python312", "python312Packages.pip", "curl", "gcc"]
 
 [phases.install]
 cmds = ["python3 -m pip install --no-cache-dir -r requirements.txt"]
 
 [start]
 cmd = "python backend/run.py"
+

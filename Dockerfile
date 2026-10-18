@@ -14,24 +14,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python dependencies globally into system site-packages
-# Ensures uvicorn and all packages are always accessible in any shell/user context
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r /app/requirements.txt
 
-# Copy application directories and files
-COPY backend /app/backend
-COPY mcp_hub /app/mcp_hub
-COPY scripts /app/scripts
-COPY public /app/public
-COPY agent_manifest.yaml /app/agent_manifest.yaml
-
-# Create non-root application user and grant permissions to /app
-RUN groupadd -g 10001 appgroup && \
-    useradd -u 10001 -g appgroup -m -d /app -s /bin/bash appuser && \
-    chown -R appuser:appgroup /app
-
-USER appuser
+# Copy complete application repository
+COPY . /app
 
 # Production environment variables
 ENV PYTHONPATH=/app \
@@ -45,3 +33,4 @@ EXPOSE 8000 8080
 
 # Launch server with resilient port-binding runner
 CMD ["python", "backend/run.py"]
+
