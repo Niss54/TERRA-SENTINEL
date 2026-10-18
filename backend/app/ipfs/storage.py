@@ -72,8 +72,9 @@ class IPFSStorageClient:
                 "cid": canonical_cid,
                 "url": f"{IPFS_PUBLIC_GATEWAY}/{canonical_cid}",
                 "pin_size": len(serialized),
-                "is_fallback": False,
-                "storage_protocol": "IPFS CIDv1 Multihash (dag-pb Base32)"
+                "is_fallback": True,
+                "verified_pinned": False,
+                "storage_protocol": "Local RFC-Compliant CIDv1 Buffer (Unpinned / Offline)"
             }
 
         try:
@@ -103,6 +104,7 @@ class IPFSStorageClient:
                             "url": f"{IPFS_PUBLIC_GATEWAY}/{cid}",
                             "pin_size": data.get("PinSize", len(serialized)),
                             "is_fallback": False,
+                            "verified_pinned": True,
                             "storage_protocol": "Pinata Cloud IPFS Remote Cluster"
                         }
         except Exception as e:
@@ -112,8 +114,9 @@ class IPFSStorageClient:
             "cid": canonical_cid,
             "url": f"{IPFS_PUBLIC_GATEWAY}/{canonical_cid}",
             "pin_size": len(serialized),
-            "is_fallback": False,
-            "storage_protocol": "IPFS CIDv1 Multihash (dag-pb Base32)"
+            "is_fallback": True,
+            "verified_pinned": False,
+            "storage_protocol": "Local RFC-Compliant CIDv1 Buffer (Upload Failed / Offline)"
         }
 
     async def pin_file(self, file_bytes: bytes, filename: str) -> dict:
@@ -125,8 +128,9 @@ class IPFSStorageClient:
             return {
                 "cid": canonical_cid,
                 "url": f"{IPFS_PUBLIC_GATEWAY}/{canonical_cid}",
-                "is_fallback": False,
-                "storage_protocol": "IPFS CIDv1 Multihash (dag-pb Base32)"
+                "is_fallback": True,
+                "verified_pinned": False,
+                "storage_protocol": "Local RFC-Compliant CIDv1 Buffer (Unpinned / Offline)"
             }
 
         try:
@@ -155,6 +159,7 @@ class IPFSStorageClient:
                             "cid": cid,
                             "url": f"{IPFS_PUBLIC_GATEWAY}/{cid}",
                             "is_fallback": False,
+                            "verified_pinned": True,
                             "storage_protocol": "Pinata Cloud IPFS Remote Cluster"
                         }
         except Exception as e:
@@ -163,8 +168,9 @@ class IPFSStorageClient:
         return {
             "cid": canonical_cid,
             "url": f"{IPFS_PUBLIC_GATEWAY}/{canonical_cid}",
-            "is_fallback": False,
-            "storage_protocol": "IPFS CIDv1 Multihash (dag-pb Base32)"
+            "is_fallback": True,
+            "verified_pinned": False,
+            "storage_protocol": "Local RFC-Compliant CIDv1 Buffer (Upload Failed / Offline)"
         }
 
     def retrieve(self, cid: str) -> Optional[Any]:

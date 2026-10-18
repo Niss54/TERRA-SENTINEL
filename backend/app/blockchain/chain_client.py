@@ -63,16 +63,21 @@ class TerraSentinelChainClient:
             self.deployments.get("contracts", {}).get("CarbonFloodCredit", DEFAULT_CFMC)
         )
 
-        # Load Smart Contract ABI
+        # Load Smart Contract ABIs for all 3 contracts
         self.ledger_abi = self._load_contract_abi("TerraSentinelRiskLedger")
+        self.bond_abi = self._load_contract_abi("DisasterBond")
+        self.cfmc_abi = self._load_contract_abi("CarbonFloodCredit")
 
         # Initialize Web3 Connection & Account
         self.rpc_url = os.getenv("POLYGON_AMOY_RPC", AMOY_RPC_POOL[0])
         self.w3: Optional[Any] = None
         self.contract: Optional[Any] = None
+        self.bond_contract: Optional[Any] = None
+        self.cfmc_contract: Optional[Any] = None
         self.account: Optional[Any] = None
         self._block_number = 50531206
-        self._nonce = 0
+        self._nonce: Optional[int] = None
+        self.can_transact = False
 
         self._init_web3_and_account()
 
@@ -95,6 +100,14 @@ class TerraSentinelChainClient:
         return {}
 
     def _load_contract_abi(self, contract_name: str) -> List[Dict[str, Any]]:
+        # 1. First attempt to load canonical embedded ABI
+        try:
+            from backend.app.blockchain.abi_definitions import CANONICAL_ABIS
+            if contract_name in CANONICAL_ABIS:
+                return CANONICAL_ABIS[contract_name]
+        except Exception:
+            pass
+        # 2. Check filesystem artifacts
         base_dir = Path(__file__).resolve().parent.parent.parent.parent
         artifact_path = base_dir / "blockchain" / "artifacts" / "contracts" / f"{contract_name}.sol" / f"{contract_name}.json"
         if artifact_path.exists():
@@ -108,33 +121,36 @@ class TerraSentinelChainClient:
 
     def _init_web3_and_account(self):
         """Initializes live Web3 provider with RPC pooling and authorized relayer account."""
+        self.can_transact = False
         if not HAS_WEB3:
             logger.warning("web3 or eth_account not available; falling back to simulated mode.")
-            self.backend_wallet = DEFAULT_BACKEND_WALLET
+            self.backend_wallet = os.getenv("RELAYER_PUBLIC_ADDRESS", DEFAULT_BACKEND_WALLET)
             return
 
-        # Initialize Account from environment private key or persistent relayer seed
+        # Initialize Account strictly from environment private key (NO predictable fallback seed)
         raw_priv = os.getenv("POLYGON_AMOY_PRIVATE_KEY") or os.getenv("PRIVATE_KEY")
-        if not raw_priv:
-            raw_priv = "0x" + hashlib.sha256(b"TERRA_SENTINEL_POLYGON_AMOY_RELAYER_KEY_V2").hexdigest()
-        elif not raw_priv.startswith("0x"):
-            raw_priv = "0x" + raw_priv
-
-        try:
-            self.account = eth_account.Account.from_key(raw_priv)
-            self.backend_wallet = self.account.address
-        except Exception as e:
-            logger.error(f"Failed to initialize relayer account: {e}")
-            self.backend_wallet = DEFAULT_BACKEND_WALLET
+        if raw_priv:
+            if not raw_priv.startswith("0x"):
+                raw_priv = "0x" + raw_priv
+            try:
+                self.account = eth_account.Account.from_key(raw_priv)
+                self.backend_wallet = self.account.address
+                self.can_transact = True
+                logger.info(f"Loaded live blockchain relayer wallet: {self.backend_wallet}")
+            except Exception as e:
+                logger.error(f"Failed to initialize relayer account from environment key: {e}")
+                self.account = None
+                self.backend_wallet = os.getenv("RELAYER_PUBLIC_ADDRESS", DEFAULT_BACKEND_WALLET)
+                self.can_transact = False
+        else:
+            self.account = None
+            self.backend_wallet = os.getenv("RELAYER_PUBLIC_ADDRESS", DEFAULT_BACKEND_WALLET)
+            self.can_transact = False
+            logger.info("POLYGON_AMOY_PRIVATE_KEY not configured. Blockchain writes will fail-closed in live mode.")
 
         # Immediately initialize standalone Web3 instance for zero-latency startup & local signing
         self.w3 = Web3()
-        if self.ledger_abi and self.w3:
-            try:
-                checksummed = Web3.to_checksum_address(self.ledger_address)
-                self.contract = self.w3.eth.contract(address=checksummed, abi=self.ledger_abi)
-            except Exception as e:
-                logger.warning(f"Could not instantiate initial Web3 contract: {e}")
+        self._init_contract_instances()
 
         # Asynchronously probe live Polygon Amoy RPC endpoints without blocking server boot
         import threading
@@ -151,12 +167,7 @@ class TerraSentinelChainClient:
                             self._block_number = self.w3.eth.block_number
                         except Exception:
                             pass
-                        if self.ledger_abi and self.w3:
-                            try:
-                                checksummed = Web3.to_checksum_address(self.ledger_address)
-                                self.contract = self.w3.eth.contract(address=checksummed, abi=self.ledger_abi)
-                            except Exception:
-                                pass
+                        self._init_contract_instances()
                         logger.info(f"Connected to Polygon Amoy Web3 RPC via {endpoint} at block {self._block_number}")
                         break
                 except Exception:
@@ -164,6 +175,37 @@ class TerraSentinelChainClient:
 
         probe_thread = threading.Thread(target=_connect_rpc, daemon=True)
         probe_thread.start()
+
+    def _init_contract_instances(self):
+        """Instantiates typed Web3 contract interfaces for all 3 smart contracts."""
+        if not self.w3 or not HAS_WEB3:
+            return
+        try:
+            if self.ledger_abi and self.ledger_address:
+                self.contract = self.w3.eth.contract(
+                    address=Web3.to_checksum_address(self.ledger_address),
+                    abi=self.ledger_abi
+                )
+        except Exception as e:
+            logger.warning(f"Could not instantiate ledger contract: {e}")
+
+        try:
+            if self.bond_abi and self.bond_address:
+                self.bond_contract = self.w3.eth.contract(
+                    address=Web3.to_checksum_address(self.bond_address),
+                    abi=self.bond_abi
+                )
+        except Exception as e:
+            logger.warning(f"Could not instantiate bond contract: {e}")
+
+        try:
+            if self.cfmc_abi and self.cfmc_address:
+                self.cfmc_contract = self.w3.eth.contract(
+                    address=Web3.to_checksum_address(self.cfmc_address),
+                    abi=self.cfmc_abi
+                )
+        except Exception as e:
+            logger.warning(f"Could not instantiate cfmc contract: {e}")
 
 
     def _init_demo_bonds(self) -> Dict[str, Dict[str, Any]]:
@@ -228,11 +270,17 @@ class TerraSentinelChainClient:
         if self.w3 and self.w3.is_connected() and self.account:
             try:
                 live_nonce = self.w3.eth.get_transaction_count(self.account.address, "pending")
-                self._nonce = max(self._nonce + 1, live_nonce)
+                if self._nonce is None:
+                    self._nonce = live_nonce
+                else:
+                    self._nonce = max(self._nonce + 1, live_nonce)
                 return self._nonce
             except Exception:
                 pass
-        self._nonce += 1
+        if self._nonce is None:
+            self._nonce = 0
+        else:
+            self._nonce += 1
         return self._nonce
 
     def _create_and_sign_evm_transaction(
@@ -243,8 +291,12 @@ class TerraSentinelChainClient:
     ) -> Tuple[str, int, Dict[str, Any]]:
         """
         Assembles, ABI-encodes, and cryptographically signs a genuine Ethereum transaction.
-        Returns:
-            (tx_hash, block_number, metadata)
+        Enforces true transaction lifecycle:
+        1. Encodes calldata with the dedicated contract ABI (Ledger, Bond, or CFMC)
+        2. Validates relayer private key presence (fail-closed if absent)
+        3. Signs with secp256k1 via eth_account
+        4. Broadcasts to Polygon Amoy RPC
+        5. Awaits receipt confirmation (status == 1)
         """
         self._block_number += 1
         curr_block = self._block_number
@@ -254,12 +306,19 @@ class TerraSentinelChainClient:
             except Exception:
                 pass
 
+        # Select target contract for dedicated ABI encoding
+        target_contract = self.contract
+        if contract_address == self.bond_address or function_name in ["notifyAssessment", "createBond"]:
+            target_contract = getattr(self, "bond_contract", None) or self.contract
+        elif contract_address == self.cfmc_address or function_name in ["issueMitigationCredit", "retireCredits"]:
+            target_contract = getattr(self, "cfmc_contract", None) or self.contract
+
         calldata = b""
-        if self.contract and hasattr(self.contract, "encode_abi"):
+        if target_contract and hasattr(target_contract, "encode_abi"):
             try:
-                calldata = self.contract.encode_abi(function_name, args)
+                calldata = target_contract.encode_abi(function_name, args)
             except Exception as e:
-                logger.debug(f"encode_abi fallback: {e}")
+                logger.debug(f"encode_abi for {function_name}: {e}")
 
         # Assemble EIP-155 transaction structure
         gas_price = 25_000_000_000  # 25 Gwei
@@ -279,32 +338,66 @@ class TerraSentinelChainClient:
             "data": calldata
         }
 
-        # Cryptographically sign transaction with private key
+        # Handle unconfigured relayer: Fail-closed mode (no fake key derivations)
+        if not self.can_transact or not self.account:
+            tx_hash = "0x" + hashlib.sha256(f"READONLY_{time.time()}_{function_name}".encode()).hexdigest()
+            meta = {
+                "broadcast_status": "RELAYER_UNCONFIGURED_FAIL_CLOSED",
+                "receipt_status": None,
+                "confirmed": False,
+                "signer_address": self.backend_wallet,
+                "contract_address": contract_address,
+                "function_name": function_name,
+                "raw_tx_prefix": "N/A",
+                "notice": "POLYGON_AMOY_PRIVATE_KEY not set in environment; transaction recorded in local state ledger only"
+            }
+            return tx_hash, curr_block, meta
+
+        # Cryptographically sign transaction with genuine relayer key
         tx_hash = "0x" + hashlib.sha256(f"{time.time()}:{curr_block}".encode()).hexdigest()
         broadcast_status = "CRYPTOGRAPHICALLY_SIGNED"
+        receipt_status = None
+        confirmed = False
         raw_tx_hex = ""
 
-        if HAS_WEB3 and self.account and eth_account:
-            try:
-                signed = eth_account.Account.sign_transaction(tx_envelope, self.account.key)
-                tx_hash = "0x" + signed.hash.hex()
-                raw_tx_bytes = getattr(signed, "raw_transaction", None) or getattr(signed, "rawTransaction", b"")
-                raw_tx_hex = raw_tx_bytes.hex() if isinstance(raw_tx_bytes, bytes) else str(raw_tx_bytes)
+        try:
+            signed = eth_account.Account.sign_transaction(tx_envelope, self.account.key)
+            tx_hash = "0x" + signed.hash.hex()
+            raw_tx_bytes = getattr(signed, "raw_transaction", None) or getattr(signed, "rawTransaction", b"")
+            raw_tx_hex = raw_tx_bytes.hex() if isinstance(raw_tx_bytes, bytes) else str(raw_tx_bytes)
 
-                # Broadcast to Polygon Amoy RPC if network is available
-                if self.w3 and self.w3.is_connected() and raw_tx_bytes:
+            # Broadcast to Polygon Amoy RPC if network is available
+            if self.w3 and self.w3.is_connected() and raw_tx_bytes:
+                try:
+                    sent_hash = self.w3.eth.send_raw_transaction(raw_tx_bytes)
+                    sent_hex = sent_hash.hex() if not sent_hash.hex().startswith("0x") else sent_hash.hex()
+                    tx_hash = sent_hex
+
+                    # Wait for transaction receipt and verify status == 1
                     try:
-                        sent_hash = self.w3.eth.send_raw_transaction(raw_tx_bytes)
-                        tx_hash = sent_hash.hex() if not sent_hash.hex().startswith("0x") else sent_hash.hex()
-                        broadcast_status = "BROADCAST_SUCCESS_CONFIRMED"
-                    except Exception as exc:
-                        # E.g. execution reverted or testnet account gas exhaustion
-                        broadcast_status = f"RELAY_RECORDED: {str(exc)[:90]}"
-            except Exception as e:
-                logger.warning(f"Error signing transaction: {e}")
+                        receipt = self.w3.eth.wait_for_transaction_receipt(sent_hash, timeout=6.0)
+                        receipt_status = receipt.get("status")
+                        if receipt_status == 1:
+                            broadcast_status = "ONCHAIN_MINED_CONFIRMED"
+                            curr_block = receipt.get("blockNumber", curr_block)
+                            confirmed = True
+                        else:
+                            broadcast_status = "ONCHAIN_EXECUTION_REVERTED"
+                            confirmed = False
+                    except Exception:
+                        broadcast_status = "BROADCAST_SUBMITTED_PENDING_INCLUSION"
+                        confirmed = False
+                except Exception as exc:
+                    broadcast_status = f"RELAY_REJECTED: {str(exc)[:90]}"
+                    confirmed = False
+        except Exception as e:
+            logger.warning(f"Error signing transaction: {e}")
+            broadcast_status = f"SIGNING_FAILED: {str(e)[:60]}"
 
         meta = {
             "broadcast_status": broadcast_status,
+            "receipt_status": receipt_status,
+            "confirmed": confirmed,
             "signer_address": self.backend_wallet,
             "contract_address": contract_address,
             "function_name": function_name,
@@ -373,7 +466,7 @@ class TerraSentinelChainClient:
                 "contract": self.ledger_address,
                 "signer_wallet": self.backend_wallet,
                 "broadcast_status": meta["broadcast_status"],
-                "is_genuine_onchain_tx": True
+                "is_genuine_onchain_tx": meta.get("confirmed", False)
             }
         }
 
@@ -463,6 +556,16 @@ class TerraSentinelChainClient:
         """Checks DisasterBond triggers for a location and executes parametric notification."""
         notified = 0
         triggered_bonds = []
+        lat_scaled = int(lat * 1e6)
+        lon_scaled = int(lon * 1e6)
+        clean_bytes = bytes.fromhex(assessment_id.replace("0x", "")) if assessment_id.startswith("0x") else assessment_id.encode()
+
+        # Execute genuine EIP-155 call to DisasterBond contract
+        bond_tx_hash, _, bond_meta = self._create_and_sign_evm_transaction(
+            contract_address=self.bond_address,
+            function_name="notifyAssessment",
+            args=[lat_scaled, lon_scaled, risk_score_bps, clean_bytes]
+        )
 
         for b_id, bond in self._mock_bonds.items():
             if not bond["active"] or bond["triggered"]:
@@ -486,7 +589,9 @@ class TerraSentinelChainClient:
         return {
             "bonds_notified": notified,
             "triggered_bonds": triggered_bonds,
-            "all_active_bonds": [b for b in self._mock_bonds.values() if b["active"]]
+            "all_active_bonds": [b for b in self._mock_bonds.values() if b["active"]],
+            "onchain_tx_hash": bond_tx_hash,
+            "broadcast_status": bond_meta["broadcast_status"]
         }
 
     async def issue_mitigation_credit(
@@ -502,10 +607,21 @@ class TerraSentinelChainClient:
         if risk_score_bps < 6500 or dem_depth_cm >= 20:
             return {"eligible": False, "reason": "Thresholds not met for mitigation credit"}
 
+        lat_scaled = int(lat * 1e6)
+        lon_scaled = int(lon * 1e6)
+        clean_bytes = bytes.fromhex(assessment_id.replace("0x", "")) if assessment_id.startswith("0x") else assessment_id.encode()
+
         tx_hash, _, meta = self._create_and_sign_evm_transaction(
             contract_address=self.cfmc_address,
-            function_name="mintMitigationCredit",
-            args=[Web3.to_checksum_address(beneficiary) if HAS_WEB3 else beneficiary, 100]
+            function_name="issueMitigationCredit",
+            args=[
+                Web3.to_checksum_address(beneficiary) if HAS_WEB3 else beneficiary,
+                clean_bytes,
+                lat_scaled,
+                lon_scaled,
+                risk_score_bps,
+                int(dem_depth_cm)
+            ]
         )
         reward = 100
         self._mock_cfmc_balances[beneficiary] = self._mock_cfmc_balances.get(beneficiary, 0) + reward
@@ -519,6 +635,31 @@ class TerraSentinelChainClient:
             "explorer_url": f"https://amoy.polygonscan.com/tx/{tx_hash}",
             "broadcast_status": meta["broadcast_status"]
         }
+
+    def check_bytecode(self, address: str) -> Dict[str, Any]:
+        """Queries Polygon Amoy RPC via eth_getCode to verify contract deployment with 60s TTL cache."""
+        now = time.time()
+        if not hasattr(self, "_bytecode_cache"):
+            self._bytecode_cache: Dict[str, Tuple[float, Dict[str, Any]]] = {}
+        if address in self._bytecode_cache and (now - self._bytecode_cache[address][0]) < 60:
+            return self._bytecode_cache[address][1]
+
+        if not self.w3 or not self.w3.is_connected() or not HAS_WEB3:
+            res = {"verified": False, "status": "RPC_NOT_CONNECTED", "bytecode_length": 0}
+            self._bytecode_cache[address] = (now, res)
+            return res
+        try:
+            chk = Web3.to_checksum_address(address)
+            code = self.w3.eth.get_code(chk)
+            length = len(code)
+            if length > 2:
+                res = {"verified": True, "status": "ONCHAIN_BYTECODE_VERIFIED", "bytecode_length": length}
+            else:
+                res = {"verified": False, "status": "DEVELOPMENT_PREDEPLOYMENT_ADDRESS", "bytecode_length": 0}
+        except Exception as e:
+            res = {"verified": False, "status": f"QUERY_ERROR: {str(e)[:40]}", "bytecode_length": 0}
+        self._bytecode_cache[address] = (now, res)
+        return res
 
     def get_assessment(self, assessment_id: str) -> Optional[Dict[str, Any]]:
         return self._mock_assessments.get(assessment_id)
@@ -556,6 +697,13 @@ class TerraSentinelChainClient:
         total = len(self._mock_assessments)
         critical = sum(1 for a in self._mock_assessments.values() if a.get("risk_tier") == "CRITICAL")
         is_live = self.w3.is_connected() if self.w3 else False
+
+        bytecode_status = {
+            "TerraSentinelRiskLedger": self.check_bytecode(self.ledger_address),
+            "DisasterBond": self.check_bytecode(self.bond_address),
+            "CarbonFloodCredit": self.check_bytecode(self.cfmc_address),
+        }
+
         return {
             "total_assessments": total,
             "critical_alerts": critical,
@@ -566,13 +714,15 @@ class TerraSentinelChainClient:
                 "DisasterBond": self.bond_address,
                 "CarbonFloodCredit": self.cfmc_address,
             },
+            "contracts_bytecode_verification": bytecode_status,
             "network": "Polygon Amoy Testnet (Chain ID 80002)",
             "explorer": f"https://amoy.polygonscan.com/address/{self.ledger_address}",
             "rpc_url": self.rpc_url,
             "live_rpc_connected": is_live,
             "current_block": self._block_number,
             "backend_wallet": self.backend_wallet,
-            "signer_type": "EIP-155 ECDSA Relayer (eth_account)"
+            "relayer_configured": self.account is not None,
+            "signer_type": "EIP-155 ECDSA Relayer (eth_account)" if self.account else "READ_ONLY_UNCONFIGURED (Fail-closed)"
         }
 
     def get_bonds(self, lat: Optional[float] = None, lon: Optional[float] = None) -> List[Dict[str, Any]]:
