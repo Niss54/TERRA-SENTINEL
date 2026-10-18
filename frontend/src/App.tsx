@@ -2688,7 +2688,7 @@ export function App() {
                         {currentProfile.is_india ? `₹${(result.agent3.var_estimate_inr / 10000000).toFixed(2)} Cr` : currentProfile.primary_var_display}
                       </span>
                       <span className="mono" style={{ fontSize: "0.85rem", color: "var(--color-primary)" }}>
-                        {currentProfile.is_india ? `(${(result.agent3.var_estimate_usd / 1000000).toFixed(2)}M)` : `(${currentProfile.secondary_var_display})`}
+                        {currentProfile.is_india ? `(${(result.agent3.var_estimate_usd / 1000000).toFixed(2)}M)` : currentProfile.secondary_var_display}
                       </span>
                     </div>
                     <div style={{ fontSize: "0.7rem", color: "var(--color-watch)", marginTop: "4px" }}>
@@ -3720,7 +3720,7 @@ export function App() {
 
                   {/* Executive Summary Block */}
                   <div style={{ background: "rgba(14, 154, 167, 0.1)", border: "1px solid rgba(14, 154, 167, 0.3)", borderRadius: "8px", padding: "14px", marginBottom: "20px", fontSize: "0.82rem", lineHeight: 1.6, color: "var(--color-text-primary)" }}>
-                    <b>Executive Intelligence Summary:</b> Autonomous 3-agent intelligence cascade evaluated acute meteorological telemetry, 30m DEM elevation basins, and regulatory policy mandates for <b>{locationName}</b>. Acute physical flood risk is evaluated at <b>{result ? (result.agent1.risk_score * 100).toFixed(0) : 88}% ({result?.agent1.risk_tier || "CRITICAL"})</b>, projecting direct structural inundation of <b>{result?.agent2?.waterlogging_depth_cm || 85} cm</b> across {result?.agent2?.buildings_at_risk || 340} critical assets. Total Enterprise Value at Risk (VaR) is estimated at <b>{modalProfile.is_india ? `₹${result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Crores` : modalProfile.primary_var_display}</b> ({modalProfile.is_india ? `$${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M USD` : modalProfile.secondary_var_display}).
+                    <b>Executive Intelligence Summary:</b> Autonomous 3-agent intelligence cascade evaluated acute meteorological telemetry, 30m DEM elevation basins, and regulatory policy mandates for <b>{locationName}</b>. Acute physical flood risk is evaluated at <b>{result ? (result.agent1.risk_score * 100).toFixed(0) : 88}% ({result?.agent1.risk_tier || "CRITICAL"})</b>, projecting direct structural inundation of <b>{result?.agent2?.waterlogging_depth_cm || 85} cm</b> across {result?.agent2?.buildings_at_risk || 340} critical assets. Total Enterprise Value at Risk (VaR) is estimated at <b>{modalProfile.is_india ? `₹${result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Crores` : modalProfile.primary_var_display}</b>{modalProfile.is_india ? ` ($${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M USD)` : ` ${modalProfile.secondary_var_display}`}.
                   </div>
 
                   {/* 3 Pillar Summary Grid */}
