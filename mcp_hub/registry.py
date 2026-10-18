@@ -810,6 +810,22 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["project_id"]
         },
         "target_agent": "panda-carbon-mrv-agent"
+    },
+    "scan_ecological_threats": {
+        "name": "scan_ecological_threats",
+        "description": "Executes Sentinel Flood-Watch multi-temporal change detection (NDBI concrete expansion, NDVI canopy clearing, MNDWI wetland shrinkage) and computes Ecological Threat Index: ETI = 0.45*Delta_NDBI + 0.35*(-Delta_NDVI) + 0.20*(-Delta_MNDWI).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "site_id": {"type": "string", "description": "Ecological site ID (site_mithi_mangrove, site_bellandur_wetland, site_yamuna_oza, site_deepor_beel, site_pallikaranai_marsh)", "default": "site_mithi_mangrove"},
+                "current_ndbi": {"type": "number", "description": "Observed NDBI at t1"},
+                "current_ndvi": {"type": "number", "description": "Observed NDVI at t1"},
+                "current_mndwi": {"type": "number", "description": "Observed MNDWI at t1"},
+                "notes": {"type": "string", "description": "Mission telemetry notes", "default": ""}
+            },
+            "required": ["site_id"]
+        },
+        "target_agent": "sentinel-floodwatch-agent"
     }
 }
 

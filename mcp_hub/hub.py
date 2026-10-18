@@ -756,6 +756,20 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         )
         return panda_mrv_engine.verify_carbon_mrv(req).model_dump()
 
+    elif tool_name == "scan_ecological_threats":
+        from backend.app.ecological_watch import ecological_watch_engine, EcologicalScanRequest
+        ndbi = float(params["current_ndbi"]) if "current_ndbi" in params and params["current_ndbi"] is not None else None
+        ndvi = float(params["current_ndvi"]) if "current_ndvi" in params and params["current_ndvi"] is not None else None
+        mndwi = float(params["current_mndwi"]) if "current_mndwi" in params and params["current_mndwi"] is not None else None
+        req = EcologicalScanRequest(
+            site_id=str(params.get("site_id", "site_mithi_mangrove")),
+            current_ndbi=ndbi,
+            current_ndvi=ndvi,
+            current_mndwi=mndwi,
+            notes=str(params.get("notes", ""))
+        )
+        return ecological_watch_engine.scan_site(req).model_dump()
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
