@@ -4,26 +4,38 @@
 
 <div align="center">
 
-# 🛡️ TERRA-SENTINEL v3.5.0-ENTERPRISE
-### *Autonomous Multi-Agent Environmental & Climate Risk Intelligence Platform for Bharat & JAPAC*
+<img src="./public/terra-logo.png" alt="TERRA-SENTINEL Logo" width="120" /><br/>
 
-> **Translating Environmental Hazards into Actionable Business, Civic, Evacuation & On-Chain Resilience Intelligence**
+# 🛡️ TERRA-SENTINEL v3.6.0-ENTERPRISE
+### *Autonomous Multi-Agent Environmental & Climate Risk Intelligence Platform for JAPAC & Global Corridors*
 
-Built for **Google Cloud AI Builder Cup Singapore Grand Finale** & **Enterprise Environmental Intelligence**  
-*Track 1: Climate Data Verification · Track 2: Autonomous Agent Swarms · Track 3: Parametric Adaptation & Carbon Markets*
+> **Translating Satellite Radar, Topographic Inundation, and Environmental Threats into Actionable Business, Civic, Evacuation & On-Chain Resilience Intelligence**
 
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Niss54/TERRA-SENTINEL)
-[![Roadmap](https://img.shields.io/badge/Roadmap-29%2F29%20Phases%20(100%25%20COMPLETE)-00C853?style=for-the-badge&logo=target&logoColor=white)](./docs/TODO.md)
-[![Tests](https://img.shields.io/badge/Pytest%20Suite-321%2F321%20Passing%20(100%25)-brightgreen?style=for-the-badge&logo=checkmarx&logoColor=white)](#-automated-testing--verification)
-[![Network](https://img.shields.io/badge/Network-Polygon%20Amoy%20(80002)-8A2BE2?style=for-the-badge&logo=polygon&logoColor=white)](https://amoy.polygonscan.com/address/0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D)
-[![Storage](https://img.shields.io/badge/Storage-IPFS%20%2F%20Filecoin-3AC2E1?style=for-the-badge&logo=ipfs&logoColor=white)](https://pinata.cloud)
-[![Domain](https://img.shields.io/badge/Domain-Energy%20%26%20ClimateTech-2ea44f?style=for-the-badge&logo=leaf&logoColor=white)](#-domain--bharat-impact)
-[![Architecture](https://img.shields.io/badge/Protocol-Official%20MCP%20JSON--RPC%202.0-ff6b35?style=for-the-badge&logo=anthropic&logoColor=white)](#-model-context-protocol-mcp-gateway)
-[![Team](https://img.shields.io/badge/Team-Syntrix-8a2be2?style=for-the-badge&logo=shield&logoColor=white)](#-team-syntrix)
+Built for **Google Cloud AI Builder Cup Singapore Grand Finale** & **Enterprise Climate Resilience**  
+*Track 1: Climate Remote Sensing & GIS · Track 2: Autonomous Agent Swarms · Track 3: Parametric Adaptation & Carbon Ledger*
+
+---
+
+### 🌟 Project Links & Submission Metadata
+| 🎥 3-Minute Demo Video | 🌐 Live Web Application | 📦 GitHub Repository | 👥 Team Details |
+|:---:|:---:|:---:|:---:|
+| [![Demo Video](https://img.shields.io/badge/Demo_Video-Watch_3--Min_Screenplay-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YOUR_DEMO_VIDEO_URL_HERE) | [![Live App](https://img.shields.io/badge/Live_App-Launch_Cockpit-00C853?style=for-the-badge&logo=googlecloud&logoColor=white)](https://terra-sentinel-demo.web.app) | [![GitHub](https://img.shields.io/badge/GitHub-Niss54%2FTERRA--SENTINEL-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Niss54/TERRA-SENTINEL) | **Team Syntrix**<br/>**Lead:** Nishant Maurya |
+
+---
+
+<!-- BADGES ROW -->
+[![Pytest Suite](https://img.shields.io/badge/Pytest_Suite-359%2F359_Passing_(100%25)-brightgreen?style=flat-square&logo=pytest&logoColor=white)](#-automated-testing--verification)
+[![Hardhat Suite](https://img.shields.io/badge/Smart_Contracts-21%2F21_Passing_(100%25)-8A2BE2?style=flat-square&logo=solidity&logoColor=white)](#-automated-testing--verification)
+[![Python Version](https://img.shields.io/badge/Python-3.12_Async-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![React Version](https://img.shields.io/badge/React-19_Vite_TypeScript-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![Google Cloud](https://img.shields.io/badge/Google_Cloud-Vertex_AI_%7C_Cloud_Run-4285F4?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com)
+[![Network](https://img.shields.io/badge/Blockchain-Polygon_Amoy_(80002)-8A2BE2?style=flat-square&logo=polygon&logoColor=white)](https://amoy.polygonscan.com/address/0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D)
+[![MCP Protocol](https://img.shields.io/badge/MCP-Official_JSON--RPC_2.0-FF6B35?style=flat-square&logo=anthropic&logoColor=white)](#-model-context-protocol-mcp-gateway)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](./LICENSE)
 
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" width="100%" alt="divider"/>
 
-[📋 Guidelines](./HACKATHON_GUIDELINES.md) · [📑 Master PRD](./PRD.md) · [⏱️ Engineering Task Tracker](./docs/TODO.md) · [📊 Pitch Deck](./docs/PITCH_DECK.md) · [🎬 Demo Script](./docs/DEMO_SCRIPT.md) · [🤖 Agent Manifest](./agent_manifest.yaml)
+[📑 Master PRD](./PRD.md) · [⏱️ Engineering Task Tracker](./docs/TODO.md) · [📊 Pitch Deck](./docs/PITCH_DECK.md) · [🎬 Demo Script](./docs/DEMO_SCRIPT.md) · [🤖 Agent Manifest](./agent_manifest.yaml)
 
 </div>
 
@@ -31,17 +43,17 @@ Built for **Google Cloud AI Builder Cup Singapore Grand Finale** & **Enterprise 
 
 ## 🌊 The Hook: Why TERRA-SENTINEL Exists
 
-India experiences some of the most volatile meteorological phenomena on the planet — catastrophic monsoon cloudbursts in Mumbai, urban lake-breach waterlogging across Bengaluru's tech parks, Brahmaputra riverine floods across Assam, and coastal cyclones inundating Chennai industrial corridors. 
+Across the JAPAC region and vulnerable global megadeltas — from Singapore's coastal drainage choke points and Jakarta's sinking urban corridors to Mumbai's monsoon cloudbursts, Rotterdam's sea-level defenses, and Accra's ecological wetlands — **climate hazards are compounding at an unprecedented velocity.**
 
-Yet today, **a fatal operational disconnect paralyzes disaster response:**
-- **Petabytes of raw data exist in silos:** Satellite rasters, Open-Meteo feeds, 30m Digital Elevation Models (DEM), municipal drainage networks, and hundreds of pages of SEBI BRSR and NDMA climate policies.
-- **Decision-makers receive fragmented, delayed reports:** Disaster response authorities react hours after arterial highways drown; municipal engineers lack parcel-level water accumulation projections; and enterprise CFOs face uncalculated balance-sheet Value-at-Risk (VaR) and punitive regulatory penalties under SEBI BRSR Principle 6 mandates.
+Yet today, **a fatal operational disconnect paralyzes disaster response and financial resilience:**
+- **Petabytes of raw telemetry exist in disconnected silos:** Sentinel-1 Synthetic Aperture Radar (SAR), Open-Meteo weather APIs, 30m Digital Elevation Models (DEM), and municipal drainage shapefiles sit completely isolated from statutory disclosure frameworks like SEBI BRSR and TCFD.
+- **Decision-makers receive fragmented, delayed reports:** Disaster response authorities react hours after arterial highways submerge; municipal engineers lack parcel-level water accumulation projections; and corporate CFOs face uncalculated balance-sheet Value-at-Risk (VaR) and severe regulatory penalties.
 
-**TERRA-SENTINEL** bridges this chasm by deploying an **Autonomous Hub-and-Spoke Multi-Agent Architecture** powered by the **Model Context Protocol (MCP)** and **LangGraph**. It translates physical weather vectors into immediate operational alerts, multi-decade structural vulnerability projections, and enterprise financial risk under one unified pane of glass.
+**TERRA-SENTINEL bridges this chasm** by deploying an **Autonomous Multi-Agent Intelligence Engine** powered by the **Model Context Protocol (MCP)**, **Google Cloud technologies**, **Clay Earth Foundation Models (ViT-B/16 MAE)**, and **tamper-evident Polygon Amoy smart contracts**. It translates raw radar vectors into immediate operational alerts, multi-decade structural vulnerability projections, and enterprise financial resilience under one unified mission-control pane.
 
 ---
 
-## 🎬 Live Mission-Control Cockpit
+## 🎬 Mission-Control Cockpit & Visual Walkthrough
 
 <p align="center">
   <img src="./public/dashboard.png" alt="TERRA-SENTINEL Mission-Control Dashboard" width="100%" />
@@ -49,9 +61,15 @@ Yet today, **a fatal operational disconnect paralyzes disaster response:**
 
 <div align="center">
 
-| 🛰️ Interactive Esri GIS Basemap | ⚡ Real-Time ML Hazard Gauges | 🧪 "What-If" Anomaly Sandbox | 🎙️ Bhasha-AI Neural Voice |
-|:---:|:---:|:---:|:---:|
-| Multi-layer flood polygon inundation contours & canal vector overlays | XGBoost flash-flood probability (0–100%) with 15-minute telemetry refresh | Dynamic precipitation slider (+0mm to +200mm) triggering live re-planning | Sarvam AI (Devanagari Hindi) & ElevenLabs (English) live audio broadcast |
+| 1️⃣ Collapsible Command Radar | 2️⃣ Multi-Agent Thought Stream |
+|:---:|:---:|
+| <img src="./public/submission_photos/1_Command_Radar_Overview.png" width="480" alt="Command Radar" /> | <img src="./public/submission_photos/2_Multi_Agent_Swarm.png" width="480" alt="Multi-Agent Swarm" /> |
+| *Esri Dark Gray GIS Canvas with 48h temporal LSTM scrubber and regional hotspots.* | *Autonomous cascading trace (Agent 1 ➔ Agent 2 ➔ Agent 3) with full monologue.* |
+
+| 3️⃣ Official MCP Tool Hub | 4️⃣ Financial Risk & BRSR Governance |
+|:---:|:---:|
+| <img src="./public/submission_photos/3_MCP_Tool_Hub.png" width="480" alt="MCP Tool Hub" /> | <img src="./public/submission_photos/4_Financial_BRSR_Risk.png" width="480" alt="Financial Risk" /> |
+| *Specification-compliant JSON-RPC 2.0 gateway executing tool calls in real time.* | *Executive Value-at-Risk (VaR) calculator with SEBI BRSR and TCFD compliance.* |
 
 </div>
 
@@ -59,38 +77,78 @@ Yet today, **a fatal operational disconnect paralyzes disaster response:**
 
 ## 📋 Table of Contents
 
-- [🛡️ TERRA-SENTINEL](#️-terra-sentinel)
+- [🛡️ TERRA-SENTINEL v3.6.0-ENTERPRISE](#️-terra-sentinel-v360-enterprise)
+  - [🌟 Project Links & Submission Metadata](#-project-links--submission-metadata)
   - [🌊 The Hook: Why TERRA-SENTINEL Exists](#-the-hook-why-terra-sentinel-exists)
-  - [🎬 Live Mission-Control Cockpit](#-live-mission-control-cockpit)
-  - [📋 Table of Contents](#-table-of-contents)
-  - [🤖 The Multi-Agent Ecosystem](#-the-multi-agent-ecosystem)
-  - [✨ Key Platform Features](#-key-platform-features)
+  - [🎬 Mission-Control Cockpit & Visual Walkthrough](#-mission-control-cockpit--visual-walkthrough)
+  - [⚡ Quick Verification for Hackathon Judges (30 Seconds)](#-quick-verification-for-hackathon-judges-30-seconds)
+  - [🤖 Autonomous Multi-Agent Swarm Ecosystem](#-autonomous-multi-agent-swarm-ecosystem)
+  - [✨ Key Platform Modules](#-key-platform-modules)
+  - [🛰️ Remote Sensing & Open-Source Intelligence Integration](#️-remote-sensing--open-source-intelligence-integration)
   - [🏛️ System Architecture](#️-system-architecture)
   - [🔌 Model Context Protocol (MCP) Gateway](#-model-context-protocol-mcp-gateway)
   - [🛠️ Tech Stack](#️-tech-stack)
   - [🚀 Getting Started](#-getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Local Installation](#local-installation)
-    - [Docker Compose Quickstart](#docker-compose-quickstart)
   - [⚙️ Environment Configuration Matrix](#️-environment-configuration-matrix)
-  - [📡 REST API & WebSocket Reference](#-rest-api--websocket-reference)
+  - [📡 Comprehensive REST API & WebSocket Reference](#-comprehensive-rest-api--websocket-reference)
   - [🧪 Automated Testing & Verification](#-automated-testing--verification)
-  - [📦 Deployment & Container Architecture Specifications](#-deployment--container-architecture-specifications)
-    - [Method 1: YAML / Agent Manifest Submission](#method-1-yaml--agent-manifest-submission)
-    - [Method 2: Hosted API Endpoint Submission](#method-2-hosted-api-endpoint-submission)
   - [👥 Team Syntrix](#-team-syntrix)
   - [📄 License & Acknowledgments](#-license--acknowledgments)
 
 ---
 
-## 🤖 The Multi-Agent Ecosystem
+## ⚡ Quick Verification for Hackathon Judges (30 Seconds)
+
+Hackathon judges can independently verify that every endpoint, model, and calculation is 100% operational in seconds using these copy-pasteable `curl` commands:
+
+### 1. System Health & Agent Telemetry
+```bash
+curl -s http://127.0.0.1:8000/api/v1/health | jq .
+```
+*Expected Output: `{"status": "healthy", "service": "TERRA-SENTINEL Backend", "agents": {"agent1_acute": "online", "agent2_chronic": "online", "agent3_financial": "online"}}`*
+
+### 2. Autonomous Multi-Agent Hazard Pipeline (Singapore JAPAC Corridor)
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/analyze" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "lat": 1.290270,
+       "lon": 103.851959,
+       "location_name": "Singapore Marina Bay Core",
+       "simulated_additional_rain_mm": 50.0
+     }' | jq '{location: .location, risk_score: .agent_1_physical_risk.probability, flood_depth_cm: .agent_2_structural_exposure.waterlogging_depth_cm, var_usd: .agent_3_financial_impact.var_usd}'
+```
+
+### 3. Deltares HydroMT Topographic Wetness Index (TWI)
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/hydrology/twi" \
+     -H "Content-Type: application/json" \
+     -d '{"lat": 1.290270, "lon": 103.851959, "slope_deg": 12.5, "catchment_area_m2": 15000.0}' | jq .
+```
+
+### 4. Panda Protocol Satellite Biomass MRV & Carbon Sequestration
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/carbon/mrv" \
+     -H "Content-Type: application/json" \
+     -d '{"project_id": "PRJ-SG-MANGROVE-01", "area_hectares": 120.0, "ndvi_pre": 0.42, "ndvi_post": 0.68, "biome": "mangrove"}' | jq .
+```
+
+### 5. Instant C-Suite Printable Executive Briefing (HTML)
+```bash
+curl -I "http://127.0.0.1:8000/api/v1/events/evt-singapore-01/executive-briefing/html"
+```
+*Returns `HTTP/1.1 200 OK` with full printable A4 HTML styling.*
+
+---
+
+## 🤖 Autonomous Multi-Agent Swarm Ecosystem
 
 TERRA-SENTINEL deploys **three autonomous, decoupled AI agents** executing in strict accordance with the **Understand ➔ Reason ➔ Plan ➔ Use Tools ➔ Act ➔ Deliver** cycle:
 
 ```
 ┌──────────────┐     ┌──────────┐     ┌──────────┐
 │  UNDERSTAND  │ ──> │  REASON  │ ──> │   PLAN   │
-└──────────────┐     └──────────┘     └──────────┘
+└──────────────┘     └──────────┘     └──────────┘
                                             │
                                             ▼
 ┌──────────────┐     ┌──────────┐     ┌──────────┐
@@ -98,149 +156,136 @@ TERRA-SENTINEL deploys **three autonomous, decoupled AI agents** executing in st
 └──────────────┘     └──────────┘     └──────────┘
 ```
 
-| Agent Spec | Agent 1: Acute Physical Risk | Agent 2: Chronic Vulnerability | Agent 3: Macro Transition & Financial VaR |
+| Agent Specification | Agent 1: Acute Physical Risk | Agent 2: Chronic Vulnerability | Agent 3: Financial & Governance VaR |
 | :--- | :--- | :--- | :--- |
-| **Operational Horizon** | **Immediate (0 – 24 Hours)** | **Tactical & Strategic (10 – 30 Years)** | **Executive & Boardroom (Corporate Balance Sheet)** |
-| **Core Engine** | Gradient Boosting Classifier (95.14% CV Accuracy) | 30m SRTM DEM Spatial Elevation + GeoPandas | ChromaDB Cosine Similarity RAG + Multi-LLM Reasoning |
-| **Input Vectors** | 24h/7d Rain, Soil Saturation %, Humidity, Elevation | Topographical Depressions, Inundation Depth, Drainage Capacity | Physical Asset Loss, SEBI BRSR Mandates, Carbon Penalties |
-| **Autonomous Trigger** | Telemetry ingestion on target coordinate `(lat, lon)` | Automatically triggered when **Agent 1 Risk Score > 0.65** | Automatically triggered when **Agent 2 Tier == INFRASTRUCTURE_FAILURE** |
-| **MCP Tools Called** | `fetch_weather_vectors`, `run_flood_classifier` | `compute_dem_exposure` | `query_policy_rag` |
-| **Key Output** | Flash flood probability `[0.0 - 1.0]`, Risk Tier (`CRITICAL/HIGH/MED/LOW`) | Waterlogging depth (cm), Exposed building count, Infrastructure Choke % | Value-at-Risk (INR/USD), Stranded asset risk, Bilingual Hindi/English Dispatch |
+| **Operational Horizon** | **Immediate (0 – 24 Hours)** | **Tactical & Spatial (10 – 30 Years)** | **Executive & Corporate Balance Sheet** |
+| **Core ML Engine** | Gradient Boosting Classifier + Clay Foundation ViT-B/16 | 30m SRTM DEM Spatial Elevation + D8 Flow Routing | ChromaDB Cosine Similarity RAG + Multi-LLM Reasoning |
+| **Input Vectors** | 24h Rain, Soil Moisture %, Elevation, Sentinel-1 SAR | Topographic Depressions, Inundation Depth, Drainage Choke | Asset Replacement Cost, SEBI BRSR Mandates, Carbon Penalties |
+| **Autonomous Trigger** | Ingestion of coordinates `(lat, lon)` | Triggered when **Agent 1 Risk Score > 0.65** | Triggered when **Agent 2 Tier == INFRASTRUCTURE_FAILURE** |
+| **MCP Tools Called** | `fetch_weather_vectors`, `run_flood_classifier` | `compute_dem_exposure`, `compute_hydromt_twi` | `query_policy_rag`, `retire_carbon_offset` |
+| **Actionable Deliverables** | Flash-flood probability `[0.0 - 1.0]`, SAR penetration status | Waterlogging depth (cm), Building counts, Canal choke % | Value-at-Risk (USD/INR), Stranded asset risk, Voice dispatch |
 
 ---
 
-## ✨ Key Platform Features
+## ✨ Key Platform Modules
 
-### 1. 🤖 Autonomous Cascade Orchestration
-- **Conditional Triggering:** Agents do not run blindly. High-risk acute flash-flood signals automatically instantiate the spatial DEM engine, which in turn feeds the financial VaR auditor.
-- **Agent Thought Log & Tool Trace:** Live streaming drawer showing the internal reasoning monologue (`THOUGHT`, `TOOL_INVOCATION`, `OBSERVATION`, `DECISION`).
+### 1. 🌐 Planetary Command Radar & Collapsible Executive Rail
+- **Collapsible Navigation Rail**: Modern 68px icon dock expandable to 250px drawer, organizing 10 modules into Core Intelligence, Risk & Governance, and Protocols & Operations.
+- **Global Climate Corridors**: Covers international high-risk deltas (Singapore, Jakarta, Rotterdam, Tokyo, New York, Accra, Sindh) with one-click regional filtering.
+- **Dynamic Leaflet Invalidation**: Automatically adapts GIS canvas dimensions during rail transitions without tile freeze.
 
-### 2. 🗺️ Precision Geospatial & 30m DEM Terrain Modeling
-- **High-Velocity Inundation Polygons:** GeoJSON spatial overlays mapping 60cm+ deep submersion corridors versus secondary perimeter buffers.
-- **Municipal Canal Choke Analysis:** Identifies drainage network overload rates (e.g., 98.5% capacity breach in Mumbai Mithi Basin).
+### 2. 🌊 Compound Landslide & Flood Inundation (SailabAlert Architecture)
+- **CFLSI Engine**: Evaluates compound slope instability and inundation using:
+  $$CFLSI = 0.35 \cdot \frac{R_{24h}}{150} + 0.25 \cdot \frac{H_{river}}{7.0} + 0.25 \cdot \frac{S_{soil}}{100} + 0.15 \cdot \frac{\theta_{slope}}{90}$$
+- **Catastrophic Safety Rule**: Overrides to $\ge 0.92$ when $\theta_{slope} > 35^\circ \land S_{soil} > 85\% \land R_{24h} > 100\text{mm}$.
+- **Trilingual Safety Advisories**: Real-time generation of life-safety instructions in English, Urdu, and Hindi.
 
-### 3. 💼 Enterprise Value-at-Risk (VaR) & Regulatory RAG
-- **Four-Pillar Financial Quantification:** Combines direct structural reconstruction costs, business interruption downtime, SEBI BRSR non-disclosure fines, and insurance premium surges.
-- **ChromaDB Policy Corpus:** Pre-indexed vector store containing SEBI BRSR Core Mandates, National Disaster Management Authority (NDMA) Urban Flood Guidelines, and Carbon Tax Schemes.
+### 3. 🗺️ HydroMT Topographic Wetness Index & Manning Velocity
+- **Deltares-Inspired Hydrography**: Calculates soil saturation and topographic drainage convergence:
+  $$TWI = \ln\left(\frac{\alpha}{\tan\beta + 10^{-4}}\right), \quad v = \frac{1}{n} R_h^{2/3} S_0^{1/2}$$
+- **Canal Choke Analysis**: Identifies critical stormwater bottleneck thresholds ($TWI \ge 12.0$).
 
-### 4. 🗣️ Bhasha-AI Bilingual Voice Dispatch
-- **Sarvam AI (`hi-IN`)**: Synthesizes genuine Devanagari Hindi neural speech using the native `priya` voice model for field emergency services.
-- **ElevenLabs Multilingual**: Streams broadcast-grade executive English alerts for corporate boardrooms and C-suite briefings.
-- **Resilient Fallback**: Graceful automatic cross-engine failover and browser Web Speech API support.
+### 4. 🛰️ Panda Protocol Satellite Biomass MRV & Carbon Tokenization
+- **Sentinel-2 MSI Biomass Tracking**: Validates ecological restoration and mangrove carbon capture:
+  $$\Delta\text{Biomass} = A_{\text{project}} \cdot \max(0, \Delta\text{NDVI}) \cdot \kappa_{\text{biome}} \cdot f_{\text{canopy}}, \quad \text{tCO}_2\text{e} = \Delta\text{Biomass} \cdot \frac{44}{12}$$
+- **Smart Contract Bridge**: Generates cryptographic Keccak-256 proofs and IPFS metadata for ERC-20 carbon credits.
 
-### 5. 🧪 Interactive "What-If" Climate Anomaly Sandbox
-- Real-time slider allowing judges to simulate catastrophic cloudbursts (+0mm to +200mm rainfall) and watch the three agents re-plan, re-classify, and re-calculate Value-at-Risk dynamically.
+### 5. 🌿 Sentinel Ecological Threat Index (Sentinel Flood-Watch)
+- **Multi-Temporal Remote Sensing**: Evaluates illegal urban encroachment and wetland degradation:
+  $$ETI = 0.45 \cdot \max(0, \Delta\text{NDBI}) + 0.35 \cdot \max(0, -\Delta\text{NDVI}) + 0.20 \cdot \max(0, -\Delta\text{MNDWI})$$
+- **Statutory Directives**: Generates automated stop-work compliance notices when $ETI \ge 0.60$.
 
-### 6. 📄 1-Click C-Suite Executive Briefing Exporter
-- Generates a print-ready, high-resolution A4 executive dossier (`GET /api/v1/events/{id}/executive-briefing/html`) equipped with team signatures, NDMA audit seals, and financial impact breakdowns.
+### 6. 💼 Financial Value-at-Risk (VaR) & SEBI BRSR Audit RAG
+- **Four-Pillar Financial Quantification**: Quantifies structural damages, business downtime, insurance surges, and regulatory fines.
+- **ChromaDB Policy Corpus**: Vector retrieval covering SEBI BRSR Principle 6, TCFD, and NDMA Urban Flood Guidelines.
 
-### 7. ⛓️ Smart Contracts & Tamper-Evident Ledger (TERRA-CHAIN v2.0)
-- **Polygon Amoy Anchoring (`TerraSentinelRiskLedger.sol`):** Every Agent 1 risk score, Agent 2 DEM simulation, and Agent 3 financial audit is immutably anchored on-chain with its IPFS CIDv1, creating permanent provenance.
-- **15-Minute Idempotency:** Prevents spam and ensures deduplicated telemetry ingestion.
-- **Parametric Disaster Bonds (`DisasterBond.sol`):** Automatic USDC payouts executed immediately upon consecutive critical threshold breaches, eliminating delayed insurance adjusters.
-- **Carbon Flood Mitigation Credits (`CarbonFloodCredit.sol`):** ERC-20 CFMC tokens incentivizing proactive drainage maintenance and avoided flood loss.
+### 7. 🗣️ Bhasha-AI Bilingual Voice Dispatch
+- **Sarvam AI (`hi-IN`)**: Native Devanagari Hindi neural audio using the `priya` speaker for field relief teams.
+- **ElevenLabs Multilingual**: Broadcast-grade English audio dispatch for corporate boardrooms and civil leadership.
 
-### 8. 🔒 Independent Evidence Verifier & Tamper Simulator
-- **Cryptographic Canonicalization:** Normalizes AI report payloads and generates SHA-256 and Keccak-256 digests.
-- **1-Click Live Tamper Simulation:** Interactive cockpit tool demonstrating how any unauthorized alteration of risk scores or water depths fails verification against the Polygon Amoy blockchain.
+### 8. ⛓️ Blockchain Provability & Tamper Resistance (TERRA-CHAIN v2.0)
+- **Polygon Amoy Anchoring (`TerraSentinelRiskLedger.sol`)**: Every risk score and DEM simulation is immutably anchored on-chain with its IPFS CIDv1.
+- **15-Minute Idempotency**: Cryptographically rejects duplicate spam telemetry.
+- **Parametric Disaster Bonds (`DisasterBond.sol`)**: Immediate automated USDC escrow release upon consecutive critical threshold breaches.
 
 ---
 
 ## 🏛️ System Architecture
 
-```
-                  ┌──────────────────────────────────────────────┐
-                  │       MISSION-CONTROL COCKPIT (VITE/REACT)   │
-                  │ (Particle Canvas, Esri GIS Map, Audio Waves) │
-                  └──────────────────────┬───────────────────────┘
-                                         │ REST / WebSockets
-                                         ▼
-                  ┌──────────────────────────────────────────────┐
-                  │            FASTAPI CORE ENGINE (Port 8000)   │
-                  │   (/api/v1/analyze · /api/v1/bhasha/tts)     │
-                  └──────────────────────┬───────────────────────┘
-                                         │ JSON-RPC 2.0
-                                         ▼
-                  ┌──────────────────────────────────────────────┐
-                  │        MCP HUB GATEWAY (Port 8001 & 8000)    │
-                  │ (Dynamic Tool Registry · Official MCP Spec)  │
-                  └──────┬────────────────┬───────────────┬──────┘
-                         │                │               │
-         ┌───────────────┘                │               └───────────────┐
-         ▼                                ▼                               ▼
-┌──────────────────┐            ┌──────────────────┐            ┌──────────────────┐
-│     AGENT 1      │            │     AGENT 2      │            │     AGENT 3      │
-│  ACUTE PHYSICAL  │            │ CHRONIC CLIMATE  │            │ MACRO TRANSITION │
-│    RISK AGENT    │            │VULNERABILITY AGT │            │ & FINANCIAL RISK │
-├──────────────────┤            ├──────────────────┤            ├──────────────────┤
-│• Open-Meteo Live │ Score>0.65 │• GeoPandas + DEM │ High-Risk  │• ChromaDB RAG    │
-│• XGBoost Model   │───────────>│• Drainage Matrix │───────────>│• Groq/Gemini LLM │
-│• 15-min Refresh  │            │• HAZUS Exposure  │            │• Value at Risk   │
-└──────────────────┘            └──────────────────┘            └──────────────────┘
-```
-
-### Detailed Execution Sequence
-
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Disaster Officer / CRO
-    participant UI as Mission-Control Cockpit
-    participant API as FastAPI Backend (Port 8000)
-    participant MCP as MCP Hub Gateway (Port 8001)
-    participant A1 as Agent 1 (Acute ML)
-    participant A2 as Agent 2 (Chronic DEM)
-    participant A3 as Agent 3 (Financial VaR)
-    participant TTS as Bhasha-AI Voice Engine
-
-    User->>UI: Selects Hotspot (e.g. Mumbai Mithi Basin) & Clicks Analyze
-    UI->>API: POST /api/v1/analyze {lat, lon, sim_rain}
-    API->>MCP: JSON-RPC 2.0: fetch_weather_vectors(lat, lon)
-    MCP-->>API: Returns 24h precip (85.6mm), soil sat (90%)
-    API->>MCP: JSON-RPC 2.0: run_flood_classifier(vectors)
-    MCP-->>A1: Execute GradientBoostingClassifier
-    A1-->>API: Flash Flood Risk = 0.75 (CRITICAL)
-    
-    rect rgb(30, 41, 59)
-    note over API, A2: Autonomous Trigger: Score > 0.65 breaches Acute Safety Threshold
-    API->>MCP: JSON-RPC 2.0: compute_dem_exposure(lat, lon, score)
-    MCP-->>A2: 30m SRTM DEM + Drainage Choke Overlap
-    A2-->>API: 65cm waterlogging depth, 321 exposed structures
+flowchart TD
+    subgraph Client["Frontend Mission Control (React 19 / Vite / Leaflet)"]
+        UI["Executive Dashboard & Hotspot Selector"]
+        Rail["Collapsible Navigation Rail (3 Tiers)"]
+        GIS["Leaflet GIS Map + 48h Temporal Scrubber"]
+        Voice["Bhasha-AI Neural Audio Dispatch"]
     end
 
-    rect rgb(44, 24, 16)
-    note over API, A3: Autonomous Trigger: Exposure Tier == INFRASTRUCTURE_FAILURE
-    API->>MCP: JSON-RPC 2.0: query_policy_rag("SEBI BRSR Principle 6 penalties")
-    MCP-->>A3: Vector Cosine Search (ChromaDB) + Groq Sub-400ms LLM
-    A3-->>API: VaR = ₹3,450 Cr ($41.5M), Stranded Asset = HIGH
+    subgraph Backend["FastAPI Core Engine (Python 3.12)"]
+        Router["Async FastAPI Router (/api/v1)"]
+        WS["WebSocket Stream Engine (/ws/events)"]
+        Auth["API Key & Rate Limiter"]
     end
 
-    API->>TTS: POST /api/v1/bhasha/tts (Devanagari Hindi + English)
-    TTS-->>API: Returns Base64 Neural Audio (Sarvam AI / ElevenLabs)
-    API-->>UI: Complete Multi-Agent Assessment Dossier
-    UI-->>User: Renders Map Polygons, Gauges, Thought Trace & Plays Audio
+    subgraph MCPHub["Model Context Protocol (MCP) Gateway (Port 8001 / 8000)"]
+        MCP["Official JSON-RPC 2.0 Dispatcher"]
+        T1["fetch_weather_vectors"]
+        T2["run_flood_classifier"]
+        T3["compute_dem_exposure"]
+        T4["compute_hydromt_twi"]
+        T5["calculate_panda_carbon"]
+        T6["query_policy_rag"]
+    end
+
+    subgraph Swarm["Autonomous Multi-Agent Intelligence Swarm"]
+        A1["Agent 1: Acute Physical Risk\n(Clay ViT-B/16 + XGBoost)"]
+        A2["Agent 2: Chronic Vulnerability\n(30m SRTM DEM + HydroMT TWI)"]
+        A3["Agent 3: Financial & Governance VaR\n(ChromaDB RAG + Groq LLM)"]
+    end
+
+    subgraph Web3["Decentralized Resilience & Storage (Polygon Amoy / IPFS)"]
+        Ledger["TerraSentinelRiskLedger.sol\n(Proof of Hazard)"]
+        Bond["DisasterBond.sol\n(Parametric Payouts)"]
+        Carbon["CarbonFloodCredit.sol\n(MRV Tokenization)"]
+        IPFS["Pinata IPFS CIDv1 Storage"]
+    end
+
+    UI --> Router
+    GIS --> Router
+    Router --> WS
+    Router --> MCP
+    MCP --> T1 & T2 & T3 & T4 & T5 & T6
+    T1 & T2 --> A1
+    A1 -- "Score > 0.65" --> A2
+    A2 -- "INFRASTRUCTURE_FAILURE" --> A3
+    A3 --> Ledger & Bond & Carbon
+    Ledger --> IPFS
+    A3 --> Voice
+    WS --> UI
 ```
 
 ---
 
 ## 🔌 Model Context Protocol (MCP) Gateway
 
-TERRA-SENTINEL implements a full, specification-compliant **Model Context Protocol (MCP)** server over **JSON-RPC 2.0** on **Port 8001** and mounted directly on the primary backend (**Port 8000**):
+TERRA-SENTINEL features an official **Model Context Protocol (MCP)** implementation over **JSON-RPC 2.0**:
 
-### Protocol Handshake & Tool Discovery
-1. **Initialize (`method: "initialize"`)**: Returns server capabilities, protocol version (`2024-11-05`), and tool registration status.
-2. **Tools List (`method: "tools/list"`)**: Catalogs available tools, descriptive schemas, and target agent bindings.
-3. **Tool Call (`method: "tools/call"`)**: Standard MCP tool dispatch with structured arguments and sandboxed execution.
-4. **Direct Tool Invocation**: Zero-overhead JSON-RPC 2.0 tool execution for real-time streaming agents.
-
-### Registered Tool Registry
-
-| Tool Method | Target Agent | Parameters | Description |
-| :--- | :--- | :--- | :--- |
-| `fetch_weather_vectors` | `agent-1-acute` | `lat` (float), `lon` (float) | Fetches live precipitation, antecedent rainfall, soil moisture, and humidity from Open-Meteo API. |
-| `run_flood_classifier` | `agent-1-acute` | `precipitation_24h_mm`, `soil_saturation_pct`, etc. | Executes trained Gradient Boosting ML model to predict flash flood probability `[0.0 - 1.0]`. |
-| `compute_dem_exposure` | `agent-2-chronic` | `lat`, `lon`, `risk_score`, `radius_km` | Ingests 30m SRTM Digital Elevation Models and drainage network data to model inundation depth (cm). |
-| `query_policy_rag` | `agent-3-financial` | `query` (string), `top_k` (int) | Cosine similarity vector query against ChromaDB climate policy corpus (SEBI BRSR, NDMA guidelines). |
+```bash
+# Invoke tool via MCP Gateway
+curl -X POST "http://127.0.0.1:8001/mcp/invoke" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "jsonrpc": "2.0",
+       "method": "run_flood_classifier",
+       "params": {
+         "precipitation_24h_mm": 115.0,
+         "soil_saturation_pct": 92.0,
+         "relative_humidity_pct": 95.0,
+         "elevation_m": 4.5
+       },
+       "id": "mcp-test-01"
+     }'
+```
 
 ---
 
@@ -248,16 +293,14 @@ TERRA-SENTINEL implements a full, specification-compliant **Model Context Protoc
 
 <div align="center">
 
-| Layer | Technologies |
-| :--- | :--- |
-| **Agentic Core & MCP** | ![MCP](https://img.shields.io/badge/Model_Context_Protocol-JSON--RPC_2.0-FF6B35?style=flat-square) ![LangGraph](https://img.shields.io/badge/LangGraph-StateGraph-2B2D42?style=flat-square) ![Pydantic](https://img.shields.io/badge/Pydantic_v2-Data_Validation-E92063?style=flat-square) |
-| **AI & Neural Speech** | ![Groq](https://img.shields.io/badge/Groq_Cloud-Sub--400ms_LLM-F55036?style=flat-square) ![Sarvam AI](https://img.shields.io/badge/Sarvam_AI-Indic_Hindi_TTS-0E9AA7?style=flat-square) ![ElevenLabs](https://img.shields.io/badge/ElevenLabs-C--Suite_Voice-000000?style=flat-square) ![Gemini](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4?style=flat-square) ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Gradient_Boosting-F7931E?style=flat-square) |
-| **Geospatial & Earth Observation** | ![Leaflet](https://img.shields.io/badge/Leaflet.js-Interactive_GIS-199900?style=flat-square) ![Esri](https://img.shields.io/badge/Esri-World_Dark_Canvas-007AC2?style=flat-square) ![Mapbox](https://img.shields.io/badge/Mapbox-Satellite_HD-000000?style=flat-square) ![GeoPandas](https://img.shields.io/badge/GeoPandas-Spatial_Analysis-139C5A?style=flat-square) ![Open-Meteo](https://img.shields.io/badge/Open--Meteo-Live_Doppler_Telemetry-FFA500?style=flat-square) |
-| **Backend & Services** | ![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=flat-square&logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-High_Performance_Async-009688?style=flat-square&logo=fastapi&logoColor=white) ![Uvicorn](https://img.shields.io/badge/Uvicorn-ASGI_Server-499848?style=flat-square) ![WebSockets](https://img.shields.io/badge/WebSockets-Real--Time_Stream-010101?style=flat-square) |
-| **Database & Vector Store** | ![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector_Embeddings-FF5722?style=flat-square) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-PostGIS_Spatial-336791?style=flat-square&logo=postgresql&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-Context_Cache-DC382D?style=flat-square&logo=redis&logoColor=white) |
-| **Frontend Cockpit** | ![React](https://img.shields.io/badge/React_18-Vite-61DAFB?style=flat-square&logo=react&logoColor=black) ![TypeScript](https://img.shields.io/badge/TypeScript-Type_Safe-3178C6?style=flat-square&logo=typescript&logoColor=white) ![HTML5 Canvas](https://img.shields.io/badge/HTML5-Particle_Constellation-E34F26?style=flat-square) |
-| **Blockchain & Smart Contracts** | ![Polygon Amoy](https://img.shields.io/badge/Polygon_Amoy-Chain_ID_80002-8A2BE2?style=flat-square&logo=polygon&logoColor=white) ![Solidity](https://img.shields.io/badge/Solidity-0.8.24-363636?style=flat-square&logo=solidity&logoColor=white) ![Hardhat](https://img.shields.io/badge/Hardhat-Ethereum_Dev-FFF100?style=flat-square&logo=hardhat&logoColor=black) ![OpenZeppelin](https://img.shields.io/badge/OpenZeppelin-5.1.0-4E5EE4?style=flat-square&logo=openzeppelin&logoColor=white) ![Web3.py](https://img.shields.io/badge/Web3.py-7.x_Gateway-F16822?style=flat-square) ![IPFS](https://img.shields.io/badge/IPFS-Pinata_Pinning-65C2CB?style=flat-square&logo=ipfs&logoColor=white) |
-| **DevOps & Containers** | ![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=flat-square&logo=docker&logoColor=white) ![Docker Compose](https://img.shields.io/badge/Docker_Compose-Multi--Container-1389FD?style=flat-square) ![Git](https://img.shields.io/badge/Git-Version_Control-F05032?style=flat-square&logo=git&logoColor=white) |
+| Domain | Technologies |
+|:---|:---|
+| **Autonomous Agents & MCP** | ![MCP](https://img.shields.io/badge/MCP-JSON--RPC_2.0-FF6B35?style=flat-square) ![LangGraph](https://img.shields.io/badge/LangGraph-StateGraph-2B2D42?style=flat-square) ![Pydantic](https://img.shields.io/badge/Pydantic_v2-Validation-E92063?style=flat-square) |
+| **Earth Observation & AI** | ![Clay](https://img.shields.io/badge/Clay_Foundation-ViT--B%2F16_MAE-4CAF50?style=flat-square) ![Google Gemini](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4?style=flat-square) ![Groq](https://img.shields.io/badge/Groq-Llama_3.3_70B-F55036?style=flat-square) ![scikit-learn](https://img.shields.io/badge/scikit--learn-Gradient_Boosting-F7931E?style=flat-square) |
+| **Geospatial & Remote Sensing** | ![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=flat-square) ![Esri](https://img.shields.io/badge/Esri-World_Dark_Canvas-007AC2?style=flat-square) ![HydroMT](https://img.shields.io/badge/Deltares-HydroMT-005C8A?style=flat-square) ![GeoPandas](https://img.shields.io/badge/GeoPandas-Spatial-139C5A?style=flat-square) |
+| **Backend & Microservices** | ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square) ![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square) ![Uvicorn](https://img.shields.io/badge/Uvicorn-ASGI-499848?style=flat-square) ![WebSockets](https://img.shields.io/badge/WebSockets-Real--Time-010101?style=flat-square) |
+| **Frontend Mission Control** | ![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat-square) ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square) ![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=flat-square) ![Lucide](https://img.shields.io/badge/Lucide_Icons-React-F56565?style=flat-square) |
+| **Blockchain & Provenance** | ![Polygon](https://img.shields.io/badge/Polygon_Amoy-Chain_80002-8A2BE2?style=flat-square) ![Solidity](https://img.shields.io/badge/Solidity-0.8.24-363636?style=flat-square) ![Hardhat](https://img.shields.io/badge/Hardhat-Dev_Suite-FFF100?style=flat-square) ![OpenZeppelin](https://img.shields.io/badge/OpenZeppelin-Contracts_v5-4E5EE4?style=flat-square) ![IPFS](https://img.shields.io/badge/IPFS-Pinata_CIDv1-65C2CB?style=flat-square) |
 
 </div>
 
@@ -266,285 +309,102 @@ TERRA-SENTINEL implements a full, specification-compliant **Model Context Protoc
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Python**: `>= 3.11` (Python 3.12 recommended)
+- **Python**: `>= 3.11` (Python 3.12 verified)
 - **Node.js**: `>= 18.0.0`
-- **Docker & Docker Compose** (Optional, for full containerized deployment)
+- **Git**
 
-### Local Installation
+### Installation
 
 ```bash
-# 1. Clone the repository
+# 1. Clone repository
 git clone https://github.com/Niss54/TERRA-SENTINEL.git
 cd TERRA-SENTINEL
 
 # 2. Setup environment variables
 cp .env.example .env
-# Edit .env and supply your API keys (GROQ_API_KEY, SARVAM_API_KEY, ELEVENLABS_API_KEY, MAPBOX_API_TOKEN)
 
-# 3. Setup and start Backend & MCP Hub
+# 3. Install Python dependencies and launch backend
 pip install -r backend/requirements.txt
-# Launch FastAPI Core Backend (Port 8000)
-py -3.12 -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
+py -3.12 -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
 
-# In a second terminal, launch standalone MCP Hub (Port 8001)
-py -3.12 -m uvicorn mcp_hub.hub:app --host 127.0.0.1 --port 8001
-
-# 4. Setup and start Frontend Cockpit
+# 4. In a second terminal, launch frontend cockpit
 cd frontend
 npm install
 npm run dev
-# Dashboard opens on http://127.0.0.1:5173
+# Dashboard launches on http://localhost:5173
 ```
 
 <details>
-<summary>🪟 Windows PowerShell Quickstart (Copy-Paste Ready)</summary>
+<summary>🪟 Windows PowerShell One-Liner</summary>
 
 ```powershell
-# Open Windows Terminal in TERRA-SENTINEL root:
-py -3.12 -m uvicorn backend.app.main:app --port 8000
-# In second PowerShell tab:
-py -3.12 -m uvicorn mcp_hub.hub:app --port 8001
-# In third PowerShell tab:
+# In first terminal:
+py -3.12 -m uvicorn backend.app.main:app --port 8000 --reload
+# In second terminal:
 cd frontend; npm run dev
 ```
 
 </details>
 
-### Docker Compose Quickstart
-
-```bash
-# Spin up full containerized stack (PostGIS, ChromaDB, MCP Hub, Backend, Frontend):
-docker compose up -d --build
-```
-
 ---
 
 ## ⚙️ Environment Configuration Matrix
 
-| Variable | Type | Required | Description |
-| :--- | :---: | :---: | :--- |
-| `GROQ_API_KEY` | `string` | **Recommended** | High-speed LLM inference key for sub-400ms Agent Thought Trace monologue (`openai/gpt-oss-120b`). |
-| `SARVAM_API_KEY` | `string` | **Recommended** | Bhasha-AI key for native Devanagari Hindi neural speech synthesis (`priya` speaker). |
-| `ELEVENLABS_API_KEY` | `string` | **Recommended** | High-fidelity voice synthesis key for English boardroom & C-suite voice dispatch. |
-| `MAPBOX_API_TOKEN` | `string` | Optional | Mapbox token for high-resolution satellite tiles and 3D terrain rasters. |
-| `GEMINI_API_KEY` | `string` | Optional | Google Gemini 1.5 Flash key for fallback multi-modal reasoning. |
-| `OPENMETEO_BASE_URL` | `string` | Default Active | Base URL for live weather telemetry (`https://api.open-meteo.com/v1`). Free tier enabled by default. |
-| `ACUTE_RISK_TRIGGER_THRESHOLD` | `float` | Default `0.65` | Probability threshold triggering autonomous cascade from Agent 1 to Agent 2. |
-| `CHRONIC_DAMAGE_THRESHOLD` | `float` | Default `0.70` | Severity threshold triggering autonomous cascade from Agent 2 to Agent 3. |
-
----
-
-## 📡 REST API & WebSocket Reference
-
-### 1. `POST /api/v1/analyze`
-Executes complete autonomous multi-agent climate hazard analysis.
-
-```bash
-curl -X POST "http://127.0.0.1:8000/api/v1/analyze" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "lat": 19.0728,
-       "lon": 72.8797,
-       "location_name": "Mumbai — Mithi River & Kurla Basin",
-       "simulated_additional_rain_mm": 50.0
-     }'
-```
-
-### 2. `POST /api/v1/bhasha/tts`
-Synthesizes authentic bilingual neural audio dispatch (Sarvam AI for Hindi, ElevenLabs for English).
-
-```bash
-curl -X POST "http://127.0.0.1:8000/api/v1/bhasha/tts" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "text": "सावधान, मुंबई क्षेत्र में भारी जलभराव की चेतावनी है।",
-       "language": "hi",
-       "speaker": "priya"
-     }'
-```
-
-### 3. `POST /mcp/invoke`
-Official Model Context Protocol (MCP) JSON-RPC 2.0 tool execution endpoint.
-
-```bash
-curl -X POST "http://127.0.0.1:8001/mcp/invoke" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "jsonrpc": "2.0",
-       "method": "run_flood_classifier",
-       "params": {
-         "precipitation_24h_mm": 110.0,
-         "precipitation_7d_mm": 250.0,
-         "soil_saturation_pct": 88.0,
-         "relative_humidity_pct": 90.0,
-         "elevation_m": 8.0,
-         "drainage_capacity_index": 50.0
-       },
-       "id": "req-1"
-     }'
-```
-
-### 4. `WS /ws/events`
-Real-time bidirectional WebSocket stream broadcasting live thought traces, agent status tokens, and instant threshold breach alerts.
+| Variable | Type | Default | Required | Purpose |
+|:---|:---:|:---:|:---:|:---|
+| `GROQ_API_KEY` | `string` | `""` | Optional | Sub-400ms LLM inference for Agent Thought Monologue. |
+| `SARVAM_API_KEY` | `string` | `""` | Optional | Authentic Devanagari Hindi neural voice dispatch. |
+| `ELEVENLABS_API_KEY` | `string` | `""` | Optional | Broadcast-grade English executive voice audio. |
+| `GEMINI_API_KEY` | `string` | `""` | Optional | Google Gemini 1.5 Flash multi-modal reasoning. |
+| `POLYGON_RPC_URL` | `string` | `https://rpc-amoy.polygon.technology` | Optional | Polygon Amoy testnet RPC node gateway. |
+| `PINATA_API_KEY` | `string` | `""` | Optional | IPFS pinning for immutable risk evidence storage. |
+| `OPENMETEO_BASE_URL` | `string` | `https://api.open-meteo.com/v1` | Active | Global live precipitation and telemetry feed. |
 
 ---
 
 ## 🧪 Automated Testing & Verification
 
-TERRA-SENTINEL includes a comprehensive automated test suite verifying every component end-to-end:
+TERRA-SENTINEL enforces **100% test passing discipline** across all units, routes, smart contracts, and integration flows:
 
 ```bash
-# 1. Run Complete Python Pytest Suite (57/57 Tests Passing)
-py -3.12 -m pytest tests
+# Run complete Python Pytest suite (359/359 tests)
+py -3.12 -m pytest tests/ -q
 
-# 2. Run Hardhat Smart Contract Test Suite (21/21 Tests Passing)
-cd blockchain
-npx hardhat test
+# Run Hardhat smart contract tests (21/21 tests)
+cd blockchain && npx hardhat test
 
-# 3. Build Production Frontend Cockpit
-cd frontend
-npm run build
+# Run production frontend build
+cd frontend && npm run build
 ```
 
-### Verified Test Results
-
+### Verified Test Benchmark Summary:
 ```text
-============================== PYTEST TEST SUITE (29 PHASES) ==============================
-tests/test_agent1.py ...........                                                  [  3%]
-tests/test_agent2.py ............                                                 [  7%]
-tests/test_agent3.py ............                                                 [ 11%]
-tests/test_phase1.py ............                                                 [ 15%]
-tests/test_phase5_e2e.py .........                                                [ 18%]
-tests/test_phase6_winning_edge.py ..........                                      [ 21%]
-tests/test_phase24_demo_screenplay.py .........                                   [ 24%]
-tests/test_phase25_finale_strategy.py ........                                    [ 27%]
-tests/test_phase26_scenarios_ungauged.py ..........                               [ 30%]
-tests/test_phase27_clay_foundation.py .......                                     [ 32%]
-tests/test_phase27_cluster_duck.py ........                                       [ 35%]
-tests/test_phase27_veda_backend.py .........                                      [ 38%]
-tests/test_phase28_evacuation_and_oracle.py .......                               [ 40%]
-tests/test_phase29_openmeteo_glofas.py .......                                    [ 42%]
-tests/test_phase29_ushahidi_crisis.py .......                                     [ 44%]
-tests/test_phase29_crisis_cleanup.py .......                                      [ 46%]
-tests/test_phase29_toucan_bridge.py ......                                        [ 48%]
-... (44 test suites across all 29 engineering phases)                             [100%]
-====================== 321 passed, 10 deselected, 170 warnings in 454s ======================
-
-========================= HARDHAT SMART CONTRACT SUITE =========================
-  TerraSentinelRiskLedger
-    anchorRiskAssessment
-      ✔ should anchor a valid risk assessment and emit event
-      ✔ should assign CRITICAL tier when score >= 6500 BPS
-      ✔ should be idempotent within the same 15-minute window
-      ✔ should REJECT anchoring from unauthorized address
-      ✔ should reject invalid risk score > 10000 BPS
-      ✔ should emit CriticalAlertEmitted for CRITICAL tier
-    anchorDEMCascade
-      ✔ should anchor DEM cascade for critical assessment
-      ✔ should reject DEM cascade for non-critical assessment
-    anchorVaRCascade
-      ✔ should anchor VaR cascade when DEM was triggered
-    getLocationHistory and stats
-      ✔ should return assessment history for a coordinate
-      ✔ should report non-zero stats
-  CarbonFloodCredit
-      ✔ should initialize with correct token metadata
-      ✔ should mint CFMC when Agent 2 detects high risk but low damage (<20cm)
-      ✔ should reject double-minting for the same assessment
-      ✔ should reject credit issuance if risk is not critical (<6500 BPS)
-      ✔ should reject credit issuance if damage is too high (>=20cm)
-      ✔ should allow holder to retire credits
-  DisasterBond
-      ✔ should create a parametric disaster bond with escrowed USDC
-      ✔ should increment consecutive counter on 1st critical breach without triggering
-      ✔ should reset consecutive counter if risk drops below threshold
-      ✔ should auto-pay beneficiary when consecutive threshold is reached
-
-  21 passing (1s)
-
->>> TOTAL REPOSITORY SUITE: 342 TESTS (321 PYTEST + 21 HARDHAT) — 100% PASSING <<<
+======================= 359 passed, 182 warnings in 195s =======================
+Hardhat Smart Contracts: 21 passing (1s)
+Frontend TypeScript Build: tsc -b && vite build in 2.94s (0 errors)
+>>> TOTAL TESTS ACROSS REPOSITORY: 380 TESTS (100% PASSING) <<<
 ```
-
----
-
-## 🛰️ Phase 30: Multi-Modal Earth Observation & Deep Hydrological Hazard Intelligence
-
-TERRA-SENTINEL v3.6.0-ENTERPRISE integrates four world-class environmental remote sensing and hydrographic intelligence repositories:
-
-```mermaid
-graph LR
-    subgraph S1["mirzayasirabdullahbaig07/SailabAlert"]
-        CFLSI["CFLSI Engine<br/>Compound Landslide & Flood"]
-        Groq["Groq Llama 3.3 70B<br/>Trilingual Advisories (EN, UR, HI)"]
-    end
-    subgraph S2["Deltares/hydromt"]
-        D8["D8 Flow Routing<br/>Steepest Descent"]
-        TWI["TWI Heatmap Matrix<br/>ln(alpha / tan beta)"]
-        Manning["Manning Friction Velocity<br/>v = (1/n) Rh^(2/3) S0^(1/2)"]
-    end
-    subgraph S3["karanjaxyz/panda"]
-        NDVI["Sentinel-2 MSI NDVI<br/>Temporal Canopy Delta"]
-        Biomass["Stoichiometric CO2e<br/>Biomass * (44 / 12)"]
-        Mint["Polygon Amoy Token Proofs<br/>Keccak-256 / IPFS CIDv1"]
-    end
-    subgraph S4["Hou-dini/sentinel-flood-watch"]
-        Change["Multi-Temporal Changes<br/>NDBI + NDVI + MNDWI"]
-        ETI["Ecological Threat Index<br/>0.45 dNDBI + 0.35(-dNDVI) + 0.20(-dMNDWI)"]
-        Enforce["Statutory MoEFCC Directives<br/>Stop-Work Violation Notices"]
-    end
-
-    S1 --> Cockpit["Multi-Hazard Ecological Cockpit<br/>React 19 / Mission Control"]
-    S2 --> Cockpit
-    S3 --> Cockpit
-    S4 --> Cockpit
-```
-
-### Mathematical Invariants & Scientific Foundations
-1. **Compound Flood & Landslide Susceptibility Index ($CFLSI$):**
-   $$CFLSI = 0.35 \cdot \frac{R_{24h}}{150} + 0.25 \cdot \frac{H_{river}}{7.0} + 0.25 \cdot \frac{S_{soil}}{100} + 0.15 \cdot \frac{\theta_{slope}}{90}$$
-   - *Catastrophic Override:* $\theta_{slope} > 35^\circ \land S_{soil} > 85\% \land R_{24h} > 100\text{mm} \implies CFLSI \ge 0.92$ (`CATASTROPHIC`).
-2. **Topographic Wetness Index ($TWI$ - Deltares HydroMT):**
-   $$TWI = \ln\left(\frac{\alpha}{\tan\beta + 10^{-4}}\right), \quad v = \frac{1}{n} R_h^{2/3} S_0^{1/2}$$
-   - Structural sink condition: $TWI \ge 12.0$ marks severe flood pooling basins.
-3. **Panda Protocol Satellite Biomass MRV & Stoichiometric Carbon Sequestration:**
-   $$\Delta\text{Biomass (dry tons)} = A_{\text{project}} \cdot \max(0, \Delta\text{NDVI}) \cdot \kappa_{\text{biome}} \cdot f_{\text{canopy}}$$
-   $$\text{Sequestered } \text{CO}_2\text{e (tCO}_2\text{e)} = \Delta\text{Biomass} \cdot \frac{44}{12}$$
-4. **Ecological Threat Index ($ETI$ - Sentinel Flood-Watch):**
-   $$ETI = 0.45 \cdot \max(0, \Delta\text{NDBI}) + 0.35 \cdot \max(0, -\Delta\text{NDVI}) + 0.20 \cdot \max(0, -\Delta\text{MNDWI})$$
-   - $ETI \ge 0.60 \implies$ `CRITICAL_ENCROACHMENT` (MoEFCC stop-work notice dispatch).
-
----
-
-## 📦 Deployment & Container Architecture Specifications
-
-### Method 1: YAML / Agent Manifest Deployment
-TERRA-SENTINEL provides an official containerized manifest and microservice architecture:
-- **Manifest File:** [`agent_manifest.yaml`](./agent_manifest.yaml)
-- **Container Entrypoint:** [`Dockerfile`](./Dockerfile)
-- **Compose Multi-Service:** [`docker-compose.yml`](./docker-compose.yml)
-
-### Method 2: Hosted API Endpoint Architecture
-- **Primary Endpoint:** `POST /api/v1/analyze`
-- **Protocol Gateway:** `POST /mcp/invoke`
-- **Health Check:** `GET /api/v1/health`
-- **Live Local Demo:** `http://127.0.0.1:5173`
 
 ---
 
 ## 👥 Team Syntrix
 
-Architected and developed by **Team Syntrix**:
-- **Nishant Maurya** (Lead Agentic Systems & Full-Stack Architect)
-- **Navya Chaudhary** (Climate Modeling & GIS Analytics)
-- **Om Tripathi** (Blockchain & Smart Contracts Core)
-- **Nikita Chopde** (Financial Policy & UI/UX Experience)
+Proudly developed for **Google Cloud AI Builder Cup Singapore Grand Finale** by **Team Syntrix**:
+
+- **Nishant Maurya** — *Team Leader & Lead Agentic Systems Architect*
+- **Navya Chaudhary** — *Climate Modeling & GIS Remote Sensing Engineer*
+- **Om Tripathi** — *Smart Contracts & Distributed Ledger Specialist*
+- **Nikita Chopde** — *Financial Policy, ESG & Frontend UI/UX Developer*
 
 ---
 
 ## 📄 License & Acknowledgments
 
-- **License:** MIT Open Source License. See [LICENSE](./LICENSE) for details.
-- **Meteorological Data:** Courtesy of [Open-Meteo API](https://open-meteo.com/) (Open-access community license).
-- **Cartographic Basemaps:** Courtesy of Esri World Dark Gray Canvas and Mapbox.
-- **Standards:** SEBI BRSR Principle 6, NDMA Urban Flood Mitigation Protocol, IEEE ClimateChain Specifications.
+- **License:** Open-source under the [MIT License](./LICENSE).
+- **Data Providers:** Open-Meteo, NASA VEDA, Sentinel-1 & Sentinel-2 Open Access Hub.
+- **Academic & Scientific Credits:** Deltares HydroMT, Foundation Model Clay, Hou-dini Sentinel Flood Watch, SailabAlert.
 
+---
+<div align="center">
+  <b>Built with ❤️ by Team Syntrix for Google Cloud AI Builder Cup 2026</b>
+</div>
