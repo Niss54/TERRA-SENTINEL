@@ -27,11 +27,13 @@ import {
   Code,
   Check,
   Play,
-  Satellite
+  Satellite,
+  Navigation
 } from "lucide-react";
 import { BlockchainPanel } from "./components/BlockchainPanel";
 import { VedaRasterComparator } from "./components/VedaRasterComparator";
 import { MeshTopologyRadar } from "./components/MeshTopologyRadar";
+import { EvacuationFleetCockpit } from "./components/EvacuationFleetCockpit";
 
 const getBackendBase = (): string => {
   if (typeof window !== "undefined") {
@@ -530,8 +532,8 @@ export function App() {
   const [currentLon, setCurrentLon] = useState<number>(72.8797);
   const [locationName, setLocationName] = useState<string>("Mumbai — Mithi River & Kurla Basin");
 
-  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh'
-  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh">("command");
+  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh' | 'evac'
+  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh" | "evac">("command");
 
   // MCP Hub Connection & Interactive Tester State
   const [showMcpModal, setShowMcpModal] = useState<boolean>(false);
@@ -1172,6 +1174,13 @@ export function App() {
           >
             <Radio size={13} color={activeView === "mesh" ? "#F87171" : "var(--color-text-secondary)"} />
             <span>LoRa Mesh Radar</span>
+          </button>
+          <button
+            className={`nav-tab-btn ${activeView === "evac" ? "active" : ""}`}
+            onClick={() => setActiveView("evac")}
+          >
+            <Navigation size={13} color={activeView === "evac" ? "#60A5FA" : "var(--color-text-secondary)"} />
+            <span>Evacuation & Fleet</span>
           </button>
         </nav>
 
@@ -2660,6 +2669,15 @@ export function App() {
       {activeView === "mesh" && (
         <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
           <MeshTopologyRadar />
+        </main>
+      )}
+
+      {/* ========================================================
+          VIEW 8: AUTONOMOUS EVACUATION & RESCUE FLEET COCKPIT
+          ======================================================== */}
+      {activeView === "evac" && (
+        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+          <EvacuationFleetCockpit />
         </main>
       )}
 

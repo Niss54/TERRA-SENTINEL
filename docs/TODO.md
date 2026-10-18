@@ -38,6 +38,7 @@ Phase 24: AI Builder Cup 3-Minute Video Demo Screenplay ████████
 Phase 25: 10-Slide Executive VC Pitch Deck ██████████ 100% ✅
 Phase 26: Google Research & Open Climate Fix Architecture Synthesis ██████████ 100% ✅
 Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) ██████████ 100% ✅
+Phase 28: Autonomous Evacuation Routing, Parametric Oracle & Rescue Fleet ██████████ 100% ✅
 ```
 
 ---
@@ -265,6 +266,16 @@ Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (Clust
 - [x] **Phase 27.4: NASA VEDA-UI Dual-View Swipe Comparator:** Interactive before-and-after flood inundation split-screen slider, colormaps (`blues`, `sar_radar`, `viridis`, `magma`), STAC metadata inspector, and real-time sub-50ms zonal statistics (`frontend/src/components/VedaRasterComparator.tsx`). Verified via Chrome DevTools MCP.
 - [x] **Phase 27.5: ClusterDuck Mesh Topology Radar:** LoRa ad-hoc mesh node radar, DuckLink/MamaDuck/PapaDuck node hierarchy, RSSI signal indicators, interactive off-grid SOS dispatch simulation, and dead-zone alert panel (`frontend/src/components/MeshTopologyRadar.tsx`). Verified via Chrome DevTools MCP.
 - [x] **Phase 27.6: Unified Quality Gate & Chrome DevTools MCP Verification:** 24/24 Phase 27 tests and 33/33 multi-suite regression tests passed 100%, zero-error production build (`tsc -b && vite build` in 2.95s), Chrome DevTools MCP visual DOM verification and live viewport screenshot captured.
+
+---
+
+## 🚑 Phase 28: Autonomous Evacuation Routing, Parametric Oracle & Rescue Fleet — COMPLETE ✅
+- [x] **Phase 28.1: A* Dynamic Water-Depth Constrained Evacuation Pathfinding:** Road graph routing engine avoiding submerged underpasses based on vehicle clearance thresholds (Ambulance: 40cm, Bus: 65cm, Rescue Boat: unlimited), computing turn-by-turn safe corridors to designated relief centers (`backend/app/evacuation_routing.py`, `backend/app/routes/evacuation.py`, `/api/v1/evacuation/routes`).
+- [x] **Phase 28.2: Multi-Sensor Tripartite Parametric Catastrophe Oracle:** Multi-condition trigger invariant synthesizing physical ClusterDuck LoRa water depth ($\ge 100\text{cm}$), Clay Foundation Model AI probability ($\ge 70\%$), and NASA VEDA STAC inundated area ($\ge 5\text{km}^2$), automatically signing smart contract payouts on Polygon Amoy and anchoring metadata on IPFS (`backend/app/parametric_oracle.py`, `backend/app/routes/parametric_oracle.py`, `/api/v1/oracle/auto-payout`).
+- [x] **Phase 28.3: NDRF Inflatable Rescue Boat & BMC High-Clearance Fleet Dispatch:** Real-time rescue fleet state engine managing amphibious craft, municipal buses, and recon drones with instantaneous mobilization dispatch (`backend/app/evacuation_routing.py`, `/api/v1/evacuation/fleet-dispatch`).
+- [x] **Phase 28.4: Evacuation & Fleet Operations Cockpit UI:** Mission Control view with vehicle selector, dynamic route elevation profile, turn-by-turn guidance, live fleet unit tracker, and 1-click on-chain parametric micro-insurance auto-payout trigger (`frontend/src/components/EvacuationFleetCockpit.tsx`, `frontend/src/App.tsx`). Verified via Chrome DevTools MCP.
+- [x] **Phase 28.5: Unified Quality Gate & Multi-Cloud Preflight:** 7/7 backend unit tests passing in `tests/test_phase28_evacuation_and_oracle.py`, 0 TypeScript compilation errors (`tsc -b && vite build` in 1.96s), and 5/5 multi-cloud deployment preflight checks passed.
+
 
 
 
