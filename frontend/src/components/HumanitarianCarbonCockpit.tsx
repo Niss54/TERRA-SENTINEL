@@ -222,6 +222,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
   const [calcAssetValueCr, setCalcAssetValueCr] = useState<number>(150);
   const [calcSelectedPool, setCalcSelectedPool] = useState<string>("NCT");
 
+  const [isSyncingAll, setIsSyncingAll] = useState<boolean>(false);
+  const [syncFeedback, setSyncFeedback] = useState<{ message: string; type: "success" | "info"; timestamp: string } | null>(null);
+
   const getApiUrl = (endpoint: string) => {
     const base = backendBase.replace(/\/$/, "");
     return base ? `${base}${endpoint}` : endpoint;
@@ -237,6 +240,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
       if (resp.ok) {
         const data = await resp.json();
         setBasinForecast(data);
+        setLoadingBasin(false);
         return;
       }
     } catch (err) {
@@ -1054,6 +1058,30 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
     return true;
   });
 
+  const handleSyncAllFeeds = async () => {
+    setIsSyncingAll(true);
+    setSyncFeedback(null);
+    try {
+      await Promise.all([
+        fetchGlofas(selectedBasin),
+        fetchIncidents(),
+        fetchReliefCases(),
+        fetchCarbonData()
+      ]);
+    } finally {
+      setTimeout(() => {
+        setIsSyncingAll(false);
+        const nowTime = new Date().toLocaleTimeString();
+        setSyncFeedback({
+          message: `All 4 Telemetry Feeds Synchronized • Copernicus GloFAS, Ushahidi SOS, Crisis 4R Leases & Toucan Carbon updated at ${nowTime}`,
+          type: "success",
+          timestamp: nowTime
+        });
+        setTimeout(() => setSyncFeedback(null), 5000);
+      }, 700);
+    }
+  };
+
   // Safe derived helpers for GloFAS basin values
   const currentDischarge = basinForecast?.current_discharge_m3s ?? 0;
   const q2Val = basinForecast?.q_2yr_threshold ?? basinForecast?.q2_threshold_m3s ?? 45.0;
@@ -1085,7 +1113,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
       ];
 
   return (
-    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px", paddingBottom: "48px" }}>
       {/* ========================================================
           HEADER & METRIC OVERVIEW
           ======================================================== */}
@@ -1132,7 +1160,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                 }}
               >
                 <HeartHandshake size={13} />
-                PHASE 29 MULTI-REPO RESILIENCE SYSTEM
+                AUTONOMOUS MULTI-HAZARD RESILIENCE ENGINE
               </span>
               <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
                 Copernicus GloFAS • Ushahidi Citizen SOS • Crisis Cleanup 4R • Toucan Web3
@@ -1148,30 +1176,81 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
             <button
-              onClick={() => {
-                fetchGlofas(selectedBasin);
-                fetchIncidents();
-                fetchReliefCases();
-                fetchCarbonData();
-              }}
+              onClick={handleSyncAllFeeds}
+              disabled={isSyncingAll}
               className="btn btn-secondary"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
                 fontSize: "12px",
-                padding: "8px 14px",
-                background: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid var(--color-card-border)"
+                padding: "8px 16px",
+                background: isSyncingAll
+                  ? "rgba(56, 189, 248, 0.15)"
+                  : syncFeedback
+                  ? "rgba(16, 185, 129, 0.15)"
+                  : "rgba(255, 255, 255, 0.05)",
+                border: isSyncingAll
+                  ? "1px solid rgba(56, 189, 248, 0.5)"
+                  : syncFeedback
+                  ? "1px solid rgba(16, 185, 129, 0.5)"
+                  : "1px solid var(--color-card-border)",
+                color: isSyncingAll
+                  ? "#38BDF8"
+                  : syncFeedback
+                  ? "#10B981"
+                  : "#FFFFFF",
+                cursor: isSyncingAll ? "not-allowed" : "pointer",
+                transition: "all 0.2s ease"
               }}
             >
-              <RefreshCw size={13} className={loadingBasin || loadingIncidents || loadingRelief || loadingCarbon ? "spin" : ""} />
-              <span>Sync All Feeds</span>
+              {isSyncingAll ? (
+                <>
+                  <RefreshCw size={13} className="spin" />
+                  <span>Syncing Feeds...</span>
+                </>
+              ) : syncFeedback ? (
+                <>
+                  <Check size={13} color="#10B981" />
+                  <span>Feeds Synchronized!</span>
+                </>
+              ) : (
+                <>
+                  <RefreshCw size={13} />
+                  <span>Sync All Feeds</span>
+                </>
+              )}
             </button>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", color: "var(--color-text-muted)" }}>
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10B981", display: "inline-block" }} />
+              <span>Telemetry: {syncFeedback ? syncFeedback.timestamp : "Active Sync"}</span>
+            </div>
           </div>
         </div>
+
+        {/* Live Synchronization Toast Notification */}
+        {syncFeedback && (
+          <div
+            className="animate-fade-in"
+            style={{
+              padding: "10px 16px",
+              borderRadius: "8px",
+              background: "rgba(16, 185, 129, 0.12)",
+              border: "1px solid rgba(16, 185, 129, 0.35)",
+              color: "#34D399",
+              fontSize: "12px",
+              fontWeight: 600,
+              display: "flex",
+              alignItems: "center",
+              gap: "8px"
+            }}
+          >
+            <CheckCircle2 size={16} color="#34D399" />
+            <span>{syncFeedback.message}</span>
+          </div>
+        )}
 
         {/* Top 4 KPI Metrics */}
         <div
@@ -1285,8 +1364,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             border: activeTab === "glofas" ? "1px solid rgba(56, 189, 248, 0.4)" : "1px solid transparent"
           }}
         >
-          <Waves size={15} />
+          <Waves size={15} className={loadingBasin ? "spin" : ""} />
           <span>Open-Meteo GloFAS Hydrograph</span>
+          {loadingBasin && <span style={{ fontSize: "10px", opacity: 0.7 }}>(Syncing...)</span>}
         </button>
 
         <button
@@ -1306,8 +1386,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             border: activeTab === "ushahidi" ? "1px solid rgba(245, 158, 11, 0.4)" : "1px solid transparent"
           }}
         >
-          <Radio size={15} />
+          <Radio size={15} className={loadingIncidents ? "spin" : ""} />
           <span>Ushahidi Citizen SOS Triage</span>
+          {loadingIncidents && <span style={{ fontSize: "10px", opacity: 0.7 }}>(Syncing...)</span>}
         </button>
 
         <button
@@ -1327,8 +1408,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             border: activeTab === "relief" ? "1px solid rgba(96, 165, 250, 0.4)" : "1px solid transparent"
           }}
         >
-          <ShieldCheck size={15} />
+          <ShieldCheck size={15} className={loadingRelief ? "spin" : ""} />
           <span>Crisis Cleanup 4R Mutual Aid</span>
+          {loadingRelief && <span style={{ fontSize: "10px", opacity: 0.7 }}>(Syncing...)</span>}
         </button>
 
         <button
@@ -1348,8 +1430,9 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             border: activeTab === "carbon" ? "1px solid rgba(52, 211, 153, 0.4)" : "1px solid transparent"
           }}
         >
-          <Leaf size={15} />
+          <Leaf size={15} className={loadingCarbon ? "spin" : ""} />
           <span>Toucan Protocol Carbon Registry</span>
+          {loadingCarbon && <span style={{ fontSize: "10px", opacity: 0.7 }}>(Syncing...)</span>}
         </button>
       </div>
 
@@ -2360,7 +2443,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   key={pool.token_symbol}
                   className="glass-card"
                   style={{
-                    padding: "20px",
+                    padding: "20px 20px 24px 20px",
                     border:
                       pool.token_symbol === "NCT"
                         ? "1px solid rgba(52, 211, 153, 0.4)"
@@ -2371,7 +2454,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                     flexDirection: "column",
                     gap: "12px",
                     position: "relative",
-                    overflow: "hidden"
+                    borderRadius: "12px"
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -2471,17 +2554,18 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
 
                   <div>
                     <span style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Accredited Methodologies:</span>
-                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "4px" }}>
+                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "6px" }}>
                       {pool.supported_methodologies.map((m, idx) => (
                         <span
                           key={idx}
                           style={{
-                            fontSize: "10px",
-                            padding: "2px 6px",
+                            fontSize: "10.5px",
+                            padding: "3px 8px",
                             borderRadius: "4px",
                             background: "rgba(255, 255, 255, 0.05)",
                             color: "var(--color-text-secondary)",
-                            border: "1px solid rgba(255, 255, 255, 0.08)"
+                            border: "1px solid rgba(255, 255, 255, 0.08)",
+                            lineHeight: 1.3
                           }}
                         >
                           {m}

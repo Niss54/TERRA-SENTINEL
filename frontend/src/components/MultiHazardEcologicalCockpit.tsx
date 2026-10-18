@@ -234,7 +234,7 @@ export function MultiHazardEcologicalCockpit({ backendBase }: MultiHazardEcologi
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
               <span className="cyber-badge" style={{ background: "rgba(56, 189, 248, 0.15)", color: "#38BDF8", border: "1px solid #38BDF8" }}>
-                PHASE 30 INTEGRATED
+                INTEGRATED MULTI-HAZARD INTELLIGENCE
               </span>
               <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)" }}>
                 PLANETARY REMOTE SENSING &amp; HYDROGRAPHIC RESILIENCE

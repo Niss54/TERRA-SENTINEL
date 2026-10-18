@@ -385,7 +385,7 @@ export const MapCockpit: React.FC<MapCockpitProps> = ({
       <div className="absolute top-3 left-3 z-[1000] bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-lg border border-slate-700/60 shadow-lg max-w-xs">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400 mb-0.5">
           <Cpu className="w-3.5 h-3.5" />
-          <span>PHASE 26 · QUARTZ CONTROL-ROOM COCKPIT</span>
+          <span>PLANETARY CONTROL-ROOM COCKPIT</span>
         </div>
         <div className="text-sm font-bold text-slate-100 truncate">{locationName}</div>
         <div className="flex items-center gap-3 mt-1 text-[11px] text-slate-400">

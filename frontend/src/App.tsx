@@ -58,7 +58,7 @@ const getBackendBase = (): string => {
   }
   const envUrl = (import.meta as any).env?.VITE_BACKEND_URL;
   if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/$/, "");
-  return "https://terra-sentinel-api-543789452410.asia-south1.run.app";
+  return "https://web-production-91f72.up.railway.app";
 };
 
 const API_BASE = `${getBackendBase()}/api/v1`;
@@ -2255,7 +2255,7 @@ export function App() {
                   {/* Phase 6: Municipal Conduit Network & Telemetry HMAC Sealing */}
                   <div style={{ background: "rgba(0, 0, 0, 0.25)", border: "1px solid rgba(6, 182, 212, 0.2)", borderRadius: "6px", padding: "8px", marginBottom: "10px", fontSize: "0.7rem" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-                      <span style={{ color: "var(--color-primary)", fontWeight: 700 }}>Phase 6 Hydraulic Network:</span>
+                      <span style={{ color: "var(--color-primary)", fontWeight: 700 }}>Municipal Hydraulic Network:</span>
                       <span className="mono" style={{ color: "#F59E0B", fontWeight: 700 }}>4 Conduits · 1 Chokepoint</span>
                     </div>
                     <div style={{ color: "var(--color-text-muted)", fontSize: "0.66rem", lineHeight: 1.4 }}>
@@ -3225,7 +3225,7 @@ export function App() {
           VIEW 9: HUMANITARIAN RELIEF & CARBON OPERATIONS COCKPIT
           ======================================================== */}
       {activeView === "humanitarian" && (
-        <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 60px 24px" }}>
+        <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 80px 24px" }}>
           <HumanitarianCarbonCockpit backendBase={getBackendBase()} />
         </main>
       )}

@@ -6,7 +6,6 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
-    libgeos-c1v5 \
     libgeos-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -19,11 +18,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . /app
 
 ENV PYTHONPATH=/app \
-    PORT=8000 \
     ENVIRONMENT=production \
     DEBUG=false
 
-EXPOSE 8080
 EXPOSE 8000
 
 CMD ["python3", "backend/run.py"]
