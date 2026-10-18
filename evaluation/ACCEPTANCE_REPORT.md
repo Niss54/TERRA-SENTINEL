@@ -73,14 +73,14 @@ curl -X POST "http://127.0.0.1:8000/api/v2/evidence/compute-digest" \
 
 ### E. Live Polygon Amoy Network & EIP-155 Web3 Status
 ```bash
-curl -s http://127.0.0.1:8000/api/v2/blockchain/network-status
+curl -s http://127.0.0.1:8000/api/v2/blockchain/status
 ```
-**Verified Output (Live Web3.py RPC + EIP-155 ECDSA Signing):**
+**Verified Output (Live Web3.py RPC + EIP-155 ECDSA Relayer):**
 - `network`: `Polygon Amoy Testnet (Chain ID: 80002)`
-- `rpc_url`: `https://polygon-amoy.drpc.org` (`connected: true`)
-- `current_block_height`: `50,531,200+`
-- `eip_standard`: `EIP-155 Replay-Protected ECDSA Signature (eth_account)`
-- `contracts.TerraSentinelRiskLedger`: `0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512`
+- `rpc_url`: `https://polygon-amoy.drpc.org` (`live_rpc_connected: true`)
+- `current_block_height`: `50,535,270+`
+- `signer_type`: `EIP-155 ECDSA Relayer (eth_account)` (Fail-closed security: requires `POLYGON_AMOY_PRIVATE_KEY` in environment for live writes; zero predictable fallback seeds)
+- `contracts_bytecode_verification`: Direct `eth_getCode` audit distinguishing deployed bytecode from development testnet registry addresses
 - `status`: `OPERATIONAL`
 
 ### F. Real Historical Disaster ML Model Ingestion (Instant Physical Inference)

@@ -57,18 +57,11 @@ def run_preflight_checks():
             except Exception as e:
                 print(f"  [WARN] Automated npm build encountered: {e}")
 
-        if not (os.path.exists(dist_path) and os.path.exists(index_path)):
-            assets_dir = os.path.join(dist_path, "assets")
-            os.makedirs(assets_dir, exist_ok=True)
-            with open(index_path, "w", encoding="utf-8") as f:
-                f.write("<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'/><title>TERRA-SENTINEL</title></head><body><div id='root'></div><script src='assets/index.js'></script></body></html>")
-            for f_name in ["index.js", "vendor-react.js", "vendor-leaflet.js", "index.css"]:
-                with open(os.path.join(assets_dir, f_name), "w", encoding="utf-8") as f:
-                    f.write("/* TERRA-SENTINEL Compiled Asset */\n")
-
     assert os.path.exists(dist_path), "Missing frontend/dist! Run 'npm run build' first."
     assert os.path.exists(os.path.join(dist_path, "index.html")), "Missing dist/index.html"
-    assets = os.listdir(os.path.join(dist_path, "assets"))
+    assets_dir = os.path.join(dist_path, "assets")
+    assert os.path.exists(assets_dir), "Missing frontend/dist/assets directory"
+    assets = os.listdir(assets_dir)
     assert len(assets) >= 1, "Missing compiled JS/CSS asset chunks"
     print(f"  [PASS] frontend/dist: Verified production bundle with {len(assets)} compiled assets")
 
