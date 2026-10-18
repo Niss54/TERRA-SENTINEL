@@ -51,6 +51,7 @@ class Settings(BaseSettings):
     INFERENCE: str = ""
     BHASHINI_USER_ID: str = ""
     BHASHINI_API_KEY: str = ""
+    BHASHINI_INFERENCE_KEY: str = ""
 
     # Thresholds
     ACUTE_RISK_TRIGGER_THRESHOLD: float = 0.65  # Triggers Agent 2 if risk_score > 0.65
