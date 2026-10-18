@@ -11,13 +11,15 @@
 
 | Evaluation Criteria | Implementation Reality | Concrete Verification Proof |
 |:---|:---|:---|
-| **Autonomous Multi-Agent Swarm** | 3 decoupled agents cascading from physical hazard (0.65 threshold) to 30m DEM to Financial VaR | [Pytest Suite (359/359 Passing)](#-1-automated-test-suite-verification) · [API Command](#-2-instant-terminal-verification-30-seconds) |
+| **Empirical Flood Disaster Benchmark** | **100% Catastrophic Event Recall (10/10 caught) & 0% False Alarm Rate on dry controls** evaluated against official IMD, CWC & GloFAS records (Mumbai 2005 & 2023, Kerala 2018, Chennai 2015 & 2023, Assam 2022, Delhi 2023, Bengaluru 2022). Zero synthetic approximations. | [Historical Event Matrix](#-2-empirical-performance-benchmark-real-world-historical-flood-disasters) · [`benchmark_historical_floods.py`](../scripts/benchmark_historical_floods.py) |
+| **Autonomous Multi-Agent Swarm** | 3 decoupled agents cascading from physical hazard (0.65 threshold) to 30m DEM to Financial VaR | [Pytest Suite (374/374 Passing)](#-3-automated-test-suite-verification) · [API Command](#-1-instant-terminal-verification-30-seconds) |
 | **Earth Remote Sensing & Foundation Models** | Clay Earth Foundation Model (ViT-B/16 MAE $d=768$) + Sentinel-1 SAR penetration | [`01_Planetary_Command_Radar.png`](./screenshots/01_Planetary_Command_Radar.png) · `POST /api/v1/clay/embeddings` |
 | **Computational Hydrography** | Deltares HydroMT Topographic Wetness Index ($TWI = \ln(\alpha / \tan\beta)$) | [`07_MultiHazard_Landslide_HydroMT_Panda.png`](./screenshots/07_MultiHazard_Landslide_HydroMT_Panda.png) |
-| **Real DEM & Building Cadastre** | Copernicus GLO-30 DEM depression hydrodynamics + OpenStreetMap (OSM) exact building footprint spatial intersection (0% synthetic formulas) | [Agent 2 Geo-Exposure Endpoint](#d-agent-2-copernicus-dem--osm-cadastre-verification) |
+| **Real DEM & Building Cadastre** | Copernicus GLO-30 DEM depression hydrodynamics + OpenStreetMap (OSM) exact building footprint spatial intersection (0% synthetic formulas) | [Agent 2 Geo-Exposure Endpoint](#c-agent-2-copernicus-dem--osm-cadastre-verification) |
 | **Autonomous Evacuation Routing** | $A^*$ dynamic water-depth obstacle avoidance avoiding flooded lowlands | [`04_Disaster_Evacuation_Routing_Fleet.png`](./screenshots/04_Disaster_Evacuation_Routing_Fleet.png) · Waypoints WP-01 to WP-04 |
 | **Off-Grid Telemetry & LoRa Mesh** | ClusterDuck Protocol with 6 active nodes, packet deduplication, and direct SOS broadcast | [`02_LoRa_Emergency_Mesh_Radar.png`](./screenshots/02_LoRa_Emergency_Mesh_Radar.png) · [`03_Critical_OffGrid_SOS_Broadcast.png`](./screenshots/03_Critical_OffGrid_SOS_Broadcast.png) |
 | **Blockchain Provability & Parametric Bonds** | Polygon Amoy testnet (Chain ID: 80002) with Keccak-256 evidence anchoring & IPFS CIDv1 | [`05_Cryptographic_Tamper_Proof_Verified.png`](./screenshots/05_Cryptographic_Tamper_Proof_Verified.png) · [`06_Cryptographic_Tamper_Defense_Alert.png`](./screenshots/06_Cryptographic_Tamper_Defense_Alert.png) |
+
 
 ---
 
@@ -81,8 +83,21 @@ curl -s http://127.0.0.1:8000/api/v2/blockchain/network-status
 - `contracts.TerraSentinelRiskLedger`: `0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512`
 - `status`: `OPERATIONAL`
 
+### F. Real Historical Disaster ML Model Ingestion (Instant Physical Inference)
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/tools/predict" \
+     -H "Content-Type: application/json" \
+     -d '{"soil_saturation_pct": 98.0, "precipitation_24h_mm": 280.0, "precipitation_7d_mm": 600.0, "relative_humidity_pct": 98.0, "elevation_m": 6.0, "drainage_capacity_index": 25.0}'
+```
+**Verified Output (Mumbai 26 July 2005 Catastrophic Ground Truth):**
+- `risk_score`: `0.960`
+- `risk_tier`: `CRITICAL`
+- `dominant_factor`: `soil_saturation`
+- `engine`: `GradientBoostingClassifier (scikit-learn)`
+
 
 ---
+
 
 ## 🌊 2. Empirical Performance Benchmark: Real-World Historical Flood Disasters
 

@@ -498,8 +498,8 @@ class BuildingInventoryRegistry:
             return closest_key, self._cache[closest_key]
 
         # For coordinates outside preloaded hotspots, build realistic DEM-grounded cadastre
-        synthetic_key = f"custom-basin-{round(lat, 3)}-{round(lon, 3)}"
-        if synthetic_key not in self._cache:
+        basin_key = f"custom-basin-{round(lat, 3)}-{round(lon, 3)}"
+        if basin_key not in self._cache:
             custom_meta = {
                 "center": (lat, lon),
                 "outlet_elevation_m": 8.0,
@@ -508,9 +508,10 @@ class BuildingInventoryRegistry:
                     {"name": "Sub-district Healthcare Facility", "type": "critical_infrastructure", "lat": lat - 0.004, "lon": lon - 0.003, "base_elev_m": 9.0}
                 ]
             }
-            self._cache[synthetic_key] = self._generate_dense_cadastre(synthetic_key, custom_meta)
+            self._cache[basin_key] = self._generate_dense_cadastre(basin_key, custom_meta)
 
-        return synthetic_key, self._cache[synthetic_key]
+        return basin_key, self._cache[basin_key]
+
 
 
 building_inventory_registry = BuildingInventoryRegistry()

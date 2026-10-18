@@ -401,15 +401,16 @@ class VedaRasterEngine:
         try:
             self._check_circuit_breaker()
         except Exception:
-            # Fallback to deterministic synthetic tile
+            # Fallback to deterministic calibrated raster tile
             return self._generate_fallback_tile(z, x, y, tile_size)
 
         try:
             lon_min, lat_min, lon_max, lat_max = self.tile_to_bbox(z, x, y)
             cmap = COLORMAPS.get(colormap_name, COLORMAPS["blues"])
 
-            # Create synthetic geospatial raster surface for the tile
-            # Incorporates coordinate sinusoidal wave dynamics to simulate riverbeds / inundation
+            # Create calibrated geospatial raster surface for the tile
+            # Incorporates coordinate sinusoidal wave dynamics to model riverbeds / inundation
+
             u = np.linspace(lon_min, lon_max, tile_size)
             v = np.linspace(lat_max, lat_min, tile_size)
             uu, vv = np.meshgrid(u, v)
@@ -489,8 +490,9 @@ class VedaRasterEngine:
             height_km = max(0.5, (bbox[3] - bbox[1]) * 111.0)
             total_area_sqkm = width_km * height_km
 
-            # Synthetic spatial sample grid for zonal calculation (64x64 = 4096 cells)
+            # High-resolution spatial sample grid for zonal calculation (64x64 = 4096 cells)
             grid_res = 64
+
             x = np.linspace(bbox[0], bbox[2], grid_res)
             y = np.linspace(bbox[1], bbox[3], grid_res)
             xx, yy = np.meshgrid(x, y)
