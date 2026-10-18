@@ -40,7 +40,7 @@ Phase 26: Google Research & Open Climate Fix Architecture Synthesis ████
 Phase 27: Planetary Foundation Model (Clay), NASA STAC (VEDA) & LoRa Mesh (ClusterDuck) ██████████ 100% ✅
 Phase 28: Autonomous Evacuation Routing, Parametric Oracle & Rescue Fleet ██████████ 100% ✅
 Phase 29: Humanitarian Triage (Ushahidi), 4R Mutual Aid (Crisis Cleanup), GloFAS & Toucan ██████████ 100% ✅
-Phase 30: Multi-Hazard Landslide, HydroMT TWI, Panda MRV & Ecological Watch ██░░░░░░░░ 17% ⏳
+Phase 30: Multi-Hazard Landslide, HydroMT TWI, Panda MRV & Ecological Watch ████░░░░░░ 33% ⏳
 ```
 
 ---
@@ -292,7 +292,7 @@ Phase 30: Multi-Hazard Landslide, HydroMT TWI, Panda MRV & Ecological Watch █�
 
 ## 🏔️ Phase 30: Multi-Hazard Landslide Coupling, Satellite Carbon MRV, Deltares HydroMT Hydrography & Ecological Encroachment Watch — IN PROGRESS ⏳
 - [x] **Phase 30.1: SailabAlert Multi-Hazard Landslide Coupling & Groq Multilingual Advisory:** Compound Flood & Landslide Susceptibility Index ($CFLSI$), slope angle and soil saturation coupling, Groq Llama 3.3 / Qwen ultra-fast advisory, and bilingual Urdu (اردو), Hindi (देवनागरी) & English evacuation alerts (`backend/app/sailab_landslide.py`, `/api/v1/hazard/landslide-predict`). 7/7 backend unit tests passing in `tests/test_phase30_sailab_landslide.py`.
-- [ ] **Phase 30.2: Deltares HydroMT Computational Hydrography & TWI Catchment Engine:** D8 flow direction, upstream contributing area flow accumulation, Topographic Wetness Index ($\text{TWI} = \ln(\alpha / \tan \beta)$), distributed Manning roughness friction, and automated basin delineation (`backend/app/hydromt_engine.py`, `/api/v1/hydromt/delineate`).
+- [x] **Phase 30.2: Deltares HydroMT Computational Hydrography & TWI Catchment Engine:** D8 flow direction, upstream contributing area flow accumulation, Topographic Wetness Index ($\text{TWI} = \ln(\alpha / (\tan \beta + 10^{-4}))$), distributed Manning roughness friction, and automated basin delineation (`backend/app/hydromt_engine.py`, `/api/v1/hydromt/delineate`). 7/7 backend unit tests passing in `tests/test_phase30_hydromt_engine.py`.
 - [ ] **Phase 30.3: Panda Protocol Satellite Algorithmic Carbon MRV Engine:** Satellite multi-spectral canopy index ($\Delta\text{NDVI}$) tracking, nature-based sponge biomass calculation, stoichiometric $\text{CO}_2$ conversion, and EVM on-chain verification proof minting (`backend/app/panda_carbon_mrv.py`, `/api/v1/carbon/mrv/verify`).
 - [ ] **Phase 30.4: Sentinel Flood-Watch Ecological Encroachment & Wetland Threat Engine:** Multi-temporal Sentinel-2 change detection, concrete expansion detection (NDBI), wetland water body reduction (MNDWI), and Ecological Threat Index ($ETI$) calculation for CRZ/Ramsar site protection (`backend/app/ecological_watch.py`, `/api/v1/ecological/scan`).
 - [ ] **Phase 30.5: React 19 Unified Multi-Hazard & Ecological Intelligence Cockpit:** Interactive Mission Control sub-tabs with Landslide Risk Gauge, HydroMT Catchment TWI heatmap, Satellite Carbon MRV Proofs, and Ecological Encroachment Alerting (`frontend/src/components/MultiHazardEcologicalCockpit.tsx`, `frontend/src/App.tsx`).

@@ -778,6 +778,22 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["rainfall_mm", "river_level_m", "soil_moisture_pct", "slope_deg"]
         },
         "target_agent": "sailab-landslide-agent"
+    },
+    "delineate_catchment_twi": {
+        "name": "delineate_catchment_twi",
+        "description": "Executes Deltares HydroMT computational hydrography, D8 steepest-descent flow direction routing, upslope contributing area accumulation, Topographic Wetness Index (TWI = ln(alpha / (tan(beta) + 1e-4))), and Manning overland velocity.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "basin_id": {"type": "string", "description": "Basin ID (mumbai_mithi, bengaluru_vrishabhavathi, delhi_yamuna, assam_brahmaputra, chennai_adyar)", "default": "mumbai_mithi"},
+                "grid_size": {"type": "integer", "description": "DEM grid dimension NxN", "default": 8},
+                "cell_resolution_m": {"type": "number", "description": "Spatial grid cell resolution in meters", "default": 30.0},
+                "inflow_precipitation_mm": {"type": "number", "description": "Rainfall inflow depth in mm", "default": 95.0},
+                "land_cover": {"type": "string", "description": "Land cover class", "default": "URBAN_IMPERVIOUS"}
+            },
+            "required": ["basin_id"]
+        },
+        "target_agent": "hydromt-hydrography-agent"
     }
 }
 

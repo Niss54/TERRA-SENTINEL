@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.app.config import settings
 from backend.app.websocket import manager
-from backend.app.routes import health, analyze, geo, documents, hotspots, blockchain, satellite, demo, executive, telemetry, sync, financial, llm, cache, civic, cockpit, edge, container, ci, vercel, quality, screenplay, strategy, clay, veda, cluster_duck, evacuation, parametric_oracle, glofas, crisis, relief, carbon, landslide
+from backend.app.routes import health, analyze, geo, documents, hotspots, blockchain, satellite, demo, executive, telemetry, sync, financial, llm, cache, civic, cockpit, edge, container, ci, vercel, quality, screenplay, strategy, clay, veda, cluster_duck, evacuation, parametric_oracle, glofas, crisis, relief, carbon, landslide, hydromt
 
 # Resilient MCP Hub import — backend must never crash due to agent engine import failures
 try:
@@ -113,6 +113,8 @@ app.include_router(carbon.router, prefix="/api/v1")
 app.include_router(carbon.router)
 app.include_router(landslide.router, prefix="/api/v1")
 app.include_router(landslide.router)
+app.include_router(hydromt.router, prefix="/api/v1")
+app.include_router(hydromt.router)
 
 # Mount TERRA-CHAIN v2.0 Blockchain Gateway
 app.include_router(blockchain.router, prefix="/api/v2")

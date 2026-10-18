@@ -726,6 +726,22 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         )
         return sailab_engine.predict_hazard(req).model_dump()
 
+    elif tool_name == "delineate_catchment_twi":
+        from backend.app.hydromt_engine import hydromt_engine, DelineateRequest, LandCoverType
+        lc_str = str(params.get("land_cover", "URBAN_IMPERVIOUS"))
+        try:
+            lc = LandCoverType(lc_str)
+        except Exception:
+            lc = LandCoverType.URBAN_IMPERVIOUS
+        req = DelineateRequest(
+            basin_id=str(params.get("basin_id", "mumbai_mithi")),
+            grid_size=int(params.get("grid_size", 8)),
+            cell_resolution_m=float(params.get("cell_resolution_m", 30.0)),
+            inflow_precipitation_mm=float(params.get("inflow_precipitation_mm", 95.0)),
+            land_cover=lc
+        )
+        return hydromt_engine.delineate_catchment(req).model_dump()
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 
