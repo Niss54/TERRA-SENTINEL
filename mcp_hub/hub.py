@@ -742,6 +742,20 @@ def execute_tool_logic(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]
         )
         return hydromt_engine.delineate_catchment(req).model_dump()
 
+    elif tool_name == "verify_satellite_carbon_mrv":
+        from backend.app.panda_carbon_mrv import panda_mrv_engine, MRVVerificationRequest
+        b_ndvi = float(params["baseline_ndvi"]) if "baseline_ndvi" in params and params["baseline_ndvi"] is not None else None
+        c_ndvi = float(params["current_ndvi"]) if "current_ndvi" in params and params["current_ndvi"] is not None else None
+        c_cov = float(params["canopy_coverage_factor"]) if "canopy_coverage_factor" in params and params["canopy_coverage_factor"] is not None else None
+        req = MRVVerificationRequest(
+            project_id=str(params.get("project_id", "prj_mumbai_mangrove")),
+            baseline_ndvi=b_ndvi,
+            current_ndvi=c_ndvi,
+            canopy_coverage_factor=c_cov,
+            beneficiary_wallet=str(params.get("beneficiary_wallet", "0x71C8364860D4e0223E4c38AcEbA218175f78235C"))
+        )
+        return panda_mrv_engine.verify_carbon_mrv(req).model_dump()
+
     return {"status": "executed", "tool": tool_name, "params": params}
 
 

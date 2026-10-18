@@ -794,6 +794,22 @@ TOOLS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "required": ["basin_id"]
         },
         "target_agent": "hydromt-hydrography-agent"
+    },
+    "verify_satellite_carbon_mrv": {
+        "name": "verify_satellite_carbon_mrv",
+        "description": "Executes Panda Protocol satellite algorithmic carbon MRV: measures Sentinel-2 multi-spectral NDVI canopy growth, derives dry biomass (tons C), calculates stoichiometric sequestered CO2e (tCO2e = Delta_Biomass * 44/12), and generates Polygon Amoy verification proof hash.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Project ID (prj_mumbai_mangrove, prj_sundarbans_delta, prj_western_ghats, prj_delhi_aravali, prj_bengaluru_lakes)", "default": "prj_mumbai_mangrove"},
+                "baseline_ndvi": {"type": "number", "description": "Baseline NDVI at t0"},
+                "current_ndvi": {"type": "number", "description": "Current Sentinel-2 NDVI at t1"},
+                "canopy_coverage_factor": {"type": "number", "description": "Canopy fraction [0.0, 1.0]"},
+                "beneficiary_wallet": {"type": "string", "description": "Beneficiary EVM wallet address", "default": "0x71C8364860D4e0223E4c38AcEbA218175f78235C"}
+            },
+            "required": ["project_id"]
+        },
+        "target_agent": "panda-carbon-mrv-agent"
     }
 }
 
