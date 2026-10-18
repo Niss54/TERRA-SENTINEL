@@ -2,11 +2,12 @@
 providers = ["python"]
 
 [phases.setup]
-nixPkgs = ["python312", "python312Packages.pip", "curl", "gcc"]
+nixPkgs = ["python312", "python312Packages.pip", "curl", "gcc", "geos"]
 
 [phases.install]
 cmds = ["python3 -m pip install --no-cache-dir -r requirements.txt"]
 
 [start]
-cmd = "python backend/run.py"
+cmd = "python3 backend/run.py"
+
 

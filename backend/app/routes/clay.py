@@ -6,6 +6,7 @@ Exposes endpoints for:
 - Model architectural specifications and circuit breaker probes
 """
 from typing import Dict, Any
+from time import perf_counter as time_perf_counter
 from fastapi import APIRouter, HTTPException
 
 from backend.app.clay_foundation import (
@@ -15,6 +16,7 @@ from backend.app.clay_foundation import (
     ClayFloodProbRequest,
     ClayFloodProbResponse
 )
+
 
 router = APIRouter(prefix="/clay", tags=["Clay Earth Foundation Model"])
 

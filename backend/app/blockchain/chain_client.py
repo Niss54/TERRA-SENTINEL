@@ -127,35 +127,44 @@ class TerraSentinelChainClient:
             logger.error(f"Failed to initialize relayer account: {e}")
             self.backend_wallet = DEFAULT_BACKEND_WALLET
 
-        # Probe RPC endpoints to select live connection
-        candidates = [self.rpc_url] + [r for r in AMOY_RPC_POOL if r != self.rpc_url]
-        for endpoint in candidates:
-            try:
-                provider = Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 2.5})
-                candidate_w3 = Web3(provider)
-                if candidate_w3.is_connected():
-                    self.w3 = candidate_w3
-                    self.rpc_url = endpoint
-                    try:
-                        self._block_number = self.w3.eth.block_number
-                    except Exception:
-                        pass
-                    logger.info(f"Connected to Polygon Amoy Web3 RPC via {endpoint} at block {self._block_number}")
-                    break
-            except Exception:
-                continue
-
-        if not self.w3 or not self.w3.is_connected():
-            logger.info("Using standalone Web3 instance for local cryptographic signing.")
-            self.w3 = Web3()
-
-        # Bind Contract Instance
+        # Immediately initialize standalone Web3 instance for zero-latency startup & local signing
+        self.w3 = Web3()
         if self.ledger_abi and self.w3:
             try:
                 checksummed = Web3.to_checksum_address(self.ledger_address)
                 self.contract = self.w3.eth.contract(address=checksummed, abi=self.ledger_abi)
             except Exception as e:
-                logger.warning(f"Could not instantiate Web3 contract: {e}")
+                logger.warning(f"Could not instantiate initial Web3 contract: {e}")
+
+        # Asynchronously probe live Polygon Amoy RPC endpoints without blocking server boot
+        import threading
+        def _connect_rpc():
+            candidates = [self.rpc_url] + [r for r in AMOY_RPC_POOL if r != self.rpc_url]
+            for endpoint in candidates:
+                try:
+                    provider = Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 3.0})
+                    candidate_w3 = Web3(provider)
+                    if candidate_w3.is_connected():
+                        self.w3 = candidate_w3
+                        self.rpc_url = endpoint
+                        try:
+                            self._block_number = self.w3.eth.block_number
+                        except Exception:
+                            pass
+                        if self.ledger_abi and self.w3:
+                            try:
+                                checksummed = Web3.to_checksum_address(self.ledger_address)
+                                self.contract = self.w3.eth.contract(address=checksummed, abi=self.ledger_abi)
+                            except Exception:
+                                pass
+                        logger.info(f"Connected to Polygon Amoy Web3 RPC via {endpoint} at block {self._block_number}")
+                        break
+                except Exception:
+                    continue
+
+        probe_thread = threading.Thread(target=_connect_rpc, daemon=True)
+        probe_thread.start()
+
 
     def _init_demo_bonds(self) -> Dict[str, Dict[str, Any]]:
         return {
