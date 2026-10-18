@@ -20,7 +20,7 @@ from backend.app.websocket import manager
 from backend.app.agent1_ml import flood_ml_engine
 from backend.app.agent2_geo import chronic_geo_engine
 from backend.app.agent3_financial import financial_risk_engine
-from backend.app.hydrology_sequence import hydrology_sequence_engine, CatchmentDescriptors
+from backend.app.hydrology_sequence import hydrology_sequence_engine, CatchmentDescriptors, UngaugedBasinResult
 
 router = APIRouter(tags=["Analysis & Agent Orchestration"])
 
@@ -829,6 +829,178 @@ async def get_forecast_progression_get(
         drainage_capacity_index=drainage_capacity_index
     )
     return res.model_dump()
+
+
+@router.get("/forecast/ungauged-basin")
+async def get_ungauged_basin_forecast(
+    lat: float = 19.0760,
+    lon: float = 72.8777,
+    location_name: str = "Ungauged Municipal Catchment",
+    basin_area_km2: float = 14.5,
+    slope_gradient: float = 0.022,
+    curve_number_cn: float = 82.0
+):
+    """
+    Google Research Zero-Shot Ungauged Catchment Hydrology:
+    Extrapolates rating curve and flood parameters without stream gauges.
+    """
+    res = hydrology_sequence_engine.predict_ungauged_basin_transfer(
+        lat=lat,
+        lon=lon,
+        location_name=location_name,
+        basin_area_km2=basin_area_km2,
+        slope_gradient=slope_gradient,
+        curve_number_cn=curve_number_cn
+    )
+    return res.model_dump()
+
+
+SCENARIO_PRESETS: Dict[str, Dict[str, Any]] = {
+    "mithi_cloudburst": {
+        "id": "mithi_cloudburst",
+        "title": "Mumbai Mithi River Cloudburst & High-Tide Lock",
+        "hazard_tier": "CRITICAL",
+        "badge_color": "rose",
+        "location_name": "Mumbai Mithi River Basin (BKC Corridor)",
+        "lat": 19.0728,
+        "lon": 72.8797,
+        "precipitation_24h_mm": 135.0,
+        "soil_saturation_pct": 94.0,
+        "precipitation_7d_mm": 320.0,
+        "relative_humidity_pct": 96.0,
+        "elevation_m": 8.0,
+        "drainage_capacity_index": 35.0,
+        "basin_area_km2": 16.5,
+        "slope_gradient": 0.015,
+        "curve_number_cn": 88.0,
+        "description": "Extreme convective cloudburst (135mm/24h) coinciding with 4.6m astronomical spring high tide. Sluice gates locked at Mahim Creek, causing immediate backward inundation across BKC financial corridor.",
+        "expected_dgmr_p80": 0.89,
+        "expected_financial_var_crores": 34.50
+    },
+    "kurla_sluice_jam": {
+        "id": "kurla_sluice_jam",
+        "title": "Kurla LBS Drainage Pump Trip & Sluice Jam",
+        "hazard_tier": "SEVERE",
+        "badge_color": "amber",
+        "location_name": "Kurla West - LBS Marg Drainage Corridor",
+        "lat": 19.0657,
+        "lon": 72.8793,
+        "precipitation_24h_mm": 88.0,
+        "soil_saturation_pct": 86.0,
+        "precipitation_7d_mm": 210.0,
+        "relative_humidity_pct": 90.0,
+        "elevation_m": 9.5,
+        "drainage_capacity_index": 22.0,
+        "basin_area_km2": 11.2,
+        "slope_gradient": 0.008,
+        "curve_number_cn": 85.0,
+        "description": "High-intensity monsoonal band over central suburban railway junction. Critical 3000 HP stormwater dewatering pumps suffer electrical grid trip, reducing drainage capacity by 78%.",
+        "expected_dgmr_p80": 0.64,
+        "expected_financial_var_crores": 18.20
+    },
+    "dharavi_storm_surge": {
+        "id": "dharavi_storm_surge",
+        "title": "Dharavi Hyper-Dense Inundation & Tail-Risk Surge",
+        "hazard_tier": "HIGH_VULNERABILITY",
+        "badge_color": "cyan",
+        "location_name": "Dharavi Informal Settlement Transit Node",
+        "lat": 19.0434,
+        "lon": 72.8562,
+        "precipitation_24h_mm": 115.0,
+        "soil_saturation_pct": 91.0,
+        "precipitation_7d_mm": 280.0,
+        "relative_humidity_pct": 93.0,
+        "elevation_m": 5.2,
+        "drainage_capacity_index": 40.0,
+        "basin_area_km2": 8.4,
+        "slope_gradient": 0.005,
+        "curve_number_cn": 92.0,
+        "description": "Low-elevation topographic depression with 92% impervious surface cover. P90 tail-risk simulation evaluates structural hazard across 12,000 micro-enterprises and artisan workshops.",
+        "expected_dgmr_p80": 0.76,
+        "expected_financial_var_crores": 26.80
+    }
+}
+
+
+@router.get("/scenarios/presets")
+async def get_scenario_presets():
+    """Returns curated extreme climate hazard scenario presets for 1-click evaluation."""
+    return list(SCENARIO_PRESETS.values())
+
+
+class ScenarioSimulateRequest(BaseModel):
+    scenario_id: Optional[str] = None
+    custom_parameters: Optional[AnalyzeRequest] = None
+
+
+@router.post("/scenarios/simulate")
+async def simulate_scenario(req: ScenarioSimulateRequest):
+    """
+    Simulates an end-to-end multi-agent cascade and hydrology progression
+    for a chosen catastrophic climate scenario in one atomic roundtrip.
+    """
+    if req.scenario_id and req.scenario_id in SCENARIO_PRESETS:
+        preset = SCENARIO_PRESETS[req.scenario_id]
+        precip_val = preset.get("precipitation_24h_mm", 100.0)
+        sat_val = preset.get("soil_saturation_pct", 90.0)
+        elev_val = preset.get("elevation_m", 10.0)
+        drain_val = preset.get("drainage_capacity_index", 30.0)
+        params = AnalyzeRequest(
+            lat=preset["lat"],
+            lon=preset["lon"],
+            location_name=preset["location_name"],
+            simulated_additional_rain_mm=precip_val,
+            simulated_saturation_pct_override=sat_val
+        )
+        scenario_meta = preset
+    elif req.custom_parameters:
+        params = req.custom_parameters
+        precip_val = params.simulated_additional_rain_mm or 95.0
+        sat_val = params.simulated_saturation_pct_override or 85.0
+        elev_val = 12.0
+        drain_val = 50.0
+        scenario_meta = {
+            "id": "custom",
+            "title": "Custom User-Specified Climate Simulation",
+            "hazard_tier": "DYNAMIC",
+            "badge_color": "emerald",
+            "description": "User-configured multi-parameter stress simulation"
+        }
+    else:
+        raise HTTPException(status_code=400, detail="Must provide either scenario_id or custom_parameters")
+
+    # 1. Execute Multi-Agent Cascade
+    unified_risk = await analyze_location(params)
+
+    # 2. Execute Google Research LSTM Hydrology & DeepMind DGMR Nowcast
+    c_desc = CatchmentDescriptors(
+        basin_area_km2=scenario_meta.get("basin_area_km2", 15.0),
+        slope_gradient=scenario_meta.get("slope_gradient", 0.02),
+        curve_number_cn=scenario_meta.get("curve_number_cn", 80.0)
+    )
+    hydrology = hydrology_sequence_engine.predict_lead_time_progression(
+        lat=params.lat,
+        lon=params.lon,
+        location_name=params.location_name or "Target Basin",
+        precipitation_24h_mm=precip_val,
+        soil_saturation_pct=sat_val,
+        elevation_m=elev_val,
+        drainage_capacity_index=drain_val,
+        catchment=c_desc
+    )
+
+    return {
+        "status": "success",
+        "scenario": scenario_meta,
+        "unified_risk": unified_risk,
+        "hydrology_progression": hydrology.model_dump(),
+        "disaster_management_sop": {
+            "ndma_level": "LEVEL-3 SEVERE ALERT" if precip_val > 100 else "LEVEL-2 ADVISORY",
+            "sluice_gate_instruction": "Open downstream tidal lock gates immediately during low-tide window.",
+            "civic_evacuation_radius_km": round(2.5 * (precip_val / 100.0), 1),
+            "parametric_payout_readiness": "AUTHORIZED" if unified_risk.agent1.risk_score > 0.70 else "MONITORING"
+        }
+    }
 
 
 

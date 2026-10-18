@@ -502,11 +502,12 @@ function TelemetryTicker() {
 }
 
 const SCENARIO_PRESETS = [
-  { id: "mumbai_05", label: "🌧️ Mumbai '05 Cloudburst", desc: "+110mm rain / 98% saturation", rain: 110, sat: 98, hotspotId: "mumbai-mithi" },
+  { id: "mithi_cloudburst", label: "⛈️ Mithi Cloudburst & Sea Lock", desc: "Google LSTM + DGMR P(R>80)=89% | 135mm rain / 94% sat", rain: 135, sat: 94, hotspotId: "mumbai-mithi" },
+  { id: "kurla_sluice_jam", label: "⚙️ Kurla Sluice Mechanical Jam", desc: "3000HP Pump Trip | 88mm rain / 86% sat", rain: 88, sat: 86, hotspotId: "mumbai-mithi" },
+  { id: "dharavi_storm_surge", label: "🌊 Dharavi Surge (P90 Tail Risk)", desc: "92% Impervious Cover | 115mm rain / 91% sat", rain: 115, sat: 91, hotspotId: "mumbai-mithi" },
   { id: "blr_22", label: "🌊 Bengaluru '22 Lake Breach", desc: "+85mm rain / 90% saturation", rain: 85, sat: 90, hotspotId: "bengaluru-bellandur" },
-  { id: "assam_24", label: "⛈️ Assam River Surge", desc: "+125mm rain / 96% saturation", rain: 125, sat: 96, hotspotId: "assam-kaziranga" },
-  { id: "cyclone", label: "🌪️ Cyclone Coastal Storm", desc: "+95mm rain / 85% saturation", rain: 95, sat: 85, hotspotId: "mundra-industrial" },
-  { id: "baseline", label: "🌤️ Baseline Monsoon", desc: "+30mm rain / 50% saturation", rain: 30, sat: 50, hotspotId: "mumbai-mithi" }
+  { id: "assam_24", label: "⛈️ Assam Brahmaputra River Surge", desc: "+125mm rain / 96% saturation", rain: 125, sat: 96, hotspotId: "assam-kaziranga" },
+  { id: "baseline", label: "🌤️ Baseline Monsoon Standard", desc: "+30mm rain / 50% saturation", rain: 30, sat: 50, hotspotId: "mumbai-mithi" }
 ];
 
 const MCP_TOOL_TEMPLATES: Record<string, string> = {

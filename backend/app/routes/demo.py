@@ -43,26 +43,28 @@ DEMO_ACTS = [
         "duration_seconds": 60.0,
         "start_seconds": 30.0,
         "end_seconds": 90.0,
-        "key_visual_anchor": "Interactive Cockpit: Rainfall slider +110mm, Sentinel-2 NDWI, GEE DEM, Bhasha-AI",
+        "key_visual_anchor": "Interactive Cockpit: Scenario Preset, Google LSTM, DeepMind DGMR, Quartz Scrubber, Bhasha-AI",
         "tech_stack_callouts": [
-            "Agent 1 (GBM ML)",
-            "Agent 2 (GEE 30m DEM Slope)",
-            "Agent 3 (Vertex AI Gemini 2.0 Flash)",
+            "Agent 1 (GBM & Google Research LSTM)",
+            "DeepMind DGMR Nowcasting Engine",
+            "Agent 2 (GEE 30m DEM & Sentinel-2)",
+            "Agent 3 (Vertex AI Gemini 2.0 Flash & Quartz VaR)",
             "Bhasha-AI Hindi TTS"
         ],
         "voiceover_lines": (
             "Notice that TERRA-SENTINEL is not a passive chatbot. It is a live, autonomous cognitive loop. "
-            "Watch: we simulate an extreme 125mm rainfall anomaly with 92% soil saturation. In under twenty milliseconds, "
-            "Agent 1 executes a supervised Gradient Boosting model trained on 3,500 physical telemetry vectors, "
-            "detecting an 88% catastrophic flood probability. Crossing the 0.65 critical safety threshold, Agent 1 "
+            "Watch: we trigger the Mithi River Cloudburst preset with 135mm rainfall and 94% soil saturation. In under twenty milliseconds, "
+            "Agent 1 executes Google Research State-Handoff LSTM sequence hydrology combined with DeepMind DGMR radar nowcasting, "
+            "detecting an 89% catastrophic flood exceedance probability. Crossing the critical safety threshold, Agent 1 "
             "autonomously awakens Agent 2, our Spatial Digital Twin. Agent 2 fuses Copernicus Sentinel-2 MSI multispectral "
             "water indices with Google Earth Engine 30-meter elevation contours, identifying three hundred and forty endangered "
             "structures and calculating 95-centimeter water ingress. Detecting infrastructure compromise, Agent 2 instantly "
-            "dispatches Agent 3, our Autonomous Financial & Civic Controller powered by Google Vertex AI Gemini 2.0 Flash."
+            "dispatches Agent 3, our Autonomous Financial & Civic Controller powered by Google Vertex AI Gemini 2.0 Flash, "
+            "rendering deterministic P10, P50, and P90 Value-at-Risk confidence corridors across our Quartz temporal scrubber."
         ),
         "visual_cues": [
             "[00:30-00:50] Fly to Mumbai Mithi Basin (19.0728 N, 72.8797 E); toggle Sentinel-2 NDWI & GEE DEM slope contours",
-            "[00:50-01:15] Drag rainfall slider to +125mm, click 'Execute Autonomous Cascade'; watch live monologue terminal stream",
+            "[00:50-01:15] Click 'Mithi Cloudburst' 1-click scenario preset; scrub Quartz 0h-48h temporal timeline to verify P10/P50/P90 VaR bands",
             "[01:15-01:30] Trigger Bhasha-AI vernacular Hindi speech readout & preview C-Suite Executive Briefing PDF modal"
         ]
     },

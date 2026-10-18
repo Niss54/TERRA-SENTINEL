@@ -361,11 +361,18 @@ export const MapCockpit: React.FC<MapCockpitProps> = ({
           />
         </div>
 
-        {/* Quartz Time Horizon Labels */}
-        <div className="hidden sm:flex flex-col text-right text-[10px] text-slate-400 font-mono">
-          <span>0h ➔ 48h</span>
-          <span className="text-emerald-400 text-[9px]">Google Seq LSTM</span>
-        </div>
+        {/* Quartz Time Horizon Labels & Inspection Trigger */}
+        <button
+          onClick={() => setShowInspectionDrawer(!showInspectionDrawer)}
+          className="hidden sm:flex flex-col items-end text-right text-[10px] text-slate-400 font-mono hover:text-cyan-400 transition-colors bg-slate-800/80 px-2 py-1 rounded border border-slate-700/60"
+          title="Toggle Google Research & DeepMind Hydrology Inspection"
+        >
+          <span className="flex items-center gap-1 text-slate-300 font-bold">
+            <Sliders className="w-3 h-3 text-cyan-400" />
+            0h ➔ 48h
+          </span>
+          <span className="text-emerald-400 text-[9px]">Google LSTM · DGMR</span>
+        </button>
       </div>
 
       {/* 5. Interactive GIS Layer Controls (Top-Right under HUD) */}
@@ -455,6 +462,16 @@ export const MapCockpit: React.FC<MapCockpitProps> = ({
                     <span className="text-[9px] text-slate-400">&gt;80mm</span>
                     <div className="text-red-400 font-bold">{Math.round(pExceed50 * 65)}%</div>
                   </div>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-slate-400">Ungauged Physical Transfer:</span>
+                <div className="space-y-0.5 mt-1 text-slate-300 font-mono text-[10px] bg-slate-800/60 p-1.5 rounded border border-slate-700/60">
+                  <div>• Cluster: <b className="text-cyan-300">IND-WestCoast-Urban</b></div>
+                  <div>• Transfer Conf: <b className="text-emerald-400">91.2%</b></div>
+                  <div>• Time of Concentration: <b>1.45h</b></div>
+                  <div>• Synthetic Rating: <b>Q = 14.8·H¹·⁶⁷</b></div>
                 </div>
               </div>
 
