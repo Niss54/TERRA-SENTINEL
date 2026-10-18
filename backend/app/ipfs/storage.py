@@ -3,7 +3,12 @@ import os
 import json
 import hashlib
 from typing import Dict, Any, Optional
-import aiohttp
+try:
+    import aiohttp
+    HAS_AIOHTTP = True
+except ImportError:
+    aiohttp = None
+    HAS_AIOHTTP = False
 import logging
 
 logger = logging.getLogger("terra_sentinel.ipfs")
@@ -44,7 +49,7 @@ class IPFSStorageClient:
         synthetic_cid = self._generate_synthetic_cid(serialized)
         self._local_cache[synthetic_cid] = payload
 
-        if not self.api_key or not self.api_secret or self.api_key.startswith("<"):
+        if not self.api_key or not self.api_secret or self.api_key.startswith("<") or not HAS_AIOHTTP or aiohttp is None:
             return {
                 "cid": synthetic_cid,
                 "url": f"{IPFS_PUBLIC_GATEWAY}/{synthetic_cid}",

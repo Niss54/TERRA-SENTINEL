@@ -17,7 +17,12 @@ from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timezone
 from pydantic import BaseModel, Field
 import numpy as np
-from PIL import Image
+try:
+    from PIL import Image
+    HAS_PIL = True
+except ImportError:
+    Image = None
+    HAS_PIL = False
 
 logger = logging.getLogger("terra_sentinel.veda_raster")
 
@@ -448,6 +453,9 @@ class VedaRasterEngine:
 
     def _generate_fallback_tile(self, z: int, x: int, y: int, tile_size: int = 256) -> bytes:
         """Deterministic fallback tile when upstream circuits trip."""
+        if not HAS_PIL or Image is None:
+            # Return minimal 1x1 transparent PNG bytes
+            return b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15c4\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82'
         arr = np.zeros((tile_size, tile_size, 4), dtype=np.uint8)
         # Transparent tile with faint amber watermark border
         arr[0, :, :] = [255, 165, 0, 120]

@@ -23,8 +23,8 @@ def main():
         digits = re.findall(r"\d+", str(raw_port))
         port = int(digits[0]) if digits else 8000
 
-    host = os.environ.get("HOST", "0.0.0.0")
-    print(f"[TERRA-SENTINEL] Starting server on {host}:{port} (raw PORT='{raw_port}')")
+    host = "0.0.0.0"
+    print(f"[TERRA-SENTINEL] Starting server on {host}:{port} (raw PORT='{raw_port}')", flush=True)
 
     uvicorn.run(
         "backend.app.main:app",

@@ -2,18 +2,20 @@
 # TERRA-SENTINEL Production Hardened Multi-Stage Dockerfile
 # Governance: Gravitas Reliability Runtime · Phase 20 Specification
 # Invariant: ImageSize <= 250MB, Vulnerabilities = 0
-# Optimized for Google Cloud Run (Serverless) / Kubernetes / Docker
+# Optimized for Railway, Google Cloud Run (Serverless), and Kubernetes
 # ==============================================================================
 
-# --- Stage 1: Build Frontend Single Page App ---
-FROM node:20-alpine AS frontend-builder
-WORKDIR /app/frontend
+# --- Stage 1: Build Wheels & Dependencies ---
+FROM python:3.12-slim AS builder
 
-COPY frontend/package*.json ./
-RUN npm ci --silent
+WORKDIR /build
 
-COPY frontend/ ./
-RUN npm run build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
 
 # --- Stage 2: Production Hardened Python Runtime ---
 FROM python:3.12-slim AS runner
@@ -26,13 +28,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Create dedicated non-root user and group (UID/GID 10001)
+# Create dedicated non-root application user with standard shell (UID/GID 10001)
 RUN groupadd -g 10001 appgroup && \
-    useradd -u 10001 -g appgroup -m -s /sbin/nologin appuser
+    useradd -u 10001 -g appgroup -m -s /bin/bash appuser
 
-# Install python dependencies with minimal build footprint
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy installed python dependencies from builder stage
+COPY --from=builder /root/.local /home/appuser/.local
 
 # Copy application directories with non-root ownership
 COPY --chown=appuser:appgroup backend /app/backend
@@ -40,26 +41,25 @@ COPY --chown=appuser:appgroup mcp_hub /app/mcp_hub
 COPY --chown=appuser:appgroup scripts /app/scripts
 COPY --chown=appuser:appgroup public /app/public
 COPY --chown=appuser:appgroup agent_manifest.yaml /app/agent_manifest.yaml
-
-# Copy compiled frontend assets from Stage 1
-COPY --from=frontend-builder --chown=appuser:appgroup /app/frontend/dist /app/frontend/dist
+COPY --chown=appuser:appgroup requirements.txt /app/requirements.txt
 
 # Security Hardening: Switch to unprivileged non-root user
 USER appuser:appgroup
 
 # Production Environment Configuration
-ENV PYTHONPATH=/app \
+ENV PATH=/home/appuser/.local/bin:$PATH \
+    PYTHONPATH=/app \
     PYTHONUNBUFFERED=1 \
-    PORT=8080 \
+    PORT=8000 \
     ENVIRONMENT=production \
     DEBUG=false
 
-# Expose standard Cloud Run & Container ports
+# Expose standard Cloud Run & Railway ports
 EXPOSE 8080 8000
 
 # Container healthcheck for sub-second container spinup verification
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:${PORT:-8080}/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD curl -f http://127.0.0.1:${PORT:-8000}/health || exit 1
 
 # Launch production server with robust port-aware launcher
 CMD ["python", "backend/run.py"]
