@@ -208,9 +208,9 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     description: "Flagship Southeast Asian financial district exposed to extreme tropical cloudbursts, spring tide sea-level rise, and coastal barrage drainage saturation.",
     typical_annual_loss_inr: "₹2,450 Crores",
     typical_annual_loss_usd: "$295M USD",
-    regional_language: "English / Malay",
-    regional_language_native: "Melayu / English",
-    regional_lang_code: "en-SG"
+    regional_language: "Malay / Mandarin",
+    regional_language_native: "Melayu / 华语",
+    regional_lang_code: "ms-SG"
   },
   {
     id: "jakarta-ciliwung",
@@ -276,8 +276,8 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     description: "Dense financial capital vulnerable to Atlantic hurricane storm surges, Nor'easters, and subway transit tunnel inundation.",
     typical_annual_loss_inr: "₹7,500 Crores",
     typical_annual_loss_usd: "$910M USD",
-    regional_language: "English",
-    regional_language_native: "English",
+    regional_language: "English / Spanish",
+    regional_language_native: "English / Español",
     regional_lang_code: "en-US"
   },
   {
@@ -293,9 +293,9 @@ const DEFAULT_HOTSPOTS: Hotspot[] = [
     description: "Sub-Saharan coastal capital facing seasonal flash inundation, urban plastic drainage blockages, and informal settlement vulnerability.",
     typical_annual_loss_inr: "₹950 Crores",
     typical_annual_loss_usd: "$115M USD",
-    regional_language: "English / Akan",
-    regional_language_native: "Twi / English",
-    regional_lang_code: "en-GH"
+    regional_language: "Twi / Akan",
+    regional_language_native: "Twi / Akan",
+    regional_lang_code: "ak-GH"
   },
   {
     id: "sylhet-surma",
@@ -506,6 +506,360 @@ function generateFallbackGeoJson(lat: number, lon: number, depth_cm: number) {
   };
 }
 
+interface RegionalProfile {
+  regional_language: string;
+  regional_language_native: string;
+  regional_lang_code: string;
+  regional_alert_text: string;
+  applicable_regulations: string[];
+  recommended_actions: string[];
+  regulatory_header: string;
+  briefing_badge: string;
+}
+
+function getRegionalProfileForLocation(
+  locName: string,
+  depth: number,
+  sat: number,
+  riskTier: string,
+  varUsd: number,
+  varInr: number
+): RegionalProfile {
+  const loc = locName.toLowerCase();
+  const usdMillions = (varUsd / 1000000).toFixed(1);
+  const inrCrores = (varInr / 10000000).toFixed(0);
+
+  if (loc.includes("singapore") || loc.includes("marina") || loc.includes("kallang")) {
+    return {
+      regional_language: "Malay / Mandarin",
+      regional_language_native: "Melayu / 华语",
+      regional_lang_code: "ms-SG",
+      regional_alert_text: `⚠️ [AMARAN BAHAYA BANJIR | TAHAP: ${riskTier}] ${locName} menghadapi ancaman limpahan air pasang (> ${depth}cm) di bawah ketepuan tanah ${sat}%. Anggaran pendedahan kewangan: $${usdMillions}M USD. Pihak berkuasa segera aktifkan pam saliran Marina Barrage dan sistem amaran pencegahan banjir.`,
+      applicable_regulations: [
+        "Monetary Authority of Singapore (MAS) Guidelines on Environmental Risk Management",
+        "Public Utilities Board (PUB) Surface Runoff & Code of Practice for Drainage",
+        "Singapore Green Finance Taskforce (GFIT) Climate Taxonomy 2026"
+      ],
+      recommended_actions: [
+        `Deploy Marina Barrage crest gates and auxiliary sea-discharge pumps for ${depth}cm surge overload.`,
+        "File accelerated Monetary Authority of Singapore (MAS) Environmental Risk physical asset disclosure.",
+        "Enforce Singapore PUB mandatory flood protection thresholds (+1.25m minimum platform level).",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (MAS & PUB Singapore):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & PUB BRIEFING"
+    };
+  }
+
+  if (loc.includes("jakarta") || loc.includes("indonesia") || loc.includes("ciliwung")) {
+    return {
+      regional_language: "Indonesian",
+      regional_language_native: "Bahasa Indonesia",
+      regional_lang_code: "id-ID",
+      regional_alert_text: `⚠️ [PERINGATAN BAHAYA BANJIR | TINGKAT: ${riskTier}] ${locName} menghadapi ancaman luapan banjir kritis (> ${depth}cm) dengan saturasi tanah ${sat}%. Perkiraan kerugian: $${usdMillions}M USD. Segera aktifkan sodetan Ciliwung dan pompa polder pesisir.`,
+      applicable_regulations: [
+        "OJK Sustainable Finance Regulation POJK 51/POJK.03/2017 (Physical Climate Risk)",
+        "BNPB National Disaster Management Framework & Inundation Protocol",
+        "DKI Jakarta Governor Regulation on Coastal Embankment Hardening"
+      ],
+      recommended_actions: [
+        `Activate Ciliwung sodetan diversion tunnel and North Jakarta coastal polder pumps for ${depth}cm surge.`,
+        "File accelerated OJK Sustainable Finance physical risk disclosure.",
+        "Enforce temporary flood walls along vulnerable low-lying coastal polders.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (OJK & BNPB Indonesia):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & BNPB BRIEFING"
+    };
+  }
+
+  if (loc.includes("rotterdam") || loc.includes("netherlands") || loc.includes("rhine") || loc.includes("amsterdam")) {
+    return {
+      regional_language: "Dutch",
+      regional_language_native: "Nederlands",
+      regional_lang_code: "nl-NL",
+      regional_alert_text: `⚠️ [NOODWAARSCHUWING OVERSTROMING | NIVEAU: ${riskTier}] ${locName} kampt met kritiek overstromingsgevaar (> ${depth}cm) bij ${sat}% bodemverzadiging. Geschatte financiële schade: $${usdMillions}M USD. Nooddiensten moeten direct de Maeslantkering stormvloedkering en Delta pompen activeren.`,
+      applicable_regulations: [
+        "EU Corporate Sustainability Reporting Directive (CSRD / ESRS E1 Climate Change)",
+        "Rijkswaterstaat Water Act Statutory Safety Standards (Normering Waterveiligheid)",
+        "Dutch Delta Programme 2026 Flood Risk Management Mandates"
+      ],
+      recommended_actions: [
+        `Deploy Maeslantkering storm surge barrier and Delta Programme auxiliary pumps for ${depth}cm surge.`,
+        "File accelerated EU CSRD / ESRS E1 physical climate risk disclosure.",
+        "Enforce Rijkswaterstaat Water Act statutory safety standards (Normering Waterveiligheid).",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (EU CSRD & Rijkswaterstaat):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & RIJKSWATERSTAAT BRIEFING"
+    };
+  }
+
+  if (loc.includes("tokyo") || loc.includes("japan") || loc.includes("arakawa")) {
+    return {
+      regional_language: "Japanese",
+      regional_language_native: "日本語",
+      regional_lang_code: "ja-JP",
+      regional_alert_text: `⚠️ [緊急警報 | レベル: ${riskTier}] ${locName}における深刻な浸水被害（水深${depth}cm、土壌飽和度${sat}%）の予測。想定被害総額: $${usdMillions}M USD。直ちに地下放水路（G-CANS）を配備し、江戸川水門の閉鎖体制を確立してください。`,
+      applicable_regulations: [
+        "Financial Services Agency (FSA Japan) Mandatory Climate-Related Disclosures (TCFD)",
+        "Ministry of Land, Infrastructure, Transport and Tourism (MLIT) River Act",
+        "Tokyo Metropolitan Inundation Disaster Prevention Ordinance"
+      ],
+      recommended_actions: [
+        `Activate G-CANS underground discharge tunnel and Edogawa sluice gates for ${depth}cm surge.`,
+        "File accelerated FSA Japan TCFD climate disclosure.",
+        "Enforce MLIT River Law urban basin inundation emergency protocols.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (FSA & MLIT Japan):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & MLIT BRIEFING"
+    };
+  }
+
+  if (loc.includes("new york") || loc.includes("manhattan") || loc.includes("jamaica bay") || loc.includes("united states") || loc.includes("usa")) {
+    return {
+      regional_language: "English / Spanish",
+      regional_language_native: "English / Español",
+      regional_lang_code: "en-US",
+      regional_alert_text: `⚠️ [EMERGENCY COASTAL SURGE ADVISORY | TIER: ${riskTier}] ${locName} facing critical storm surge (> ${depth}cm) at ${sat}% soil saturation. Loss estimate: $${usdMillions}M USD. Alerta en Español: Grave riesgo de inundación costera. Despliegue inmediato de compuertas y barreras contra tormentas.`,
+      applicable_regulations: [
+        "SEC Mandatory Climate-Related Financial Risk Disclosure Rules (Item 1502)",
+        "FEMA National Flood Insurance Program (NFIP) Elevation Standards",
+        "NYC Climate Resiliency Design Guidelines (Version 4.1)"
+      ],
+      recommended_actions: [
+        `Deploy Lower Manhattan coastal flood walls and deploy deployable subway storm gates for ${depth}cm surge.`,
+        "File accelerated SEC Climate Risk & FEMA hazard disclosure.",
+        "Enforce NYC Climate Resiliency Design Guidelines (Version 4.1).",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (SEC & FEMA):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & FEMA BRIEFING"
+    };
+  }
+
+  if (loc.includes("accra") || loc.includes("ghana") || loc.includes("odaw") || loc.includes("korle")) {
+    return {
+      regional_language: "Twi / Akan",
+      regional_language_native: "Twi / Akan",
+      regional_lang_code: "ak-GH",
+      regional_alert_text: `⚠️ [KƆKƆBƆ KƐSEƐ | GYINAESIE: ${riskTier}] ${locName} rehyia nsuo ayiri kɛse (> ${depth}cm) wɔ asaase nsuo dodoɔ ${sat}% mu. Sika a ɛbɛtumi ayera: $${usdMillions}M USD. Mfididwuma ne ahobammɔfoɔ nyinaa mfa nsuo mpompo ne Odaw asubɔnten ahobammɔ mmra adi dwuma ntɛm ara.`,
+      applicable_regulations: [
+        "Ghana National Disaster Management Organisation (NADMO) Act 927",
+        "Bank of Ghana Sustainable Banking Principles & Climate Directives",
+        "EPA Ghana Environmental Assessment Regulations"
+      ],
+      recommended_actions: [
+        `Deploy Odaw Basin emergency retention pumps and dredge Korle Lagoon outflow channels for ${depth}cm surge.`,
+        "File Bank of Ghana Sustainable Banking physical climate disclosure.",
+        "Execute NADMO urban flood contingency and community evacuation warnings.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (NADMO & Bank of Ghana):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & NADMO BRIEFING"
+    };
+  }
+
+  if (loc.includes("sylhet") || loc.includes("bangladesh") || loc.includes("surma") || loc.includes("haor")) {
+    return {
+      regional_language: "Bengali",
+      regional_language_native: "বাংলা",
+      regional_lang_code: "bn-BD",
+      regional_alert_text: `⚠️ [জরুরি সতর্কতা | স্তর: ${riskTier}] ${locName}-এ মারাত্মক জলাবদ্ধতার (${depth} সেমি) পূর্বাভাস, মাটির আর্দ্রতা ${sat}%। আনুমানিক আর্থিক ক্ষতি $${usdMillions}M USD (₹${inrCrores} কোটি)। দুর্যোগ মোকাবিলা দল অবিলম্বে নিষ্কাশন পাম্প ও সুরমা-মেঘনা সুরক্ষা বাঁধ কার্যকর করুন।`,
+      applicable_regulations: [
+        "Bangladesh Disaster Management Act 2012 & Standing Orders on Disaster (SOD)",
+        "Bangladesh Bank Guidelines on Environmental & Social Risk Management (ESRM)",
+        "Bangladesh Delta Plan 2100 Climate Resilience Mandate"
+      ],
+      recommended_actions: [
+        `Deploy Surma-Meghna flood embankment gates and mobile pumping units for ${depth}cm surge.`,
+        "File Bangladesh Bank ESRM climate disaster disclosure.",
+        "Activate Department of Disaster Management (DDM) haor basin relief protocols.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (DDM & Bangladesh Bank):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & DDM BRIEFING"
+    };
+  }
+
+  if (loc.includes("sindh") || loc.includes("pakistan") || loc.includes("indus") || loc.includes("murree")) {
+    return {
+      regional_language: "Urdu",
+      regional_language_native: "اردو",
+      regional_lang_code: "ur-PK",
+      regional_alert_text: `⚠️ [ہنگامی الرٹ | درجہ: ${riskTier}] ${locName} میں شدید سیلاب اور پانی جمع ہونے (${depth} سینٹی میٹر) کا شدید خدشہ ہے، مٹی کی نمی ${sat}% ہے۔ متوقع مالیاتی نقصان $${usdMillions}M USD (₹${inrCrores} کروڑ)۔ حفاظتی اقدامات اور انڈس فلڈ پروٹیکشن والز فوری طور پر فعال کیے جائیں۔`,
+      applicable_regulations: [
+        "National Disaster Management Authority (NDMA Pakistan) Act 2010",
+        "State Bank of Pakistan (SBP) Environmental & Social Risk Guidelines",
+        "Sindh Environmental Protection Act (SEPA 2014)"
+      ],
+      recommended_actions: [
+        `Reinforce lower Indus river embankments and deploy emergency spillway controls for ${depth}cm surge.`,
+        "File State Bank of Pakistan (SBP) green banking climate risk assessment.",
+        "Enforce Sindh Disaster Management Authority (PDMA) rural evacuation protocols.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (NDMA Pakistan & SBP):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & NDMA PAKISTAN BRIEFING"
+    };
+  }
+
+  if (loc.includes("mumbai") || loc.includes("maharashtra") || loc.includes("mithi") || loc.includes("kurla")) {
+    return {
+      regional_language: "Marathi",
+      regional_language_native: "मराठी",
+      regional_lang_code: "mr-IN",
+      regional_alert_text: `⚠️ [आपत्कालीन इशारा | स्तर: ${riskTier}] ${locName} मध्ये तीव्र पूरस्थिती (${depth} सेमी) निर्माण होण्याची शक्यता आहे (माती संपृक्तता ${sat}%)। अंदाजित आर्थिक नुकसान $${usdMillions}M USD (₹${inrCrores} कोटी)। मिठी नदी नियंत्रण पथक आणि आपत्ती व्यवस्थापन कक्षाने त्वरित जलउपसा पंप कार्यान्वित करावेत.`,
+      applicable_regulations: [
+        "SEBI BRSR Principle 6 (Mandatory Climate Risk Disclosure)",
+        "NDMA Urban Flood Mitigation Protocol & Standard Operating Procedures",
+        "Brihanmumbai Municipal Corporation (BMC) Disaster Management Guidelines"
+      ],
+      recommended_actions: [
+        `Deploy Mithi River tidal floodgates and BMC stormwater pumping stations for ${depth}cm surge.`,
+        "File accelerated SEBI BRSR Principle 6 physical risk disclosure.",
+        "Elevate electrical distribution panels and IT server banks by at least +120cm datum.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (NDMA & SEBI BRSR):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & NDMA BRIEFING"
+    };
+  }
+
+  if (loc.includes("bengaluru") || loc.includes("karnataka") || loc.includes("bellandur")) {
+    return {
+      regional_language: "Kannada",
+      regional_language_native: "ಕನ್ನಡ",
+      regional_lang_code: "kn-IN",
+      regional_alert_text: `⚠️ [ತುರ್ತು ಎಚ್ಚರಿಕೆ | ಹಂತ: ${riskTier}] ${locName} ನಲ್ಲಿ ತೀವ್ರ ಪ್ರವಾಹ ಮತ್ತು ನೀರು ನಿಲ್ಲುವಿಕೆ (${depth} ಸೆಂ.ಮೀ) ಸಂಭವನೀಯತೆ ಇದೆ (ಮಣ್ಣಿನ ತೇವಾಂಶ ${sat}%)। ಅಂದಾಜು ನಷ್ಟ $${usdMillions}M USD (₹${inrCrores} ಕೋಟಿ)। ಬೆಳ್ಳಂದೂರು ರಾಜಕಾಲುವೆ ನೀರು ಹರಿವು ತೆರವುಗೊಳಿಸಿ ರಕ್ಷಣಾ ಕ್ರಮ ಕೈಗೊಳ್ಳಿ.`,
+      applicable_regulations: [
+        "SEBI BRSR Principle 6 (Mandatory Climate Risk Disclosure)",
+        "Karnataka State Disaster Management Authority (KSDMA) Flood Protocols",
+        "BBMP Stormwater Drain (Rajakaluve) Buffer Mandates"
+      ],
+      recommended_actions: [
+        `Clear Bellandur & Outer Ring Road interconnected stormwater canals (Rajakaluves) for ${depth}cm surge.`,
+        "File accelerated SEBI BRSR Principle 6 physical risk disclosure.",
+        "Deploy mobile dewatering pumps across tech corridor basements.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (KSDMA & SEBI BRSR):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & KSDMA BRIEFING"
+    };
+  }
+
+  if (loc.includes("assam") || loc.includes("kaziranga") || loc.includes("brahmaputra")) {
+    return {
+      regional_language: "Assamese",
+      regional_language_native: "অসমীয়া",
+      regional_lang_code: "as-IN",
+      regional_alert_text: `⚠️ [জৰুৰী সতৰ্কবাৰ্তা | পৰ্যায়: ${riskTier}] ${locName}ত ব্ৰহ্মপুত্ৰ নদীৰ পানী বিপদসীমাৰ ওপৰেৰে যোৱাৰ ফলত তীব্ৰ বানপানী (${depth} চেমি) হোৱাৰ সম্ভাৱনা (মাটিৰ আৰ্দ্ৰতা ${sat}%)। আনুমানিক লোকচান $${usdMillions}M USD (₹${inrCrores} কোটি)। এএছডিএমএ বাহিনীক লগে লগে সজাগ কৰক।`,
+      applicable_regulations: [
+        "Assam State Disaster Management Authority (ASDMA) Flood Manual",
+        "Brahmaputra Board Master Plan & Riverbank Erosion Guidelines",
+        "SEBI BRSR Principle 6 (Mandatory Climate Risk Disclosure)"
+      ],
+      recommended_actions: [
+        `Reinforce Brahmaputra riverine embankments and activate Kaziranga eco-highlands for ${depth}cm surge.`,
+        "File accelerated SEBI BRSR Principle 6 physical risk disclosure.",
+        "Mobilize ASDMA flood response teams and emergency medical barges.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (ASDMA & SEBI BRSR):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & ASDMA BRIEFING"
+    };
+  }
+
+  if (loc.includes("chennai") || loc.includes("tamil") || loc.includes("velachery") || loc.includes("pallikaranai")) {
+    return {
+      regional_language: "Tamil",
+      regional_language_native: "தமிழ்",
+      regional_lang_code: "ta-IN",
+      regional_alert_text: `⚠️ [அவசர எச்சரிக்கை | நிலை: ${riskTier}] ${locName} பகுதியில் தீவிர வெள்ளப்பெருக்கு (${depth} செ.மீ) மற்றும் பல்லிக்கரணை சதுப்புநில நீர்மட்டம் உயர்வு அபாயம் (மண் ஈரப்பதம் ${sat}%)। மதிப்பிடப்பட்ட இழப்பு $${usdMillions}M USD (₹${inrCrores} கோடி). மீட்பு நடவடிக்கைகள் உடனடியாக செயல்படுத்தப்பட வேண்டும்.`,
+      applicable_regulations: [
+        "Tamil Nadu State Disaster Management Authority (TNSDMA) Standard Protocols",
+        "Greater Chennai Corporation (GCC) Comprehensive Storm Water Drainage Plan",
+        "SEBI BRSR Principle 6 (Mandatory Climate Risk Disclosure)"
+      ],
+      recommended_actions: [
+        `Activate Velachery and Pallikaranai marshland tidal surplus sluice gates for ${depth}cm surge.`,
+        "File accelerated SEBI BRSR Principle 6 physical risk disclosure.",
+        "Deploy high-capacity mobile dewatering pumps across low-lying IT transit hubs.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (TNSDMA & SEBI BRSR):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & TNSDMA BRIEFING"
+    };
+  }
+
+  if (loc.includes("gujarat") || loc.includes("mundra") || loc.includes("surat")) {
+    return {
+      regional_language: "Gujarati",
+      regional_language_native: "ગુજરાતી",
+      regional_lang_code: "gu-IN",
+      regional_alert_text: `⚠️ [કટોકટી ચેતવણી | સ્તર: ${riskTier}] ${locName} માં દરિયાઈ ભરતી અને ભારે વરસાદને કારણે પૂર (${depth} સેમી) આવવાની ગંભીર શક્યતા છે (જમીન સંતૃપ્તિ ${sat}%)। અંદાજિત નાણાકીય નુકસાન $${usdMillions}M USD (₹${inrCrores} કરોડ)। મુન્દ્રા પોર્ટ અને ઔદ્યોગિક એકમોમાં તાત્કાલિક સુરક્ષા પગલાં લો.`,
+      applicable_regulations: [
+        "Gujarat State Disaster Management Authority (GSDMA) Coastal Hazard Act",
+        "Gujarat Maritime Board (GMB) Port Infrastructure Flood Hardening Standards",
+        "SEBI BRSR Principle 6 (Mandatory Climate Risk Disclosure)"
+      ],
+      recommended_actions: [
+        `Secure Mundra Port container terminals and deploy perimeter seawall storm barriers for ${depth}cm surge.`,
+        "File accelerated SEBI BRSR Principle 6 physical risk disclosure.",
+        "Activate GSDMA coastal cyclone and storm surge response standard protocols.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (GSDMA & SEBI BRSR):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & GSDMA BRIEFING"
+    };
+  }
+
+  const isIndia = loc.includes("india") || loc.includes("delhi") || loc.includes("pune");
+  if (isIndia) {
+    return {
+      regional_language: "Hindi",
+      regional_language_native: "हिन्दी",
+      regional_lang_code: "hi-IN",
+      regional_alert_text: `⚠️ [आपदा चेतावनी | स्तर: ${riskTier}] ${locName} में ${sat}% संतृप्ति और तीव्र मौसमी दबाव के कारण जलभराव (${depth} सेमी) का गंभीर जोखिम है। अनुमानित वित्तीय जोखिम $${usdMillions}M USD (₹${inrCrores} करोड़) है। आपातकालीन जल निकासी और सुरक्षा प्रोटोकॉल तत्काल लागू करें।`,
+      applicable_regulations: [
+        "SEBI BRSR Principle 6 (Mandatory Climate Risk Disclosure)",
+        "Ministry of Finance Environmental Cess & Carbon Transition Surcharge Act 2026",
+        "NDMA Urban Flood Mitigation Protocol & Standard Operating Procedures"
+      ],
+      recommended_actions: [
+        `Commission emergency civil drainage vaults to handle ${depth}cm runoff overload.`,
+        "File accelerated SEBI BRSR Principle 6 physical risk disclosure.",
+        "Elevate electrical distribution panels and IT server banks by at least +120cm datum.",
+        "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+      ],
+      regulatory_header: "Mandatory Mitigation Directives (NDMA & SEBI BRSR):",
+      briefing_badge: "CONFIDENTIAL // C-SUITE & NDMA BRIEFING"
+    };
+  }
+
+  // International Fallback
+  return {
+    regional_language: "English (Global)",
+    regional_language_native: "Global Primary",
+    regional_lang_code: "en-US",
+    regional_alert_text: `⚠️ [TERRA-SENTINEL GLOBAL HAZARD ADVISORY | TIER: ${riskTier}] ${locName} facing critical inundation threat (> ${depth}cm surge) under ${sat}% soil saturation index. Total Enterprise Value at Risk: $${usdMillions}M USD. Immediate civil protection protocols and parametric liquidity safeguards activated.`,
+    applicable_regulations: [
+      "UN OCHA Sendai Framework for Disaster Risk Reduction 2015-2030",
+      "TCFD / ISSB S2 International Climate-Related Disclosures",
+      "WMO Global Multi-Hazard Early Warning System (Early Warnings for All)"
+    ],
+    recommended_actions: [
+      `Deploy emergency urban flood barriers and auxiliary stormwater bypass pumps for ${depth}cm surge.`,
+      "File accelerated TCFD / ISSB physical climate risk disclosure.",
+      "Activate municipal emergency operation center and parametric contingency liquidity.",
+      "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+    ],
+    regulatory_header: "Mandatory Mitigation Directives (UN Sendai & TCFD):",
+    briefing_badge: "CONFIDENTIAL // C-SUITE & EMERGENCY BRIEFING"
+  };
+}
+
 function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: number, sat: number): AnalysisResult {
   const isHighRisk = rain > 60 || sat > 80;
   const riskScore = Math.min(0.96, Math.max(0.25, (rain / 150) * 0.55 + (sat / 100) * 0.45));
@@ -513,6 +867,7 @@ function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: 
   const depth = Math.round(30 + riskScore * 70);
   const varInr = Math.round(riskScore * 12500000000);
   const varUsd = Math.round(varInr / 83);
+  const profile = getRegionalProfileForLocation(locName, depth, sat, riskTier, varUsd, varInr);
 
   return {
     event_id: `TERRA-SENTINEL-${Date.now().toString(36).toUpperCase()}`,
@@ -555,95 +910,15 @@ function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: 
       var_estimate_usd: varUsd,
       var_estimate_inr: varInr,
       stranded_asset_risk: riskTier,
-      applicable_regulations: [
-        "SEBI BRSR Principle 6 (Mandatory Climate Risk Disclosure)",
-        "Ministry of Finance Environmental Cess & Carbon Transition Surcharge Act 2026",
-        "NDMA Urban Flood Mitigation Protocol & Standard Operating Procedures"
-      ],
+      applicable_regulations: profile.applicable_regulations,
       compliance_gap_pct: Number((riskScore * 48).toFixed(1)),
-      recommended_actions: [
-        "Enforce physical asset flood-barrier hardening up to +120cm datum level.",
-        "Trigger parametric catastrophe insurance hedge under IRDAI guidelines.",
-        "Provision contingency capital reserve for BRSR Principle 6 audit compliance."
-      ],
-      bilingual_alert_hindi: `⚠️ [टेरा-सेंटिनल वैश्विक चेतावनी | स्तर: ${riskTier}] ${locName} में ${sat}% संतृप्ति और तीव्र मौसमी दबाव के कारण जलभराव का जोखिम है। अनुमानित वित्तीय जोखिम $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} करोड़) है। आपातकालीन जल निकासी और सुरक्षा प्रोटोकॉल तत्काल लागू करें।`,
+      recommended_actions: profile.recommended_actions,
+      bilingual_alert_hindi: profile.regional_alert_text,
       bilingual_alert_english: `⚠️ [TERRA-SENTINEL GLOBAL HAZARD ADVISORY | TIER: ${riskTier}] ${locName} facing critical inundation threat (> ${depth}cm surge) under ${sat}% soil saturation index. Total Enterprise Value at Risk: $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} Cr). Immediate civil protection protocols and parametric liquidity safeguards activated.`,
-      regional_language: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
-        ? "Bengali"
-        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
-        ? "Marathi"
-        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
-        ? "Urdu"
-        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
-        ? "Tamil"
-        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
-        ? "Kannada"
-        : (locName.toLowerCase().includes("assam"))
-        ? "Assamese"
-        : (locName.toLowerCase().includes("gujarat") || locName.toLowerCase().includes("mundra"))
-        ? "Gujarati"
-        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
-        ? "Japanese"
-        : (locName.toLowerCase().includes("indonesia") || locName.toLowerCase().includes("jakarta"))
-        ? "Indonesian"
-        : (locName.toLowerCase().includes("rotterdam") || locName.toLowerCase().includes("netherlands"))
-        ? "Dutch"
-        : "Hindi",
-      regional_language_native: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
-        ? "বাংলা"
-        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
-        ? "मराठी"
-        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
-        ? "اردو"
-        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
-        ? "தமிழ்"
-        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
-        ? "ಕನ್ನಡ"
-        : (locName.toLowerCase().includes("assam"))
-        ? "অসমীয়া"
-        : (locName.toLowerCase().includes("gujarat") || locName.toLowerCase().includes("mundra"))
-        ? "ગુજરાતી"
-        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
-        ? "日本語"
-        : (locName.toLowerCase().includes("indonesia") || locName.toLowerCase().includes("jakarta"))
-        ? "Bahasa Indonesia"
-        : (locName.toLowerCase().includes("rotterdam") || locName.toLowerCase().includes("netherlands"))
-        ? "Nederlands"
-        : "हिन्दी",
-      regional_lang_code: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
-        ? "bn-BD"
-        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
-        ? "mr-IN"
-        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
-        ? "ur-PK"
-        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
-        ? "ta-IN"
-        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
-        ? "kn-IN"
-        : (locName.toLowerCase().includes("assam"))
-        ? "as-IN"
-        : (locName.toLowerCase().includes("gujarat") || locName.toLowerCase().includes("mundra"))
-        ? "gu-IN"
-        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
-        ? "ja-JP"
-        : (locName.toLowerCase().includes("indonesia") || locName.toLowerCase().includes("jakarta"))
-        ? "id-ID"
-        : (locName.toLowerCase().includes("rotterdam") || locName.toLowerCase().includes("netherlands"))
-        ? "nl-NL"
-        : "hi-IN",
-      regional_alert_text: (locName.toLowerCase().includes("bangladesh") || locName.toLowerCase().includes("sylhet"))
-        ? `⚠️ [জরুরি সতর্কতা | স্তর: ${riskTier}] ${locName}-এ মারাত্মক জলাবদ্ধতার (${depth} সেমি) পূর্বাভাস। আনুমানিক আর্থিক ক্ষতি $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} কোটি)। দুর্যোগ মোকাবিলা দল অবিলম্বে নিষ্কাশন পাম্প ও প্রতিরক্ষামূলক ব্যবস্থা চালু করুন।`
-        : (locName.toLowerCase().includes("mumbai") || locName.toLowerCase().includes("maharashtra"))
-        ? `⚠️ [आपत्कालीन इशारा | स्तर: ${riskTier}] ${locName} मध्ये तीव्र पूरस्थिती (${depth} सेमी) निर्माण होण्याची शक्यता आहे. अंदाजित आर्थिक नुकसान $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} कोटी)। आपत्ती व्यवस्थापन पथकांनी त्वरित जलउपसा पंप कार्यान्वित करावेत.`
-        : (locName.toLowerCase().includes("pakistan") || locName.toLowerCase().includes("sindh"))
-        ? `⚠️ [ہنگامی الرٹ | درجہ: ${riskTier}] ${locName} میں شدید سیلاب اور پانی جمع ہونے (${depth} سینٹی میٹر) کا شدید خدشہ ہے۔ متوقع مالیاتی نقصان $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} کروڑ)۔ حفاظتی اقدامات فوری طور پر نافذ کیے جائیں۔`
-        : (locName.toLowerCase().includes("chennai") || locName.toLowerCase().includes("tamil"))
-        ? `⚠️ [அவசர எச்சரிக்கை | நிலை: ${riskTier}] ${locName} பகுதியில் தீவிர வெள்ளப்பெருக்கு (${depth} செ.மீ) அபாயம். மதிப்பிடப்பட்ட இழப்பு $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} கோடி). மீட்பு நடவடிக்கைகள் உடனடியாக செயல்படுத்தப்பட வேண்டும்.`
-        : (locName.toLowerCase().includes("bengaluru") || locName.toLowerCase().includes("karnataka"))
-        ? `⚠️ [ತುರ್ತು ಎಚ್ಚರಿಕೆ | ಹಂತ: ${riskTier}] ${locName} ನಲ್ಲಿ ತೀವ್ರ ಪ್ರವಾಹ ಮತ್ತು ನೀರು ನಿಲ್ಲುವಿಕೆ (${depth} ಸೆಂ.ಮೀ) ಸಂಭವನೀಯತೆ ಇದೆ. ಅಂದಾಜು ನಷ್ಟ $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} ಕೋಟಿ). ತಕ್ಷಣ ರಕ್ಷಣಾ ಕ್ರಮಗಳನ್ನು ಕೈಗೊಳ್ಳಿ.`
-        : (locName.toLowerCase().includes("japan") || locName.toLowerCase().includes("tokyo"))
-        ? `⚠️ [緊急警報 | レベル: ${riskTier}] ${locName}における深刻な浸水被害（水深${depth}cm）の予測。想定被害総額: $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} Cr)。直ちに排水ポンプを配備し警戒態勢を確立してください。`
-        : `⚠️ [टेरा-सेंटिनल वैश्विक चेतावनी | स्तर: ${riskTier}] ${locName} में ${sat}% संतृप्ति और तीव्र मौसमी दबाव के कारण जलभराव का जोखिम है। अनुमानित वित्तीय जोखिम $${(varUsd / 1000000).toFixed(1)}M USD (₹${(varInr / 10000000).toFixed(0)} करोड़) है। आपातकालीन जल निकासी और सुरक्षा प्रोटोकॉल तत्काल लागू करें।`,
+      regional_language: profile.regional_language,
+      regional_language_native: profile.regional_language_native,
+      regional_lang_code: profile.regional_lang_code,
+      regional_alert_text: profile.regional_alert_text,
       execution_time_ms: 68.7
     },
     thought_trace: [
@@ -1219,7 +1494,9 @@ export function App() {
 
     setIsPlayingAudio(true);
 
-    const targetLangCode = activeLangTab === "english" ? "en-US" : (langCode || result?.agent3?.regional_lang_code || "hi-IN");
+    const targetLangCode = activeLangTab === "english"
+      ? "en-US"
+      : (langCode || result?.agent3?.regional_lang_code || (locationName.toLowerCase().includes("singapore") ? "ms-SG" : (locationName.toLowerCase().includes("india") || locationName.toLowerCase().includes("mumbai") ? "hi-IN" : "en-US")));
 
     // 1. Try authentic Neural Voice (Sarvam AI / Bhashini / ElevenLabs) via backend /bhasha/tts
     try {
@@ -2442,7 +2719,7 @@ export function App() {
                     <div style={{ fontSize: "0.75rem", color: "var(--color-text-primary)", lineHeight: 1.45, marginBottom: "8px" }}>
                       {activeLangTab === "english"
                         ? result.agent3.bilingual_alert_english
-                        : (result.agent3.regional_alert_text || result.agent3.bilingual_alert_hindi)}
+                        : (result.agent3.regional_alert_text || result.agent3.bilingual_alert_english)}
                     </div>
 
                     <div style={{ display: "flex", gap: "8px" }}>
@@ -2458,7 +2735,7 @@ export function App() {
                           speakText(
                             activeLangTab === "english"
                               ? result.agent3?.bilingual_alert_english || ""
-                              : (result.agent3?.regional_alert_text || result.agent3?.bilingual_alert_hindi || ""),
+                              : (result.agent3?.regional_alert_text || result.agent3?.bilingual_alert_english || ""),
                             result.agent3?.regional_lang_code
                           )
                         }
@@ -2482,7 +2759,7 @@ export function App() {
                           const txt =
                             activeLangTab === "english"
                               ? result.agent3?.bilingual_alert_english || ""
-                              : (result.agent3?.regional_alert_text || result.agent3?.bilingual_alert_hindi || "");
+                              : (result.agent3?.regional_alert_text || result.agent3?.bilingual_alert_english || "");
                           navigator.clipboard.writeText(txt);
                           setCopied(true);
                           setTimeout(() => setCopied(false), 2000);
@@ -3188,42 +3465,54 @@ export function App() {
               </div>
             </div>
 
-            {/* Right: SEBI BRSR & Regulatory Audit */}
-            <div className="glass-card" style={{ padding: "18px", border: "1px solid rgba(0, 240, 255, 0.25)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                <h3 style={{ fontSize: "0.95rem", color: "#FFF" }}>SEBI BRSR Principle 6 Compliance Directives</h3>
-                <span className="badge badge-safe">VECTOR RAG AUDITED</span>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
-                {(result?.agent3?.applicable_regulations || [
-                  "SEBI BRSR Core Mandate — Principle 6 (Environmental Impact & Climate Risk)",
-                  "National Disaster Management Plan (NDMA) Urban Guidelines 2024",
-                  "Reserve Bank of India (RBI) Climate Risk & Sustainable Finance Framework"
-                ]).map((reg, idx) => (
-                  <div key={idx} style={{ background: "rgba(255,255,255,0.03)", padding: "8px 12px", borderRadius: "6px", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <CheckCircle2 size={14} color="var(--color-safe)" />
-                    <span style={{ fontSize: "0.75rem", color: "#FFF", fontWeight: 600 }}>{reg}</span>
+            {/* Right: Jurisdiction Regulatory Audit */}
+            {(() => {
+              const view4Profile = getRegionalProfileForLocation(
+                locationName,
+                result?.agent2?.waterlogging_depth_cm || 75,
+                result?.agent1?.metrics?.soil_saturation_pct || 85,
+                result?.agent1?.risk_tier || "CRITICAL",
+                result?.agent3?.var_estimate_usd || 10000000,
+                result?.agent3?.var_estimate_inr || 850000000
+              );
+              return (
+                <div className="glass-card" style={{ padding: "18px", border: "1px solid rgba(0, 240, 255, 0.25)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                    <h3 style={{ fontSize: "0.95rem", color: "#FFF" }}>
+                      {view4Profile.regulatory_header.replace("Mandatory Mitigation Directives", "Mandatory Directives").replace(":", "")}
+                    </h3>
+                    <span className="badge badge-safe">VECTOR RAG AUDITED</span>
                   </div>
-                ))}
-              </div>
 
-              <div style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", textTransform: "uppercase", marginBottom: "8px" }}>
-                Recommended Risk Mitigation Directives:
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                {(result?.agent3?.recommended_actions || [
-                  "Enforce mandatory physical flood barrier hardening up to +120cm datum level.",
-                  "Execute parametric climate catastrophe bond derivative hedges under IRDAI guidelines.",
-                  "Provision contingency capital reserve for BRSR Principle 6 audit compliance."
-                ]).map((action, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-primary)", background: "rgba(0,0,0,0.25)", padding: "8px 10px", borderRadius: "6px" }}>
-                    <span className="mono" style={{ color: "var(--color-primary)", fontWeight: 700 }}>#{i + 1}</span>
-                    <span>{action}</span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
+                    {(result?.agent3?.applicable_regulations && result.agent3.applicable_regulations.length > 0
+                      ? result.agent3.applicable_regulations
+                      : view4Profile.applicable_regulations
+                    ).map((reg, idx) => (
+                      <div key={idx} style={{ background: "rgba(255,255,255,0.03)", padding: "8px 12px", borderRadius: "6px", display: "flex", alignItems: "center", gap: "8px" }}>
+                        <CheckCircle2 size={14} color="var(--color-safe)" />
+                        <span style={{ fontSize: "0.75rem", color: "#FFF", fontWeight: 600 }}>{reg}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+
+                  <div style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", textTransform: "uppercase", marginBottom: "8px" }}>
+                    Recommended Risk Mitigation Directives:
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    {(result?.agent3?.recommended_actions && result.agent3.recommended_actions.length > 0
+                      ? result.agent3.recommended_actions
+                      : view4Profile.recommended_actions
+                    ).map((action, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-primary)", background: "rgba(0,0,0,0.25)", padding: "8px 10px", borderRadius: "6px" }}>
+                        <span className="mono" style={{ color: "var(--color-primary)", fontWeight: 700 }}>#{i + 1}</span>
+                        <span>{action}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </main>
       )}
@@ -3325,104 +3614,117 @@ export function App() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-                  <span className="badge" style={{ background: "rgba(214, 40, 40, 0.25)", color: "#FF5A5A", border: "1px solid rgba(214, 40, 40, 0.5)" }}>
-                    CONFIDENTIAL // C-SUITE & NDMA BRIEFING
-                  </span>
-                  <span className="mono" style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>
-                    EVENT: {result?.event_id || "TERRA-LIVE-01"}
-                  </span>
-                </div>
-                <h2 style={{ fontSize: "1.35rem", color: "#FFF", letterSpacing: "0.01em" }}>
-                  TERRA-SENTINEL Climate Hazard & Financial Value-at-Risk Briefing
-                </h2>
-                <div style={{ fontSize: "0.8rem", color: "var(--color-primary)" }}>
-                  Target: {locationName} ({currentLat.toFixed(4)}°N, {currentLon.toFixed(4)}°E)
-                </div>
-              </div>
-              <button
-                onClick={() => setShowBriefingModal(false)}
-                style={{ background: "transparent", border: "none", color: "var(--color-text-secondary)", cursor: "pointer", padding: "4px" }}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Executive Summary Block */}
-            <div style={{ background: "rgba(14, 154, 167, 0.1)", border: "1px solid rgba(14, 154, 167, 0.3)", borderRadius: "8px", padding: "14px", marginBottom: "20px", fontSize: "0.82rem", lineHeight: 1.6, color: "var(--color-text-primary)" }}>
-              <b>Executive Intelligence Summary:</b> Autonomous 3-agent intelligence cascade evaluated acute meteorological telemetry, 30m DEM elevation basins, and regulatory policy mandates for <b>{locationName}</b>. Acute physical flood risk is evaluated at <b>{result ? (result.agent1.risk_score * 100).toFixed(0) : 88}% ({result?.agent1.risk_tier || "CRITICAL"})</b>, projecting direct structural inundation of <b>{result?.agent2?.waterlogging_depth_cm || 85} cm</b> across {result?.agent2?.buildings_at_risk || 340} critical assets. Total Enterprise Value at Risk (VaR) is estimated at <b>₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Crores</b> (${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M USD).
-            </div>
-
-            {/* 3 Pillar Summary Grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "14px", marginBottom: "20px" }}>
-              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "14px", borderRadius: "8px" }}>
-                <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Agent 1: Physical Risk</div>
-                <div className="mono" style={{ fontSize: "1.4rem", fontWeight: 800, color: result && result.agent1.risk_score > 0.65 ? "var(--color-danger)" : "var(--color-safe)", marginTop: "4px" }}>
-                  {result ? (result.agent1.risk_score * 100).toFixed(0) : 88}%
-                </div>
-                <div style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
-                  24h Rain: <b>{result?.agent1.metrics.precipitation_24h_mm || 142} mm</b><br/>
-                  Moisture: <b>{result?.agent1.metrics.soil_saturation_pct || 94}%</b>
-                </div>
-              </div>
-
-              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "14px", borderRadius: "8px" }}>
-                <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Agent 2: Structural Loss</div>
-                <div className="mono" style={{ fontSize: "1.4rem", fontWeight: 800, color: "#F4A261", marginTop: "4px" }}>
-                  {result?.agent2?.waterlogging_depth_cm || 85} cm
-                </div>
-                <div style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
-                  Assets at Risk: <b>{result?.agent2?.buildings_at_risk || 340}</b><br/>
-                  Drainage Overflow: <b>{result?.agent2?.drainage_overflow_pct || 81}%</b>
-                </div>
-              </div>
-
-              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "14px", borderRadius: "8px" }}>
-                <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Agent 3: Total VaR</div>
-                <div className="mono" style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--color-primary)", marginTop: "4px" }}>
-                  ₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(0) : "1,183"} Cr
-                </div>
-                <div style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
-                  USD: <b>${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(1) : "142.5"}M</b><br/>
-                  Compliance Gap: <b>{result?.agent3?.compliance_gap_pct || 42}%</b>
-                </div>
-              </div>
-            </div>
-
-            {/* Global Civil Protection Broadcast */}
-            <div style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", padding: "14px", marginBottom: "20px" }}>
-              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#FFF", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
-                <Radio size={14} color="var(--color-primary)" />
-                Global Civil Protection Broadcast Dispatch:
-              </div>
-              <div style={{ fontSize: "0.8rem", color: "#FFF", lineHeight: 1.5, marginBottom: "10px", background: "rgba(0, 240, 255, 0.06)", padding: "10px 12px", borderRadius: "6px", borderLeft: "3px solid var(--color-primary)" }}>
-                <b style={{ color: "var(--color-primary)" }}>Primary English Broadcast:</b> {result?.agent3?.bilingual_alert_english || "Critical waterlogging projected for transit and industrial substations. Immediate flood barrier deployment mandated."}
-              </div>
-              <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", lineHeight: 1.5, padding: "0 4px" }}>
-                <b style={{ color: "#9CA3AF" }}>Regional Native ({result?.agent3?.regional_language_native || "Local"} / {result?.agent3?.regional_language || "Regional"}):</b> {result?.agent3?.regional_alert_text || result?.agent3?.bilingual_alert_hindi || "जलभराव की स्थिति गंभीर है। तत्काल जल निकासी द्वार खोलें और सुरक्षा प्रोटोकॉल लागू करें।"}
-              </div>
-            </div>
-
-            {/* Mandatory Actions */}
-            <div style={{ marginBottom: "24px" }}>
-              <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--color-text-secondary)", textTransform: "uppercase", marginBottom: "8px" }}>
-                Mandatory Mitigation Directives (NDMA & SEBI BRSR):
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                {(result?.agent3?.recommended_actions || [
-                  "Enforce mandatory physical flood barrier hardening up to +120cm datum level.",
-                  "Execute parametric climate catastrophe bond derivative hedges under IRDAI guidelines.",
-                  "Provision contingency capital reserve for BRSR Principle 6 audit compliance."
-                ]).map((action, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
-                    <CheckCircle2 size={13} color="var(--color-safe)" />
-                    <span>{action}</span>
+            {(() => {
+              const modalProfile = getRegionalProfileForLocation(
+                locationName,
+                result?.agent2?.waterlogging_depth_cm || 75,
+                result?.agent1?.metrics?.soil_saturation_pct || 85,
+                result?.agent1?.risk_tier || "CRITICAL",
+                result?.agent3?.var_estimate_usd || 10000000,
+                result?.agent3?.var_estimate_inr || 850000000
+              );
+              return (
+                <>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "16px", marginBottom: "20px" }}>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                        <span className="badge" style={{ background: "rgba(214, 40, 40, 0.25)", color: "#FF5A5A", border: "1px solid rgba(214, 40, 40, 0.5)" }}>
+                          {modalProfile.briefing_badge}
+                        </span>
+                        <span className="mono" style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>
+                          EVENT: {result?.event_id || "TERRA-LIVE-01"}
+                        </span>
+                      </div>
+                      <h2 style={{ fontSize: "1.35rem", color: "#FFF", letterSpacing: "0.01em" }}>
+                        TERRA-SENTINEL Climate Hazard & Financial Value-at-Risk Briefing
+                      </h2>
+                      <div style={{ fontSize: "0.8rem", color: "var(--color-primary)" }}>
+                        Target: {locationName} ({currentLat.toFixed(4)}°N, {currentLon.toFixed(4)}°E)
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setShowBriefingModal(false)}
+                      style={{ background: "transparent", border: "none", color: "var(--color-text-secondary)", cursor: "pointer", padding: "4px" }}
+                    >
+                      <X size={20} />
+                    </button>
                   </div>
-                ))}
-              </div>
-            </div>
+
+                  {/* Executive Summary Block */}
+                  <div style={{ background: "rgba(14, 154, 167, 0.1)", border: "1px solid rgba(14, 154, 167, 0.3)", borderRadius: "8px", padding: "14px", marginBottom: "20px", fontSize: "0.82rem", lineHeight: 1.6, color: "var(--color-text-primary)" }}>
+                    <b>Executive Intelligence Summary:</b> Autonomous 3-agent intelligence cascade evaluated acute meteorological telemetry, 30m DEM elevation basins, and regulatory policy mandates for <b>{locationName}</b>. Acute physical flood risk is evaluated at <b>{result ? (result.agent1.risk_score * 100).toFixed(0) : 88}% ({result?.agent1.risk_tier || "CRITICAL"})</b>, projecting direct structural inundation of <b>{result?.agent2?.waterlogging_depth_cm || 85} cm</b> across {result?.agent2?.buildings_at_risk || 340} critical assets. Total Enterprise Value at Risk (VaR) is estimated at <b>₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Crores</b> (${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M USD).
+                  </div>
+
+                  {/* 3 Pillar Summary Grid */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "14px", marginBottom: "20px" }}>
+                    <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "14px", borderRadius: "8px" }}>
+                      <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Agent 1: Physical Risk</div>
+                      <div className="mono" style={{ fontSize: "1.4rem", fontWeight: 800, color: result && result.agent1.risk_score > 0.65 ? "var(--color-danger)" : "var(--color-safe)", marginTop: "4px" }}>
+                        {result ? (result.agent1.risk_score * 100).toFixed(0) : 88}%
+                      </div>
+                      <div style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
+                        24h Rain: <b>{result?.agent1.metrics.precipitation_24h_mm || 142} mm</b><br/>
+                        Moisture: <b>{result?.agent1.metrics.soil_saturation_pct || 94}%</b>
+                      </div>
+                    </div>
+
+                    <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "14px", borderRadius: "8px" }}>
+                      <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Agent 2: Structural Loss</div>
+                      <div className="mono" style={{ fontSize: "1.4rem", fontWeight: 800, color: "#F4A261", marginTop: "4px" }}>
+                        {result?.agent2?.waterlogging_depth_cm || 85} cm
+                      </div>
+                      <div style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
+                        Assets at Risk: <b>{result?.agent2?.buildings_at_risk || 340}</b><br/>
+                        Drainage Overflow: <b>{result?.agent2?.drainage_overflow_pct || 81}%</b>
+                      </div>
+                    </div>
+
+                    <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "14px", borderRadius: "8px" }}>
+                      <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Agent 3: Total VaR</div>
+                      <div className="mono" style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--color-primary)", marginTop: "4px" }}>
+                        ₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(0) : "1,183"} Cr
+                      </div>
+                      <div style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
+                        USD: <b>${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(1) : "142.5"}M</b><br/>
+                        Compliance Gap: <b>{result?.agent3?.compliance_gap_pct || 42}%</b>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Global Civil Protection Broadcast */}
+                  <div style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", padding: "14px", marginBottom: "20px" }}>
+                    <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#FFF", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
+                      <Radio size={14} color="var(--color-primary)" />
+                      Global Civil Protection Broadcast Dispatch:
+                    </div>
+                    <div style={{ fontSize: "0.8rem", color: "#FFF", lineHeight: 1.5, marginBottom: "10px", background: "rgba(0, 240, 255, 0.06)", padding: "10px 12px", borderRadius: "6px", borderLeft: "3px solid var(--color-primary)" }}>
+                      <b style={{ color: "var(--color-primary)" }}>Primary English Broadcast:</b> {result?.agent3?.bilingual_alert_english || "Critical waterlogging projected for transit and industrial substations. Immediate flood barrier deployment mandated."}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", lineHeight: 1.5, padding: "0 4px" }}>
+                      <b style={{ color: "#9CA3AF" }}>Regional Native ({result?.agent3?.regional_language_native || modalProfile.regional_language_native} / {result?.agent3?.regional_language || modalProfile.regional_language}):</b> {result?.agent3?.regional_alert_text || modalProfile.regional_alert_text}
+                    </div>
+                  </div>
+
+                  {/* Mandatory Actions */}
+                  <div style={{ marginBottom: "24px" }}>
+                    <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--color-text-secondary)", textTransform: "uppercase", marginBottom: "8px" }}>
+                      {modalProfile.regulatory_header}
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {(result?.agent3?.recommended_actions && result.agent3.recommended_actions.length > 0
+                        ? result.agent3.recommended_actions
+                        : modalProfile.recommended_actions
+                      ).map((action, i) => (
+                        <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
+                          <CheckCircle2 size={13} color="var(--color-safe)" />
+                          <span>{action}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
 
             {/* Modal Footer Controls */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "16px" }}>
@@ -3548,7 +3850,7 @@ export function App() {
                   </span>
                 </div>
                 <p style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", lineHeight: 1.4 }}>
-                  Powers Agent 3 dynamic ESG policy reasoning, Hindi linguistic nuance, and C-Suite executive briefing synthesis.
+                  Powers Agent 3 dynamic ESG policy reasoning, multilingual linguistic nuance, and C-Suite executive briefing synthesis.
                 </p>
                 <div style={{ marginTop: "8px", fontSize: "0.68rem", color: "var(--color-text-muted)" }}>
                   Free key: <a href="https://aistudio.google.com" target="_blank" rel="noreferrer" style={{ color: "var(--color-primary)", textDecoration: "none" }}>aistudio.google.com</a>
@@ -3670,7 +3972,7 @@ export function App() {
                     color: integrationStatus?.sarvam_ai?.configured ? "#10B981" : "#F97316",
                     border: "1px solid rgba(249, 115, 22, 0.3)"
                   }}>
-                    {integrationStatus?.sarvam_ai?.configured ? "INDIC ACTIVE" : "LOCAL HINDI ACTIVE"}
+                    {integrationStatus?.sarvam_ai?.configured ? "INDIC ACTIVE" : "LOCAL VOICE ACTIVE"}
                   </span>
                 </div>
                 <p style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", lineHeight: 1.4 }}>

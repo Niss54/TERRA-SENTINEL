@@ -628,13 +628,33 @@ async def get_executive_briefing(event_id: str):
     var_inr = event.agent3.var_estimate_inr if event.agent3 else 0
     var_usd = event.agent3.var_estimate_usd if event.agent3 else 0
 
+    loc_str = (event.location_name or "").lower()
+    if any(k in loc_str for k in ["singapore", "marina", "kallang"]):
+        prep_entity = "Monetary Authority of Singapore (MAS), PUB & Corporate Risk Directorate"
+    elif any(k in loc_str for k in ["indonesia", "jakarta", "ciliwung"]):
+        prep_entity = "Badan Nasional Penanggulangan Bencana (BNPB), OJK & C-Suite Risk Committee"
+    elif any(k in loc_str for k in ["netherlands", "rotterdam", "rhine"]):
+        prep_entity = "Rijkswaterstaat, Port of Rotterdam Authority & ESG Risk Directorate"
+    elif any(k in loc_str for k in ["japan", "tokyo", "arakawa"]):
+        prep_entity = "Ministry of Land, Infrastructure, Transport and Tourism (MLIT) & C-Suite Risk Committee"
+    elif any(k in loc_str for k in ["new york", "manhattan", "usa", "jamaica bay"]):
+        prep_entity = "FEMA Region 2, NYC Emergency Management & SEC Risk Committee"
+    elif any(k in loc_str for k in ["accra", "ghana", "odaw"]):
+        prep_entity = "National Disaster Management Organisation (NADMO) & Bank of Ghana Risk Committee"
+    elif any(k in loc_str for k in ["sylhet", "bangladesh", "surma"]):
+        prep_entity = "Department of Disaster Management (DDM) & Bangladesh Bank Risk Directorate"
+    elif any(k in loc_str for k in ["sindh", "pakistan", "indus"]):
+        prep_entity = "National Disaster Management Authority (NDMA Pakistan) & Provincial Disaster Directorate"
+    else:
+        prep_entity = "National Disaster Management Authority (NDMA) & C-Suite Risk Committee"
+
     return {
         "briefing_id": f"EXEC-{event.event_id}",
         "event_id": event.event_id,
         "location": event.location_name,
         "coordinates": {"lat": event.lat, "lon": event.lon},
         "generated_at": datetime.utcnow().isoformat() + "Z",
-        "prepared_for": "National Disaster Management Authority (NDMA) & C-Suite Risk Committee",
+        "prepared_for": prep_entity,
         "executive_summary": (
             f"Autonomous 3-agent intelligence platform evaluated {event.location_name}. "
             f"Acute hazard tier is {event.agent1.risk_tier} (Risk Score: {event.agent1.risk_score:.2f}). "
@@ -680,6 +700,10 @@ async def get_executive_briefing_html(event_id: str):
     Supports browser Ctrl+P directly to print A4 PDF report.
     """
     briefing = await get_executive_briefing(event_id)
+
+    loc_name_str = str(briefing.get('location', {}).get('name', briefing.get('location', ''))).lower()
+    is_india_loc = any(k in loc_name_str for k in ['india', 'mumbai', 'mithi', 'kurla', 'pune', 'delhi', 'chennai', 'bengaluru', 'assam', 'gujarat', 'surat', 'kaziranga', 'velachery', 'bellandur', 'mundra'])
+    subtitle = "Autonomous Multi-Agent Environmental & Financial Intelligence for Bharat" if is_india_loc else "Autonomous Multi-Agent Planetary Climate & Financial Intelligence"
 
     actions_html = "".join([f"<li>{act}</li>" for act in briefing["recommended_actions"]])
     policies_html = "".join([f"<li><b>{p}</b></li>" for p in briefing["financial_var"]["applicable_mandates"]]) if briefing.get("financial_var") else "<li>Standard Urban SOP</li>"
@@ -766,7 +790,7 @@ async def get_executive_briefing_html(event_id: str):
   <div class="header">
     <div>
       <div class="title">TERRA-SENTINEL EXECUTIVE BRIEFING</div>
-      <div class="subtitle">Autonomous Multi-Agent Environmental & Financial Intelligence for Bharat</div>
+      <div class="subtitle">{subtitle}</div>
       <div style="font-size: 11px; color: #718096; margin-top: 4px;">Prepared for: {briefing['prepared_for']}</div>
     </div>
     <div style="text-align: right;">
@@ -821,8 +845,8 @@ async def get_executive_briefing_html(event_id: str):
   <div class="alert-box">
     <b>📢 Multi-Tier Civil Protection & ESG Advisory Broadcast:</b><br/>
     <div style="margin-top: 6px; font-family: sans-serif;"><b>🌍 Global Primary (English):</b> {briefing['bilingual_alerts']['english']}</div>
-    <div style="margin-top: 4px; color: #2D3748;"><b>📍 Regional Native ({briefing['bilingual_alerts'].get('regional_language_native', 'Local')} / {briefing['bilingual_alerts'].get('regional_language', 'Regional')}):</b> {briefing['bilingual_alerts'].get('regional') or briefing['bilingual_alerts']['hindi']}</div>
-    <div style="margin-top: 4px; color: #718096; font-size: 11px;"><b>🏛️ Central Command (Hindi / हिन्दी):</b> {briefing['bilingual_alerts']['hindi']}</div>
+    <div style="margin-top: 4px; color: #2D3748;"><b>📍 Regional Native ({briefing['bilingual_alerts'].get('regional_language_native', 'Local')} / {briefing['bilingual_alerts'].get('regional_language', 'Regional')}):</b> {briefing['bilingual_alerts'].get('regional') or briefing['bilingual_alerts']['english']}</div>
+    {f'<div style="margin-top: 4px; color: #718096; font-size: 11px;"><b>🏛️ Central Command (Hindi / हिन्दी):</b> ' + briefing['bilingual_alerts']['hindi'] + '</div>' if any(k in briefing['location']['name'].lower() for k in ['india', 'mumbai', 'mithi', 'kurla', 'pune', 'delhi', 'chennai', 'bengaluru', 'assam', 'gujarat', 'surat']) else ''}
   </div>
 
   <div style="margin-top: 16px;">

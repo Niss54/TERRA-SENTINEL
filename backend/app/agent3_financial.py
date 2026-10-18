@@ -247,12 +247,49 @@ def get_regional_language_profile(location_name: str) -> Dict[str, str]:
             "bcp47": "nl-NL"
         }
 
-    # Default to Hindi for India or general fallback
+    # Singapore (Marina Bay, Kallang, Singapore)
+    if any(k in loc for k in ["singapore", "marina", "kallang"]):
+        return {
+            "name": "Malay / Mandarin",
+            "native": "Melayu / 华语",
+            "code": "ms-SG",
+            "bcp47": "ms-SG"
+        }
+
+    # United States (New York, Manhattan, Jamaica Bay)
+    if any(k in loc for k in ["new york", "manhattan", "jamaica bay", "united states", "usa"]):
+        return {
+            "name": "Spanish",
+            "native": "Español",
+            "code": "es-US",
+            "bcp47": "es-US"
+        }
+
+    # Ghana (Accra, Odaw, Korle Lagoon)
+    if any(k in loc for k in ["accra", "odaw", "korle", "ghana"]):
+        return {
+            "name": "Twi / Akan",
+            "native": "Twi",
+            "code": "ak-GH",
+            "bcp47": "ak-GH"
+        }
+
+    # Default for Northern India if matched, else English for international
+    is_indian = any(k in loc for k in [
+        "india", "mumbai", "mithi", "kurla", "pune", "delhi", "chennai", "bengaluru", "assam", "gujarat", "surat", "kaziranga", "velachery", "bellandur", "mundra"
+    ])
+    if is_indian:
+        return {
+            "name": "Hindi",
+            "native": "हिन्दी",
+            "code": "hi-IN",
+            "bcp47": "hi-IN"
+        }
     return {
-        "name": "Hindi",
-        "native": "हिन्दी",
-        "code": "hi-IN",
-        "bcp47": "hi-IN"
+        "name": "English",
+        "native": "English",
+        "code": "en-US",
+        "bcp47": "en-US"
     }
 
 
@@ -306,28 +343,62 @@ def generate_regional_template(profile: Dict[str, str], location: str, depth: in
     elif lang == "Japanese":
         return (
             f"緊急警報: {location}における深刻な浸水被害（水深{depth}cm）の予測。 "
-            f"{buildings}棟の主要施設が危険にさらされています。想定被害総額: 約{crores:.2f}億円規模。 "
-            f"防災機関は直ちに排水ポンプを配備し警戒体制を確立してください。"
+            f"{buildings}棟の主要施設が危険にさらされています。想定被害総額: ${var_usd/1000000:.1f}M USD。 "
+            f"防災機関は直ちに地下放水路および排水ポンプを配備し警戒体制を確立してください。"
         )
     elif lang == "Indonesian":
         return (
             f"Peringatan Darurat: Proyeksi genangan banjir parah ({depth} cm) di {location}. "
-            f"{buildings} bangunan dan aset infrastruktur berisiko tinggi. Estimasi kerugian finansial: ₹{crores:.2f} Cr. "
-            f"Badan penanggulangan bencana segera aktifkan pompa drainase darurat dan pengamanan aset."
+            f"{buildings} bangunan dan aset infrastruktur berisiko tinggi. Estimasi kerugian finansial: ${var_usd/1000000:.1f}M USD. "
+            f"Badan penanggulangan bencana segera aktifkan sodetan Ciliwung dan pompa drainase darurat."
         )
     elif lang == "Dutch":
         return (
             f"Noodwaarschuwing: Ernstige overstroming ({depth} cm) verwacht in {location}. "
-            f"{buildings} gebouwen en vitale infrastructuur lopen direct gevaar. Geschatte financiële schade: ₹{crores:.2f} Cr. "
+            f"{buildings} gebouwen en vitale infrastructuur lopen direct gevaar. Geschatte financiële schade: ${var_usd/1000000:.1f}M USD. "
             f"Nooddiensten moeten direct waterpompen en waterkeringen activeren."
         )
-    else:  # Default Devanagari Hindi
+    elif lang == "Malay / Mandarin" or "singapore" in location.lower() or "marina" in location.lower():
         return (
-            f"आपातकालीन अलर्ट: {location} में भारी जलभराव ({depth} सेमी) का अनुमान। "
-            f"{buildings} इमारतें और औद्योगिक परिसंपत्तियां उच्च जोखिम में हैं। "
-            f"अनुमानित आर्थिक नुकसान: ₹{crores:.2f} करोड़। "
-            f"आपदा राहत दल तुरंत पंपिंग स्टेशन और बैरिकेडिंग सक्रिय करें।"
+            f"Amaran Bahaya Banjir: Ancaman limpahan air pasang ({depth} cm) di {location}. "
+            f"{buildings} bangunan dan infrastruktur berisiko tinggi. Anggaran kerugian kewangan: ${var_usd/1000000:.1f}M USD. "
+            f"Agensi pertahanan awam segera aktifkan pam saliran Marina Barrage dan pelan kecemasan."
         )
+    elif lang == "Spanish":
+        return (
+            f"Alerta de Emergencia: Grave riesgo de inundación costera ({depth} cm) en {location}. "
+            f"{buildings} estructuras en riesgo crítico. Pérdida financiera estimada: ${var_usd/1000000:.1f}M USD. "
+            f"Activación inmediata de compuertas y protocolos de evacuación costera."
+        )
+    elif lang == "Twi / Akan" or "Twi" in str(lang):
+        return (
+            f"Kɔkɔbɔ Kɛseɛ: Nsuo ayiri kɛse ({depth} cm) wɔ {location}. "
+            f"Adan {buildings} wɔ asiane kɛse mu. Sika a ɛbɛtumi ayera: ${var_usd/1000000:.1f}M USD. "
+            f"Mfididwuma ne ahobammɔfoɔ nyinaa mfa nsuo mpompo ne ahobammɔ mmra adi dwuma ntɛm ara."
+        )
+    elif lang in ["English", "Global English", "English (Global)"]:
+        return (
+            f"Emergency Hazard Advisory: Severe inundation threat ({depth} cm) projected for {location}. "
+            f"{buildings} structures and vital infrastructure at high risk. Estimated financial exposure: ${var_usd/1000000:.1f}M USD. "
+            f"Emergency management agencies must deploy auxiliary pumps and activate perimeter flood barriers immediately."
+        )
+    else:  # Location-adaptive fallback
+        is_indian = any(k in location.lower() for k in [
+            "india", "mumbai", "mithi", "kurla", "pune", "delhi", "chennai", "bengaluru", "assam", "gujarat", "surat", "kaziranga", "velachery", "bellandur", "mundra"
+        ])
+        if is_indian:
+            return (
+                f"आपातकालीन अलर्ट: {location} में भारी जलभराव ({depth} सेमी) का अनुमान। "
+                f"{buildings} इमारतें और औद्योगिक परिसंपत्तियां उच्च जोखिम में हैं। "
+                f"अनुमानित आर्थिक नुकसान: ₹{crores:.2f} करोड़। "
+                f"आपदा राहत दल तुरंत पंपिंग स्टेशन और बैरिकेडिंग सक्रिय करें।"
+            )
+        else:
+            return (
+                f"Emergency Hazard Advisory: Severe inundation threat ({depth} cm) projected for {location}. "
+                f"{buildings} structures and vital infrastructure at high risk. Estimated financial exposure: ${var_usd/1000000:.1f}M USD. "
+                f"Emergency management agencies must deploy auxiliary pumps and activate perimeter flood barriers immediately."
+            )
 
 
 class FinancialRiskEngine:
@@ -355,8 +426,21 @@ class FinancialRiskEngine:
         """
         t0 = time.time()
 
-        # Step 1: Semantic Query to Vector Store
-        rag_query = f"climate risk disclosure flood waterlogging penalties {sector} India"
+        # Step 1: Semantic Query to Vector Store (Geo-targeted)
+        loc_lower = (location_label or "").lower()
+        if any(k in loc_lower for k in ["singapore", "marina", "kallang"]):
+            rag_query = f"Monetary Authority of Singapore MAS Environmental Risk Management Guidelines climate disclosure {sector}"
+        elif any(k in loc_lower for k in ["indonesia", "jakarta"]):
+            rag_query = f"OJK sustainable finance regulation flood physical risk disclosure {sector}"
+        elif any(k in loc_lower for k in ["netherlands", "rotterdam"]):
+            rag_query = f"EU CSRD ESRS E1 climate flood risk reporting mandates {sector}"
+        elif any(k in loc_lower for k in ["japan", "tokyo"]):
+            rag_query = f"FSA Japan TCFD flood disclosure river law {sector}"
+        elif any(k in loc_lower for k in ["new york", "manhattan", "usa"]):
+            rag_query = f"SEC climate risk physical flood disclosure FEMA {sector}"
+        else:
+            rag_query = f"climate risk disclosure flood waterlogging penalties {sector} India"
+
         retrieved_clauses = self.rag.query(rag_query, top_k=3)
         applicable_reg_titles = [c["metadata"].get("title", c["id"]) for c in retrieved_clauses]
 
@@ -389,13 +473,49 @@ class FinancialRiskEngine:
         else:
             stranded_risk = "LOW"
 
-        # Step 4: Actionable Recommendations
-        recommendations = [
-            f"Commission emergency civil drainage vaults to handle {waterlogging_depth_cm} cm runoff overload.",
-            f"File accelerated SEBI BRSR Principle 6 physical risk disclosure to mitigate {compliance_gap_pct}% compliance penalty tier.",
-            f"Elevate electrical distribution panels and IT server banks by at least {int(waterlogging_depth_cm + 25)} cm.",
-            "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
-        ]
+        # Step 4: Actionable Recommendations (Location-aware)
+        if any(k in loc_lower for k in ["singapore", "marina", "kallang"]):
+            recommendations = [
+                f"Deploy Marina Barrage crest gates and auxiliary sea-discharge pumps for {waterlogging_depth_cm} cm surge.",
+                f"File accelerated Monetary Authority of Singapore (MAS) Environmental Risk disclosure to mitigate {compliance_gap_pct}% compliance penalty tier.",
+                f"Enforce Singapore PUB flood barrier minimum crest protection (+1.25m minimum platform level).",
+                "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+            ]
+        elif any(k in loc_lower for k in ["indonesia", "jakarta", "ciliwung"]):
+            recommendations = [
+                f"Activate Ciliwung sodetan diversion tunnel and North Jakarta polder pumps for {waterlogging_depth_cm} cm surge.",
+                f"File accelerated OJK Sustainable Finance physical risk disclosure to mitigate {compliance_gap_pct}% compliance penalty tier.",
+                f"Enforce temporary flood walls along vulnerable low-lying coastal polders.",
+                "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+            ]
+        elif any(k in loc_lower for k in ["netherlands", "rotterdam", "rhine"]):
+            recommendations = [
+                f"Deploy Maeslantkering storm surge barrier and Delta Programme auxiliary pumps for {waterlogging_depth_cm} cm surge.",
+                f"File accelerated EU CSRD / ESRS E1 physical climate risk disclosure to mitigate {compliance_gap_pct}% compliance penalty tier.",
+                f"Enforce Rijkswaterstaat Water Act statutory safety standards (Normering Waterveiligheid).",
+                "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+            ]
+        elif any(k in loc_lower for k in ["japan", "tokyo", "arakawa"]):
+            recommendations = [
+                f"Activate G-CANS underground discharge tunnel and Edogawa sluice gates for {waterlogging_depth_cm} cm surge.",
+                f"File accelerated FSA Japan TCFD climate disclosure to mitigate {compliance_gap_pct}% compliance penalty tier.",
+                f"Enforce MLIT River Law urban basin inundation emergency protocols.",
+                "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+            ]
+        elif any(k in loc_lower for k in ["new york", "manhattan", "jamaica bay", "usa"]):
+            recommendations = [
+                f"Deploy Lower Manhattan coastal flood walls and deploy deployable subway storm gates for {waterlogging_depth_cm} cm surge.",
+                f"File accelerated SEC Climate Risk & FEMA hazard disclosure to mitigate {compliance_gap_pct}% compliance penalty tier.",
+                f"Enforce NYC Climate Resiliency Design Guidelines (Version 4.1).",
+                "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+            ]
+        else:
+            recommendations = [
+                f"Commission emergency civil drainage vaults to handle {waterlogging_depth_cm} cm runoff overload.",
+                f"File accelerated SEBI BRSR Principle 6 physical risk disclosure to mitigate {compliance_gap_pct}% compliance penalty tier.",
+                f"Elevate electrical distribution panels and IT server banks by at least {int(waterlogging_depth_cm + 25)} cm.",
+                "Establish secondary parametric catastrophe reinsurance cover with 48-hour trigger index."
+            ]
 
         # Step 5: Global-First & Regional-Adaptive Civic Broadcast
         profile = get_regional_language_profile(location_label)
@@ -403,9 +523,13 @@ class FinancialRiskEngine:
         regional_lang_native = profile["native"]
         regional_lang_code = profile["code"]
 
+        is_indian = any(k in loc_lower for k in [
+            "india", "mumbai", "mithi", "kurla", "pune", "delhi", "chennai", "bengaluru", "assam", "gujarat", "surat", "kaziranga", "velachery", "bellandur", "mundra"
+        ])
+
         # Default deterministic templates for verified reliability
-        hindi_alert = generate_regional_template({"name": "Hindi"}, location_label, waterlogging_depth_cm, buildings_at_risk, total_var_inr, total_var_usd)
         regional_alert = generate_regional_template(profile, location_label, waterlogging_depth_cm, buildings_at_risk, total_var_inr, total_var_usd)
+        hindi_alert = generate_regional_template({"name": "Hindi"}, location_label, waterlogging_depth_cm, buildings_at_risk, total_var_inr, total_var_usd) if is_indian else regional_alert
 
         english_alert = (
             f"EXECUTIVE ALERT: Severe flood exposure projected for {location_label}. "
@@ -423,10 +547,13 @@ class FinancialRiskEngine:
         if llm_english:
             english_alert = f"EXECUTIVE ALERT: {llm_english}" if "EXECUTIVE ALERT" not in llm_english else llm_english
 
-        # Central Hindi Alert (for NDMA & central command)
-        llm_hindi = self._generate_llm_hindi(location_label, waterlogging_depth_cm, buildings_at_risk, total_var_inr, policy_snippets)
-        if llm_hindi:
-            hindi_alert = f"आपातकालीन चेतावनी: {llm_hindi}" if "आपातकालीन" not in llm_hindi else llm_hindi
+        # Central Hindi Alert (ONLY for Indian jurisdictions)
+        if is_indian:
+            llm_hindi = self._generate_llm_hindi(location_label, waterlogging_depth_cm, buildings_at_risk, total_var_inr, policy_snippets)
+            if llm_hindi:
+                hindi_alert = f"आपातकालीन चेतावनी: {llm_hindi}" if "आपातकालीन" not in llm_hindi else llm_hindi
+        else:
+            hindi_alert = regional_alert
 
         # Regional Native Script Alert (Priority 2 for affected local populace)
         if regional_lang_name == "Hindi":

@@ -116,15 +116,24 @@ export class CivicClient {
     const { pEff, dWater, bRisk, vInr, meta } = this.clampBounds(params);
     const varCrores = (vInr / 10000000.0).toFixed(1);
 
-    const hindi = `आपातकालीन चेतावनी (${params.location}): अत्यधिक वर्षा (${pEff.toFixed(1)} मिमी) एवं जलभराव (${dWater} सेमी) के कारण ${bRisk} महत्वपूर्ण इमारतों के प्रभावित होने की आशंका है। अनुमानित वित्तीय जोखिम ₹${varCrores} करोड़ है। एनडीएमए आपदा प्रतिक्रिया दल को तत्काल डीवाटरिंग पंप तैनात करने और विद्युत सबस्टेशनों को सुरक्षित करने का निर्देश दिया जाता है।`;
-    const english = `EXECUTIVE ALERT: Intense precipitation of ${pEff.toFixed(1)} mm and inundation of ${dWater} cm projected across ${bRisk} critical assets in ${params.location}. Projected Enterprise Value-at-Risk stands at ₹${varCrores} Crores. Mandate immediate physical floodgate deployment and lifeline protocol actuation.`;
+    const isIndia = /india|mumbai|mithi|kurla|delhi|pune|chennai|bengaluru|assam|gujarat|surat|velachery|bellandur|mundra/i.test(params.location);
+    const isSingapore = /singapore|marina|kallang/i.test(params.location);
+    const varUsdM = (vInr / 830000000.0).toFixed(1);
+
+    const regional = isSingapore
+      ? `Amaran Bahaya Banjir (${params.location}): Limpahan air pasang dan hujan lebat (${pEff.toFixed(1)} mm) dengan kedalaman air ${dWater} cm mengancam ${bRisk} struktur penting. Anggaran pendedahan kewangan: $${varUsdM}M USD. Pihak berkuasa segera aktifkan pam saliran Marina Barrage.`
+      : isIndia
+      ? `आपातकालीन चेतावनी (${params.location}): अत्यधिक वर्षा (${pEff.toFixed(1)} मिमी) एवं जलभराव (${dWater} सेमी) के कारण ${bRisk} महत्वपूर्ण इमारतों के प्रभावित होने की आशंका है। अनुमानित वित्तीय जोखिम ₹${varCrores} करोड़ है। एनडीएमए आपदा प्रतिक्रिया दल को तत्काल डीवाटरिंग पंप तैनात करने और विद्युत सबस्टेशनों को सुरक्षित करने का निर्देश दिया जाता है।`
+      : `Emergency Advisory (${params.location}): Extreme precipitation of ${pEff.toFixed(1)} mm and inundation of ${dWater} cm projected across ${bRisk} critical structures. Financial exposure: $${varUsdM}M USD. Deploy auxiliary flood barriers and high-capacity drainage pumps immediately.`;
+
+    const english = `EXECUTIVE ALERT: Intense precipitation of ${pEff.toFixed(1)} mm and inundation of ${dWater} cm projected across ${bRisk} critical assets in ${params.location}. Projected Enterprise Value-at-Risk stands at ₹${varCrores} Crores ($${varUsdM}M USD). Mandate immediate physical floodgate deployment and lifeline protocol actuation.`;
 
     return {
       status: 'COMPLETED',
       eventId: params.eventId || `TS-LOCAL-${Date.now()}`,
       location: params.location,
       englishAdvisory: english,
-      hindiAdvisory: hindi,
+      hindiAdvisory: regional,
       executionTier: 'LOCAL_FALLBACK',
       modelUsed: 'ClientDeterministicBhashaAI',
       latencyMs: 1.5,
