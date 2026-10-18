@@ -4378,10 +4378,165 @@ and commits the retirement transaction to Polygon Amoy (`0xAmoy...`), returning 
 
 ---
 
-## 28. Conclusion & Grand Finale Deliverables
+---
+
+## 28. Phase 30: Multi-Hazard Landslide Coupling, Satellite Carbon MRV, Deltares HydroMT Hydrography & Ecological Encroachment Watch
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│              PHASE 30: PLANETARY RESILIENCE, ECO-WATCH & SATELLITE CARBON MRV                   │
+├────────────────────────────────┬───────────────────────────────┬────────────────────────────────┤
+│      SailabAlert (ML/Groq)     │      Deltares HydroMT (D8)    │   Panda & Sentinel Flood-Watch │
+├────────────────────────────────┼───────────────────────────────┼────────────────────────────────┤
+│ • Compound Flood-Landslide FSM │ • D8 Flow Accumulation & Basin│ • Sentinel-2 Algorithmic MRV   │
+│ • Slope-Moisture Susceptibility│ • Topographic Wetness Index   │ • NDBI/MNDWI Encroachment Watch│
+│ • Multilingual Urdu/Hindi Voice│ • Distributed Manning Friction│ • On-Chain Biomass Verification│
+└────────────────────────────────┴───────────────────────────────┴────────────────────────────────┘
+```
+
+Phase 30 elevates **TERRA-SENTINEL** from an urban-focused flood forecasting platform to a unified **Planetary Multi-Hazard, Hydrographic, Ecological Defense & Satellite Carbon Intelligence Infrastructure**. By directly synthesizing mathematical paradigms, operational workflows, and software architectures from four specialized environmental repositories, TERRA-SENTINEL eliminates remaining blind spots in disaster modeling:
+
+1. **Multi-Hazard Compound Coupling (`mirzayasirabdullahbaig07/SailabAlert`):**
+   In high-gradient topography (Western Ghats, Sub-Himalayan Assam, Nilgiris), torrential cloudbursts do not merely inundate plains; saturated hillsides collapse into catastrophic landslides and debris torrents. Phase 30 couples precipitation, river gauge, soil moisture, and slope gradient into a **Compound Flood & Landslide Susceptibility Index (CFLSI)**, paired with ultra-low-latency multilingual public safety advisories across **Urdu (اردو), Hindi (देवनागरी), and English**.
+
+2. **Deltares-Grade Hydrography & Flow Accumulation (`Deltares/hydromt`):**
+   Replaces heuristic runoff lookups with automated D8 flow direction, upstream contributing area calculation, and **Topographic Wetness Index (TWI)** delineation, allowing precision hydrodynamic modeling across previously ungauged Indian watersheds.
+
+3. **Satellite-to-Smart-Contract Nature-Based Solutions Carbon MRV (`karanjaxyz/panda`):**
+   Transforms the Toucan Protocol bridge (Phase 29.4) from simple credit retirement into a bi-directional **Algorithmic Measurement, Reporting, and Verification (MRV)** engine. It continuously tracks satellite canopy density ($\Delta\text{NDVI}$) and biomass accumulation in mangrove sponge corridors, directly minting verifiable on-chain carbon sequestration proofs.
+
+4. **Multi-Temporal Ecological Threat & Floodplain Encroachment Detection (`Hou-dini/sentinel-flood-watch`):**
+   Integrates Sentinel-2 multi-spectral band math (NDBI, MNDWI, NDVI) to proactively detect illegal human encroachment, concrete construction, and wetland filling in critical flood drainage corridors and Ramsar sites (Mithi River CRZ, Bellandur Lake, Deepor Beel), alerting environmental regulators (MoEFCC/NGT) before drainage bottlenecks trigger disasters.
+
+---
+
+### 28.1 Mathematical Formulations & Governing Invariants
+
+#### A. Compound Flood & Landslide Susceptibility Index (CFLSI)
+$$CFLSI(x, y, t) = w_r \cdot \left(\frac{R(t)}{R_{\text{crit}}}\right) + w_s \cdot \left(\frac{S(t)}{100}\right) + w_{\theta} \cdot \sin(\theta) + w_h \cdot \left(\frac{H_{\text{gauge}}(t)}{H_{\text{danger}}}\right)$$
+
+Where:
+- $R(t)$: 24-hour rainfall accumulation ($mm$), normalized against localized critical threshold $R_{\text{crit}} = 150.0\text{ mm}$.
+- $S(t)$: Soil saturation percentage ($0 - 100\%$).
+- $\theta$: Local terrain slope gradient in degrees from 30m SRTM DEM ($\theta \in [0^\circ, 90^\circ]$).
+- $H_{\text{gauge}}(t)$: River hydraulic gauge height ($m$), normalized against bankfull danger level $H_{\text{danger}} = 7.0\text{ m}$.
+- Weights: $w_r = 0.35, \, w_s = 0.25, \, w_{\theta} = 0.25, \, w_h = 0.15$ ($\sum w_i = 1.0$).
+
+**Hazard Classification Hierarchy:**
+$$\text{Hazard Tier} = \begin{cases} 
+\text{LOW} & \text{if } CFLSI < 0.40 \\
+\text{MODERATE} & \text{if } 0.40 \le CFLSI < 0.65 \\
+\text{HIGH} & \text{if } 0.65 \le CFLSI < 0.82 \\
+\text{CATASTROPHIC} & \text{if } CFLSI \ge 0.82 \text{ or } (\theta > 35^\circ \land S > 85\% \land R > 100\text{mm})
+\end{cases}$$
+
+#### B. Deltares Topographic Wetness Index (TWI) & Hydrographic Flow
+Following Beven & Kirkby (1979) and Deltares HydroMT flow routing:
+$$TWI(x, y) = \ln\left(\frac{\alpha}{\tan(\beta) + \epsilon}\right)$$
+Where:
+- $\alpha$: Specific upslope contributing area per unit contour length ($m^2/m$), derived from D8 steepest-descent flow accumulation:
+  $$\alpha = \frac{(A_{\text{contrib}} + 1) \cdot \Delta x^2}{\Delta x} = (A_{\text{contrib}} + 1) \cdot \Delta x$$
+- $\beta$: Local surface slope in radians: $\beta = \arctan\left(\frac{\Delta z}{\Delta x}\right)$.
+- $\epsilon = 10^{-4}$ (numerical zero-divergence guard).
+- Critical saturation condition: Cells with $TWI \ge 12.5$ represent permanent hydrological depressions and structural retention basins.
+
+#### C. Satellite Algorithmic Carbon MRV Sequestration Model (Panda Protocol)
+$$\Delta \text{Biomass} = A_{\text{sponge}} \cdot \left(\text{NDVI}_{\text{post}} - \text{NDVI}_{\text{pre}}\right) \cdot \kappa_{\text{density}} \cdot f_{\text{carbon}} \text{ [dry tons]}$$
+$$\text{Verified tCO}_2\text{e} = \Delta \text{Biomass} \cdot \frac{44}{12} \cdot \left(1 - \text{Discount}_{\text{uncertainty}}\right)$$
+Where:
+- $A_{\text{sponge}}$: Monitored NBS parcel area in hectares.
+- $\kappa_{\text{density}} = 145.0\text{ t/ha}$ (Verified coastal mangrove biomass conversion factor).
+- $f_{\text{carbon}} = 0.47$ (IPCC standard carbon fraction of woody dry matter).
+- $\frac{44}{12} \approx 3.667$ (Stoichiometric molar ratio converting Elemental Carbon $\text{C}$ to Atmospheric $\text{CO}_2$).
+- $\text{Discount}_{\text{uncertainty}} = 0.08$ (Conservative $8\%$ deduction for cloud shadow and sensor noise).
+
+#### D. Ecological Threat Index (ETI) & Encroachment Detection (Sentinel Flood-Watch)
+$$\text{NDBI} = \frac{\rho_{\text{SWIR}} - \rho_{\text{NIR}}}{\rho_{\text{SWIR}} + \rho_{\text{NIR}}}, \quad \text{MNDWI} = \frac{\rho_{\text{Green}} - \rho_{\text{SWIR}}}{\rho_{\text{Green}} + \rho_{\text{SWIR}}}, \quad \text{NDVI} = \frac{\rho_{\text{NIR}} - \rho_{\text{Red}}}{\rho_{\text{NIR}} + \rho_{\text{Red}}}$$
+$$ETI(x, y) = 0.45 \cdot \max(0, \Delta \text{NDBI}) + 0.35 \cdot \max(0, -\Delta \text{NDVI}) + 0.20 \cdot \max(0, -\Delta \text{MNDWI})$$
+- An anomaly with $ETI \ge 0.55$ indicates active illegal concrete paving or unauthorized reclamation within a designated flood drainage buffer.
+
+---
+
+### 28.2 Architectural Specifications & Component Breakdown
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                             PHASE 30 SUB-PHASE IMPLEMENTATION PLAN                              │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                                 │
+│  Phase 30.1: SailabAlert Multi-Hazard Landslide Coupling & Groq Multilingual Advisory           │
+│  - backend/app/sailab_landslide.py                                                              │
+│  - Endpoints: POST /api/v1/hazard/landslide-predict, GET /api/v1/hazard/advisory/bilingual      │
+│  - Mathematical Invariant: CFLSI scoring with strict bounding [0.0, 1.0]                        │
+│  - Tests: tests/test_phase30_sailab_landslide.py                                                │
+│                                                                                                 │
+│  Phase 30.2: Deltares HydroMT Automated Hydrography & TWI Catchment Engine                      │
+│  - backend/app/hydromt_engine.py                                                                │
+│  - Endpoints: POST /api/v1/hydromt/delineate, GET /api/v1/hydromt/twi                           │
+│  - Mathematical Invariant: TWI = ln(alpha / (tan(beta) + eps)) with D8 non-negative flow        │
+│  - Tests: tests/test_phase30_hydromt_engine.py                                                  │
+│                                                                                                 │
+│  Phase 30.3: Panda Protocol Satellite Algorithmic Carbon MRV Engine                             │
+│  - backend/app/panda_carbon_mrv.py                                                              │
+│  - Endpoints: POST /api/v1/carbon/mrv/verify, GET /api/v1/carbon/mrv/certificates               │
+│  - Mathematical Invariant: Verified tCO2e = Biomass * (44/12) * (1 - discount)                  │
+│  - Tests: tests/test_phase30_panda_carbon_mrv.py                                                │
+│                                                                                                 │
+│  Phase 30.4: Sentinel Flood-Watch Ecological Encroachment & Wetland Threat Engine               │
+│  - backend/app/ecological_watch.py                                                              │
+│  - Endpoints: POST /api/v1/ecological/scan, GET /api/v1/ecological/threats                      │
+│  - Mathematical Invariant: ETI = 0.45*dNDBI + 0.35*(-dNDVI) + 0.20*(-dMNDWI)                    │
+│  - Tests: tests/test_phase30_ecological_watch.py                                               │
+│                                                                                                 │
+│  Phase 30.5: React 19 Unified Multi-Hazard & Ecological Intelligence Cockpit                    │
+│  - frontend/src/components/MultiHazardEcologicalCockpit.tsx                                     │
+│  - Landslide Radar + HydroMT Catchment TWI + Panda MRV Minting + Ecological Threat Map          │
+│                                                                                                 │
+│  Phase 30.6: Unified Quality Gate, Pytest Regression & Chrome DevTools MCP Verification         │
+│  - 100% pytest regression pass across all test suites                                           │
+│  - Zero-error Vite frontend production build                                                    │
+│  - Chrome DevTools MCP visual DOM and screenshot inspection                                     │
+│  - Atomic conventional git commits & push to origin/main                                        │
+│                                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 28.3 Model Context Protocol (MCP) Hub Tool Registry (Phase 30)
+
+| Tool Name | Input Schema | Output Schema | Functional Purpose |
+| :--- | :--- | :--- | :--- |
+| `predict_compound_landslide_flood_hazard` | `{ rainfall_mm, river_level_m, soil_moisture_pct, slope_deg }` | `{ cflsi_score, hazard_tier, confidence, groq_advisory_en, groq_advisory_ur, groq_advisory_hi }` | Evaluates multi-hazard coupling and generates trilingual public safety guidance |
+| `delineate_catchment_twi` | `{ basin_id, dem_elevation_matrix, contour_spacing_m }` | `{ twi_grid, mean_twi, contributing_area_km2, stream_network_geojson }` | Deltares D8 computational hydrography and saturated depression mapping |
+| `verify_satellite_carbon_biomass_mrv` | `{ parcel_id, pre_ndvi, post_ndvi, parcel_area_ha, sponge_type }` | `{ biomass_delta_tons, verified_tco2e, avoided_var_usd, cert_hash, ipfs_cid }` | Satellite algorithmic MRV validating nature-based carbon sinks |
+| `scan_ecological_encroachment_threat` | `{ zone_id, baseline_ndbi, current_ndbi, baseline_ndvi, current_ndvi }` | `{ eti_score, threat_level, concrete_expansion_sqm, moefcc_violation_flag }` | Detects illegal construction & concrete expansion in critical floodplains |
+
+---
+
+### 28.4 Failure Recovery & 3-Tier Circuit Breaker Architecture
+
+Every Phase 30 module incorporates independent, deterministic 3-tier circuit breakers:
+```
+Tier 1: Cloud Accelerated / API Ingestion (Groq API, Live STAC/GEE, On-Chain Web3 Provider)
+  │
+  ├── [Fails after 3 timeouts or HTTP 5xx]
+  ▼
+Tier 2: Algorithmic Python Fallback (Local Scikit-Learn Model, Deterministic Numerical D8, Keccak-256 Mock Signer)
+  │
+  ├── [Memory/Resource Constraint or Dependency Missing]
+  ▼
+Tier 3: Hardcoded Physical Tables (Standard Hazus Depth-Damage Matrices, IPCC Mangrove Constants, Static JSON Catalogs)
+```
+
+**Zero-Downtime Guarantee:** The platform shall never return an unhandled 500 Internal Server Error. All failure states fail gracefully to Tier 2/Tier 3 with full diagnostic transparency.
+
+---
+
+## 29. Conclusion & Grand Finale Deliverables
 
 **TERRA-SENTINEL** represents the gold standard of what an **AI Builder Cup & ClimateTech** winning project must be:
-- It addresses a massive, high-urgency societal and economic crisis across the JAPAC region.
+- It addresses a massive, high-urgency societal and economic crisis across Bharat and the JAPAC region.
 - It leverages the full power of Google Cloud: **Vertex AI Gemini multimodal reasoning**, **Cloud Run serverless containers**, and **Cloud Build CI/CD**.
 - It incorporates verified hydrological deep sequence architectures from **Google Research (`flood-forecasting`)** and state-of-the-art nowcasting from **DeepMind (`skillful_nowcasting`)**.
 - It delivers a control-room grade mission cockpit inspired by **Open Climate Fix (`quartz-frontend`)**.
@@ -4390,9 +4545,10 @@ and commits the retirement transaction to Polygon Amoy (`0xAmoy...`), returning 
 - It guarantees complete operational uptime during telecommunications collapse via **ClusterDuck Protocol ad-hoc LoRa mesh networking**.
 - It delivers autonomous evacuation routing avoiding submerged roads ($A^*$) and tripartite parametric catastrophe smart contract auto-settlement.
 - It synthesizes **Open-Meteo GloFAS** river discharge routing, **Ushahidi** crowdsourced citizen crisis verification, **Crisis Cleanup 4R** collaborative inter-agency relief, and **Toucan Protocol** on-chain carbon resilience retirement.
+- It integrates **SailabAlert** compound flood-landslide modeling and multilingual advisories, **Deltares HydroMT** computational D8 hydrography & TWI, **Panda Protocol** satellite algorithmic carbon MRV, and **Sentinel Flood-Watch** ecological encroachment alerting.
 - It provides uncompromised cybersecurity, zero-trust telemetry verification, and tamper-evident cryptographic blockchain anchoring on Polygon Amoy.
 
 With this Master PRD as the governing blueprint, TERRA-SENTINEL stands fully prepared to secure its place in the **Top 50** and advance to the **Singapore Grand Finale**.
 
 ---
-*Document Version: 3.5.0-ENTERPRISE · Revision Date: October 18, 2026 · Author: Team Syntrix (Lead: Nishant Maurya)*
+*Document Version: 3.6.0-ENTERPRISE · Revision Date: October 18, 2026 · Author: Team Syntrix (Lead: Nishant Maurya)*
