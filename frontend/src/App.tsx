@@ -29,13 +29,15 @@ import {
   Play,
   Satellite,
   Navigation,
-  HeartHandshake
+  HeartHandshake,
+  Mountain
 } from "lucide-react";
 import { BlockchainPanel } from "./components/BlockchainPanel";
 import { VedaRasterComparator } from "./components/VedaRasterComparator";
 import { MeshTopologyRadar } from "./components/MeshTopologyRadar";
 import { EvacuationFleetCockpit } from "./components/EvacuationFleetCockpit";
 import { HumanitarianCarbonCockpit } from "./components/HumanitarianCarbonCockpit";
+import { MultiHazardEcologicalCockpit } from "./components/MultiHazardEcologicalCockpit";
 
 const getBackendBase = (): string => {
   if (typeof window !== "undefined") {
@@ -534,8 +536,8 @@ export function App() {
   const [currentLon, setCurrentLon] = useState<number>(72.8797);
   const [locationName, setLocationName] = useState<string>("Mumbai — Mithi River & Kurla Basin");
 
-  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh' | 'evac' | 'humanitarian'
-  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh" | "evac" | "humanitarian">("command");
+  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh' | 'evac' | 'humanitarian' | 'multihazard'
+  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh" | "evac" | "humanitarian" | "multihazard">("command");
 
   // MCP Hub Connection & Interactive Tester State
   const [showMcpModal, setShowMcpModal] = useState<boolean>(false);
@@ -1190,6 +1192,13 @@ export function App() {
           >
             <HeartHandshake size={13} color={activeView === "humanitarian" ? "#34D399" : "var(--color-text-secondary)"} />
             <span>Humanitarian & Carbon</span>
+          </button>
+          <button
+            className={`nav-tab-btn ${activeView === "multihazard" ? "active" : ""}`}
+            onClick={() => setActiveView("multihazard")}
+          >
+            <Mountain size={13} color={activeView === "multihazard" ? "#38BDF8" : "var(--color-text-secondary)"} />
+            <span>Multi-Hazard & Eco</span>
           </button>
         </nav>
 
@@ -2696,6 +2705,15 @@ export function App() {
       {activeView === "humanitarian" && (
         <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
           <HumanitarianCarbonCockpit backendBase={getBackendBase()} />
+        </main>
+      )}
+
+      {/* ========================================================
+          VIEW 10: MULTI-HAZARD LANDSLIDE & ECOLOGICAL COCKPIT (PHASE 30)
+          ======================================================== */}
+      {activeView === "multihazard" && (
+        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+          <MultiHazardEcologicalCockpit backendBase={getBackendBase()} />
         </main>
       )}
 

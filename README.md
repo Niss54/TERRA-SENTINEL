@@ -467,6 +467,54 @@ tests/test_phase29_toucan_bridge.py ......                                      
 
 ---
 
+## 🛰️ Phase 30: Multi-Modal Earth Observation & Deep Hydrological Hazard Intelligence
+
+TERRA-SENTINEL v3.6.0-ENTERPRISE integrates four world-class environmental remote sensing and hydrographic intelligence repositories:
+
+```mermaid
+graph LR
+    subgraph S1["mirzayasirabdullahbaig07/SailabAlert"]
+        CFLSI["CFLSI Engine<br/>Compound Landslide & Flood"]
+        Groq["Groq Llama 3.3 70B<br/>Trilingual Advisories (EN, UR, HI)"]
+    end
+    subgraph S2["Deltares/hydromt"]
+        D8["D8 Flow Routing<br/>Steepest Descent"]
+        TWI["TWI Heatmap Matrix<br/>ln(alpha / tan beta)"]
+        Manning["Manning Friction Velocity<br/>v = (1/n) Rh^(2/3) S0^(1/2)"]
+    end
+    subgraph S3["karanjaxyz/panda"]
+        NDVI["Sentinel-2 MSI NDVI<br/>Temporal Canopy Delta"]
+        Biomass["Stoichiometric CO2e<br/>Biomass * (44 / 12)"]
+        Mint["Polygon Amoy Token Proofs<br/>Keccak-256 / IPFS CIDv1"]
+    end
+    subgraph S4["Hou-dini/sentinel-flood-watch"]
+        Change["Multi-Temporal Changes<br/>NDBI + NDVI + MNDWI"]
+        ETI["Ecological Threat Index<br/>0.45 dNDBI + 0.35(-dNDVI) + 0.20(-dMNDWI)"]
+        Enforce["Statutory MoEFCC Directives<br/>Stop-Work Violation Notices"]
+    end
+
+    S1 --> Cockpit["Multi-Hazard Ecological Cockpit<br/>React 19 / Mission Control"]
+    S2 --> Cockpit
+    S3 --> Cockpit
+    S4 --> Cockpit
+```
+
+### Mathematical Invariants & Scientific Foundations
+1. **Compound Flood & Landslide Susceptibility Index ($CFLSI$):**
+   $$CFLSI = 0.35 \cdot \frac{R_{24h}}{150} + 0.25 \cdot \frac{H_{river}}{7.0} + 0.25 \cdot \frac{S_{soil}}{100} + 0.15 \cdot \frac{\theta_{slope}}{90}$$
+   - *Catastrophic Override:* $\theta_{slope} > 35^\circ \land S_{soil} > 85\% \land R_{24h} > 100\text{mm} \implies CFLSI \ge 0.92$ (`CATASTROPHIC`).
+2. **Topographic Wetness Index ($TWI$ - Deltares HydroMT):**
+   $$TWI = \ln\left(\frac{\alpha}{\tan\beta + 10^{-4}}\right), \quad v = \frac{1}{n} R_h^{2/3} S_0^{1/2}$$
+   - Structural sink condition: $TWI \ge 12.0$ marks severe flood pooling basins.
+3. **Panda Protocol Satellite Biomass MRV & Stoichiometric Carbon Sequestration:**
+   $$\Delta\text{Biomass (dry tons)} = A_{\text{project}} \cdot \max(0, \Delta\text{NDVI}) \cdot \kappa_{\text{biome}} \cdot f_{\text{canopy}}$$
+   $$\text{Sequestered } \text{CO}_2\text{e (tCO}_2\text{e)} = \Delta\text{Biomass} \cdot \frac{44}{12}$$
+4. **Ecological Threat Index ($ETI$ - Sentinel Flood-Watch):**
+   $$ETI = 0.45 \cdot \max(0, \Delta\text{NDBI}) + 0.35 \cdot \max(0, -\Delta\text{NDVI}) + 0.20 \cdot \max(0, -\Delta\text{MNDWI})$$
+   - $ETI \ge 0.60 \implies$ `CRITICAL_ENCROACHMENT` (MoEFCC stop-work notice dispatch).
+
+---
+
 ## 📦 Deployment & Container Architecture Specifications
 
 ### Method 1: YAML / Agent Manifest Deployment
