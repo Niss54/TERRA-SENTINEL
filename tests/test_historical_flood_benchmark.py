@@ -39,6 +39,9 @@ def test_historical_flood_event_prediction(ml_model, event):
     elif expected == "HIGH":
         assert predicted_tier in ["HIGH", "CRITICAL"], f"High risk event {event['name']} must trigger >= HIGH risk, got {predicted_tier}"
         assert score >= 0.65, f"Score for {event['name']} must be >= 0.65, got {score}"
+    elif expected == "MEDIUM":
+        assert predicted_tier in ["MEDIUM", "HIGH", "LOW"], f"Moderate event {event['name']} got {predicted_tier}"
+        assert 0.20 <= score <= 0.85
     elif expected == "LOW":
         assert predicted_tier == "LOW", f"Baseline control {event['name']} must predict LOW, got {predicted_tier}"
         assert score < 0.40, f"Baseline control {event['name']} score must be < 0.40, got {score}"

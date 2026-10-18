@@ -801,6 +801,8 @@ class ChronicVulnerabilityEngine:
                 "cadastre_source": f"OpenStreetMap (OSM) Overpass Verified Cadastre [{hotspot_key}]",
                 "vulnerability_standard": "FEMA HAZUS-MH 5.0 Depth-Damage Functions",
                 "is_synthetic_formula": False,
+                "live_satellite_radar": False,
+                "prototype_disclaimer": "Simulated hydro-topographic flood inundation footprint calibrated to Copernicus 30m DEM elevation depressions. Not a live Sentinel-1 SAR orbit pass.",
                 "spatial_intersection_method": "Exact Point-In-Polygon (PIP) Hydro-Topographic Intersection",
                 "verification_hash": provenance_hash,
                 "hydro_metrics": hydro_metrics

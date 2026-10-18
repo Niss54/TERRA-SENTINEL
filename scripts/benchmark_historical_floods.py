@@ -214,6 +214,49 @@ HISTORICAL_FLOOD_BENCHMARK = [
         "drainage_capacity_index": 70.0,
         "ground_truth_severity": "LOW",
         "source": "IMD Chennai Climatological Record"
+    },
+    # Moderate / Controlled Monsoon Historical Baseline (MEDIUM Tier)
+    {
+        "event_id": "KOLKATA-MONSOON-MODERATE",
+        "name": "Kolkata Hooghly Controlled Monsoon Spate",
+        "location": "Alipore / Hooghly Basin, Kolkata",
+        "date": "2023-08-15",
+        "soil_saturation_pct": 68.0,
+        "precipitation_24h_mm": 52.0,
+        "precipitation_7d_mm": 115.0,
+        "relative_humidity_pct": 82.0,
+        "elevation_m": 9.0,
+        "drainage_capacity_index": 55.0,
+        "ground_truth_severity": "MEDIUM",
+        "source": "IMD Alipore Regional Meteorological Centre"
+    },
+    {
+        "event_id": "BHOPAL-MONSOON-MODERATE",
+        "name": "Bhopal Upper Lake Moderate Monsoon Rainfall",
+        "location": "Upper Lake Catchment, Bhopal",
+        "date": "2023-07-28",
+        "soil_saturation_pct": 70.0,
+        "precipitation_24h_mm": 58.0,
+        "precipitation_7d_mm": 130.0,
+        "relative_humidity_pct": 80.0,
+        "elevation_m": 525.0,
+        "drainage_capacity_index": 52.0,
+        "ground_truth_severity": "MEDIUM",
+        "source": "IMD Bhopal Meteorological Centre"
+    },
+    {
+        "event_id": "AHMEDABAD-MONSOON-NORMAL",
+        "name": "Ahmedabad Sabarmati Controlled Discharge",
+        "location": "Sabarmati Riverfront, Ahmedabad",
+        "date": "2023-08-04",
+        "soil_saturation_pct": 65.0,
+        "precipitation_24h_mm": 48.0,
+        "precipitation_7d_mm": 95.0,
+        "relative_humidity_pct": 78.0,
+        "elevation_m": 53.0,
+        "drainage_capacity_index": 58.0,
+        "ground_truth_severity": "MEDIUM",
+        "source": "AMC / CWC Sabarmati Basin Gauge"
     }
 ]
 

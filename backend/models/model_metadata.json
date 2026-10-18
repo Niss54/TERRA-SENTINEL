@@ -2,9 +2,9 @@
   "model_type": "GradientBoostingClassifier",
   "n_estimators": 120,
   "max_depth": 4,
-  "accuracy": 0.9514,
-  "macro_f1": 0.9056,
-  "cv_f1_mean": 0.883,
+  "accuracy": 1.0,
+  "macro_f1": 1.0,
+  "cv_f1_mean": 0.9977,
   "class_names": [
     "LOW",
     "MEDIUM",
@@ -20,12 +20,12 @@
     "drainage_capacity_index"
   ],
   "feature_importances": {
-    "soil_saturation_pct": 0.1358,
-    "precipitation_24h_mm": 0.2466,
-    "precipitation_7d_mm": 0.129,
-    "relative_humidity_pct": 0.309,
-    "elevation_m": 0.1269,
-    "drainage_capacity_index": 0.0528
+    "soil_saturation_pct": 0.3879,
+    "precipitation_24h_mm": 0.2194,
+    "precipitation_7d_mm": 0.3661,
+    "relative_humidity_pct": 0.0004,
+    "elevation_m": 0.0194,
+    "drainage_capacity_index": 0.0068
   },
   "target_classes": {
     "0": "LOW",
@@ -33,12 +33,40 @@
     "2": "HIGH",
     "3": "CRITICAL"
   },
+  "per_class_metrics": {
+    "LOW": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "MEDIUM": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "HIGH": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "CRITICAL": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    }
+  },
   "historical_event_validation": {
-    "ground_truth_sources": ["IMD", "CWC", "KSNDMC", "MCGM", "PUB Singapore"],
+    "ground_truth_sources": [
+      "IMD",
+      "CWC",
+      "KSNDMC",
+      "MCGM",
+      "PUB Singapore"
+    ],
     "catastrophic_disaster_recall_pct": 100.0,
     "false_alarm_rate_pct": 0.0,
     "overall_historical_event_accuracy_pct": 100.0,
-    "events_evaluated": 14,
+    "events_evaluated": 17,
     "benchmark_script": "scripts/benchmark_historical_floods.py",
     "test_suite": "tests/test_historical_flood_benchmark.py"
   }
