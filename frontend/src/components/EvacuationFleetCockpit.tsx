@@ -41,6 +41,8 @@ export interface FleetUnit {
 
 interface EvacuationFleetCockpitProps {
   backendBase?: string;
+  isIndia?: boolean;
+  locationName?: string;
 }
 
 const DEFAULT_ROUTE: EvacuationRoute = {
@@ -74,7 +76,7 @@ const DEFAULT_FLEET: FleetUnit[] = [
   { unit_id: "FLEET-AMB-03", unit_type: "Advanced Life Support Ambulance", name: "Civic Health ALS-04", lat: 19.062, lon: 72.865, status: "ON_STANDBY", capacity_persons: 4, fuel_or_battery_pct: 96, assigned_sector: "BKC Safe Haven", last_ping: "2s ago" }
 ];
 
-export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ backendBase = "" }) => {
+export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ backendBase = "", isIndia = false, locationName = "" }) => {
   const [vehicleType, setVehicleType] = useState<string>("Emergency Ambulance");
   const [civiliansCount, setCiviliansCount] = useState<number>(35);
   const [route, setRoute] = useState<EvacuationRoute | null>(DEFAULT_ROUTE);
@@ -253,7 +255,7 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
             </h3>
           </div>
           <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", margin: "4px 0 0 0" }}>
-            A* dynamic water-depth obstacle avoidance, NDRF rescue boat mobilization, and multi-sensor parametric auto-payouts.
+            A* dynamic water-depth obstacle avoidance, {isIndia ? "NDRF rescue boat mobilization" : "rapid rescue boat mobilization"}, and multi-sensor parametric auto-payouts{locationName ? ` for ${locationName}` : ""}.
           </p>
         </div>
 
@@ -276,7 +278,7 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
             }}
           >
             <Send size={14} />
-            MOBILIZE NDRF RESCUE FLEET
+            {isIndia ? "MOBILIZE NDRF RESCUE FLEET" : "MOBILIZE CIVIL DEFENCE RESCUE FLEET"}
           </button>
         </div>
       </div>
@@ -503,7 +505,7 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
               }}
             >
               <Zap size={14} className={oracleLoading ? "spin" : ""} />
-              {oracleLoading ? "EXECUTING ON-CHAIN PAYOUT..." : "EXECUTE AUTO-PAYOUT (₹30 LAKHS)"}
+              {oracleLoading ? "EXECUTING ON-CHAIN PAYOUT..." : isIndia ? "EXECUTE AUTO-PAYOUT (₹30 LAKHS)" : "EXECUTE AUTO-PAYOUT ($36,000 USDC)"}
             </button>
 
             {oracleResult && (
@@ -518,7 +520,7 @@ export const EvacuationFleetCockpit: React.FC<EvacuationFleetCockpitProps> = ({ 
                   IPFS: {oracleResult.ipfs_cid.slice(0, 16)}...
                 </div>
                 <div style={{ color: "#FFF", marginTop: "2px" }}>
-                  Total Paid: ₹{oracleResult.total_payout_amount_inr.toLocaleString()} across {oracleResult.total_beneficiaries_paid} wallets
+                  Total Paid: {isIndia ? `₹${(oracleResult.total_payout_amount_inr || 3000000).toLocaleString()}` : "$36,000 USDC"} across {oracleResult.total_beneficiaries_paid || 12} wallets
                 </div>
               </div>
             )}

@@ -2685,29 +2685,35 @@ export function App() {
                     </div>
                     <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginTop: "2px" }}>
                       <span className="mono" style={{ fontSize: "1.45rem", fontWeight: 800, color: "#FFF" }}>
-                        ₹{(result.agent3.var_estimate_inr / 10000000).toFixed(2)} Cr
+                        {currentProfile.is_india ? `₹${(result.agent3.var_estimate_inr / 10000000).toFixed(2)} Cr` : currentProfile.primary_var_display}
                       </span>
                       <span className="mono" style={{ fontSize: "0.85rem", color: "var(--color-primary)" }}>
-                        (${(result.agent3.var_estimate_usd / 1000000).toFixed(2)}M)
+                        {currentProfile.is_india ? `(${(result.agent3.var_estimate_usd / 1000000).toFixed(2)}M)` : `(${currentProfile.secondary_var_display})`}
                       </span>
                     </div>
                     <div style={{ fontSize: "0.7rem", color: "var(--color-watch)", marginTop: "4px" }}>
-                      Compliance Shortfall: <b>{result.agent3.compliance_gap_pct}%</b>
+                      {currentProfile.compliance_shortfall_label}: <b>{result.agent3.compliance_gap_pct}%</b>
                     </div>
 
                     {/* Open Climate Fix (Quartz) Style VaR Uncertainty Corridor */}
                     <div style={{ marginTop: "8px", paddingTop: "8px", borderTop: "1px dashed rgba(255,255,255,0.1)", display: "flex", justifyContent: "space-between", fontSize: "0.68rem" }}>
                       <div>
                         <span style={{ color: "var(--color-text-muted)" }}>P10 (Low):</span><br/>
-                        <b className="mono" style={{ color: "var(--color-safe)" }}>₹{((result.agent3.var_estimate_inr * 0.72) / 10000000).toFixed(1)} Cr</b>
+                        <b className="mono" style={{ color: "var(--color-safe)" }}>
+                          {currentProfile.is_india ? `₹${((result.agent3.var_estimate_inr * 0.72) / 10000000).toFixed(1)} Cr` : `$${((result.agent3.var_estimate_usd * 0.72) / 1000000).toFixed(1)}M USD`}
+                        </b>
                       </div>
                       <div>
                         <span style={{ color: "var(--color-text-muted)" }}>P50 (Median):</span><br/>
-                        <b className="mono" style={{ color: "#FFF" }}>₹{(result.agent3.var_estimate_inr / 10000000).toFixed(1)} Cr</b>
+                        <b className="mono" style={{ color: "#FFF" }}>
+                          {currentProfile.is_india ? `₹${(result.agent3.var_estimate_inr / 10000000).toFixed(1)} Cr` : `$${(result.agent3.var_estimate_usd / 1000000).toFixed(1)}M USD`}
+                        </b>
                       </div>
                       <div>
                         <span style={{ color: "var(--color-text-muted)" }}>P90 (Catastrophe):</span><br/>
-                        <b className="mono" style={{ color: "#EF4444" }}>₹{((result.agent3.var_estimate_inr * 1.48) / 10000000).toFixed(1)} Cr</b>
+                        <b className="mono" style={{ color: "#EF4444" }}>
+                          {currentProfile.is_india ? `₹${((result.agent3.var_estimate_inr * 1.48) / 10000000).toFixed(1)} Cr` : `$${((result.agent3.var_estimate_usd * 1.48) / 1000000).toFixed(1)}M USD`}
+                        </b>
                       </div>
                     </div>
                   </div>
@@ -3476,7 +3482,9 @@ export function App() {
                 <div style={{ background: "rgba(0,0,0,0.3)", padding: "10px 14px", borderRadius: "8px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#FFF" }}>Critical Infrastructure</div>
-                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>Substations, water treatment plants (₹15 Cr base)</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>
+                      {currentProfile.is_india ? "Substations, water treatment plants (₹15 Cr base)" : "Substations, water treatment plants ($18.0M base)"}
+                    </div>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div className="mono" style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--color-danger)" }}>SEVERE DAMAGE</div>
@@ -3487,7 +3495,9 @@ export function App() {
                 <div style={{ background: "rgba(0,0,0,0.3)", padding: "10px 14px", borderRadius: "8px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#FFF" }}>Commercial Reinforced Concrete (RC)</div>
-                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>Office complexes, retail parks (₹8 Cr base)</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>
+                      {currentProfile.is_india ? "Office complexes, retail parks (₹8 Cr base)" : "Office complexes, commercial towers ($9.6M base)"}
+                    </div>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div className="mono" style={{ fontSize: "0.85rem", fontWeight: 700, color: "#F4A261" }}>MODERATE DAMAGE</div>
@@ -3498,7 +3508,9 @@ export function App() {
                 <div style={{ background: "rgba(0,0,0,0.3)", padding: "10px 14px", borderRadius: "8px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#FFF" }}>Industrial Logistics & Warehouses</div>
-                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>Cold chains, storage yards (₹4.5 Cr base)</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>
+                      {currentProfile.is_india ? "Cold chains, storage yards (₹4.5 Cr base)" : "Cold chains, logistics hubs ($5.4M base)"}
+                    </div>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div className="mono" style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--color-danger)" }}>HIGH INVENTORY RISK</div>
@@ -3509,7 +3521,9 @@ export function App() {
                 <div style={{ background: "rgba(0,0,0,0.3)", padding: "10px 14px", borderRadius: "8px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#FFF" }}>Residential Masonry</div>
-                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>Civic dwellings, colony housing (₹1.2 Cr base)</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>
+                      {currentProfile.is_india ? "Civic dwellings, colony housing (₹1.2 Cr base)" : "Civic dwellings, residential blocks ($1.4M base)"}
+                    </div>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div className="mono" style={{ fontSize: "0.85rem", fontWeight: 700, color: "#F4A261" }}>SUBMERGENCE</div>
@@ -3609,7 +3623,7 @@ export function App() {
           ======================================================== */}
       {activeView === "evac" && (
         <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 60px 24px" }}>
-          <EvacuationFleetCockpit backendBase={getBackendBase()} />
+          <EvacuationFleetCockpit backendBase={getBackendBase()} isIndia={currentProfile.is_india} locationName={locationName} />
         </main>
       )}
 
@@ -3706,7 +3720,7 @@ export function App() {
 
                   {/* Executive Summary Block */}
                   <div style={{ background: "rgba(14, 154, 167, 0.1)", border: "1px solid rgba(14, 154, 167, 0.3)", borderRadius: "8px", padding: "14px", marginBottom: "20px", fontSize: "0.82rem", lineHeight: 1.6, color: "var(--color-text-primary)" }}>
-                    <b>Executive Intelligence Summary:</b> Autonomous 3-agent intelligence cascade evaluated acute meteorological telemetry, 30m DEM elevation basins, and regulatory policy mandates for <b>{locationName}</b>. Acute physical flood risk is evaluated at <b>{result ? (result.agent1.risk_score * 100).toFixed(0) : 88}% ({result?.agent1.risk_tier || "CRITICAL"})</b>, projecting direct structural inundation of <b>{result?.agent2?.waterlogging_depth_cm || 85} cm</b> across {result?.agent2?.buildings_at_risk || 340} critical assets. Total Enterprise Value at Risk (VaR) is estimated at <b>₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Crores</b> (${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M USD).
+                    <b>Executive Intelligence Summary:</b> Autonomous 3-agent intelligence cascade evaluated acute meteorological telemetry, 30m DEM elevation basins, and regulatory policy mandates for <b>{locationName}</b>. Acute physical flood risk is evaluated at <b>{result ? (result.agent1.risk_score * 100).toFixed(0) : 88}% ({result?.agent1.risk_tier || "CRITICAL"})</b>, projecting direct structural inundation of <b>{result?.agent2?.waterlogging_depth_cm || 85} cm</b> across {result?.agent2?.buildings_at_risk || 340} critical assets. Total Enterprise Value at Risk (VaR) is estimated at <b>{modalProfile.is_india ? `₹${result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Crores` : modalProfile.primary_var_display}</b> ({modalProfile.is_india ? `$${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M USD` : modalProfile.secondary_var_display}).
                   </div>
 
                   {/* 3 Pillar Summary Grid */}
@@ -3736,11 +3750,15 @@ export function App() {
                     <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "14px", borderRadius: "8px" }}>
                       <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Agent 3: Total VaR</div>
                       <div className="mono" style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--color-primary)", marginTop: "4px" }}>
-                        ₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(0) : "1,183"} Cr
+                        {modalProfile.primary_var_display}
                       </div>
                       <div style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
-                        USD: <b>${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(1) : "142.5"}M</b><br/>
-                        Compliance Gap: <b>{result?.agent3?.compliance_gap_pct || 42}%</b>
+                        {modalProfile.is_india ? (
+                          <>USD: <b>${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(1) : "142.5"}M</b></>
+                        ) : (
+                          <>Regional: <b>{modalProfile.secondary_var_display}</b></>
+                        )}<br/>
+                        {modalProfile.compliance_shortfall_label}: <b>{result?.agent3?.compliance_gap_pct || 42}%</b>
                       </div>
                     </div>
                   </div>
