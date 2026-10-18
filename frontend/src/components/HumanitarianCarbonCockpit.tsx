@@ -1035,7 +1035,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
     setRetirePool(calcSelectedPool);
     setRetireTons(calcTons);
     const basinLabel = calcBasin.replace(/_/g, " ").toUpperCase();
-    setRetireReason(`SEBI BRSR Principle 6: ${calcTons} tCO₂e Insetting for ${basinLabel} (₹${calcAvoidedVarInrCr} Cr VaR Mitigation)`);
+    setRetireReason(`ESG & Flood Hazard Mitigation: ${calcTons} tCO₂e Insetting for ${basinLabel} ($${(calcAvoidedVarUsd / 1000000).toFixed(2)}M / ₹${calcAvoidedVarInrCr} Cr VaR Mitigation)`);
     const formElement = document.getElementById("toucan-retirement-form");
     if (formElement) {
       formElement.scrollIntoView({ behavior: "smooth" });
@@ -1062,12 +1062,14 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
     setIsSyncingAll(true);
     setSyncFeedback(null);
     try {
-      await Promise.all([
+      await Promise.allSettled([
         fetchGlofas(selectedBasin),
         fetchIncidents(),
         fetchReliefCases(),
         fetchCarbonData()
       ]);
+    } catch (e) {
+      console.warn("Feed sync error:", e);
     } finally {
       setTimeout(() => {
         setIsSyncingAll(false);
@@ -1078,7 +1080,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
           timestamp: nowTime
         });
         setTimeout(() => setSyncFeedback(null), 5000);
-      }, 700);
+      }, 500);
     }
   };
 
@@ -1113,7 +1115,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
       ];
 
   return (
-    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px", paddingBottom: "48px" }}>
+    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px", paddingBottom: "120px" }}>
       {/* ========================================================
           HEADER & METRIC OVERVIEW
           ======================================================== */}
@@ -2627,15 +2629,15 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
             </div>
 
             {/* Slider & Input Controls */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
               {/* Basin Select */}
-              <div>
+              <div style={{ background: "rgba(0, 0, 0, 0.3)", padding: "14px 16px", borderRadius: "10px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
                 <label style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Target Hydrological Basin</label>
                 <select
                   value={calcBasin}
                   onChange={(e) => setCalcBasin(e.target.value)}
                   className="form-input"
-                  style={{ width: "100%", marginTop: "6px", fontSize: "12px" }}
+                  style={{ width: "100%", marginTop: "8px", fontSize: "12px" }}
                 >
                   <option value="mumbai_mithi">Mithi River Catchment (Mumbai)</option>
                   <option value="delhi_yamuna">Yamuna Floodplain Corridor (Delhi NCR)</option>
@@ -2646,16 +2648,16 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               </div>
 
               {/* Pool Select */}
-              <div>
+              <div style={{ background: "rgba(0, 0, 0, 0.3)", padding: "14px 16px", borderRadius: "10px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
                 <label style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Carbon Pool Selection</label>
-                <div style={{ display: "flex", gap: "8px", marginTop: "6px" }}>
+                <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
                   {["NCT", "BCT", "CFMC"].map((p) => (
                     <button
                       key={p}
                       onClick={() => setCalcSelectedPool(p)}
                       style={{
                         flex: 1,
-                        padding: "6px 8px",
+                        padding: "7px 10px",
                         borderRadius: "6px",
                         fontSize: "11px",
                         fontWeight: 700,
@@ -2672,10 +2674,12 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               </div>
 
               {/* Tonnage Slider */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ background: "rgba(0, 0, 0, 0.3)", padding: "14px 16px", borderRadius: "10px", border: "1px solid rgba(52, 211, 153, 0.25)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
                   <label style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Carbon Tonnes Retired</label>
-                  <span style={{ fontSize: "12px", fontWeight: 800, color: "#34D399" }}>{calcTons} tCO₂e</span>
+                  <span style={{ fontSize: "12px", fontWeight: 800, color: "#34D399", background: "rgba(52, 211, 153, 0.15)", padding: "2px 8px", borderRadius: "4px", border: "1px solid rgba(52, 211, 153, 0.3)" }}>
+                    {calcTons} tCO₂e
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -2686,13 +2690,20 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   onChange={(e) => setCalcTons(Number(e.target.value))}
                   style={{ width: "100%", marginTop: "8px", accentColor: "#10B981", cursor: "pointer" }}
                 />
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "10px", color: "var(--color-text-muted)", marginTop: "4px" }}>
+                  <span>10 t</span>
+                  <span>500 t</span>
+                  <span>1,000 t</span>
+                </div>
               </div>
 
               {/* Asset Exposure Slider */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ background: "rgba(0, 0, 0, 0.3)", padding: "14px 16px", borderRadius: "10px", border: "1px solid rgba(245, 158, 11, 0.25)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
                   <label style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: 600 }}>Asset Exposure at Risk</label>
-                  <span style={{ fontSize: "12px", fontWeight: 800, color: "#F59E0B" }}>₹{calcAssetValueCr} Crores</span>
+                  <span style={{ fontSize: "12px", fontWeight: 800, color: "#F59E0B", background: "rgba(245, 158, 11, 0.15)", padding: "2px 8px", borderRadius: "4px", border: "1px solid rgba(245, 158, 11, 0.3)" }}>
+                    ₹{calcAssetValueCr} Crores
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -2703,6 +2714,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                   onChange={(e) => setCalcAssetValueCr(Number(e.target.value))}
                   style={{ width: "100%", marginTop: "8px", accentColor: "#F59E0B", cursor: "pointer" }}
                 />
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "10px", color: "var(--color-text-muted)", marginTop: "4px" }}>
+                  <span>₹10 Cr</span>
+                  <span>₹250 Cr</span>
+                  <span>₹500 Cr</span>
+                </div>
               </div>
             </div>
 
@@ -2777,7 +2793,7 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>SEBI BRSR Score Gain</span>
+                  <span style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>ESG Resilience Score Boost</span>
                   <ShieldCheck size={14} color="#A78BFA" />
                 </div>
                 <div style={{ fontSize: "20px", fontWeight: 800, color: "#A78BFA", marginTop: "4px" }}>
@@ -2797,11 +2813,11 @@ export const HumanitarianCarbonCockpit: React.FC<Props> = ({ backendBase = "" })
               1-Click Toucan Protocol On-Chain Retirement (Polygon Amoy / Mainnet)
             </h3>
             <p style={{ fontSize: "12px", color: "var(--color-text-secondary)", marginTop: "4px" }}>
-              Permanently retire nature-based carbon credits on-chain to offset flood infrastructure risk under SEBI BRSR Principle 6.
+              Permanently retire nature-based carbon credits on-chain to offset flood infrastructure risk under global ESG & statutory frameworks.
               Mints a Keccak-256 certificate and pins verifiable metadata on IPFS.
             </p>
 
-            <form onSubmit={handleRetireCarbon} style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 100px 140px", gap: "12px", marginTop: "14px", alignItems: "flex-end" }}>
+            <form onSubmit={handleRetireCarbon} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "14px", marginTop: "14px", alignItems: "flex-end" }}>
               <div>
                 <label style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Beneficiary Organization</label>
                 <input

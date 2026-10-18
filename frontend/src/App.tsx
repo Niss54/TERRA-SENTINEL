@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import L from "leaflet";
 import {
   Shield,
@@ -515,6 +515,15 @@ interface RegionalProfile {
   recommended_actions: string[];
   regulatory_header: string;
   briefing_badge: string;
+  framework_name: string;
+  framework_short: string;
+  rag_label: string;
+  is_india: boolean;
+  primary_currency_symbol: string;
+  primary_currency_code: string;
+  primary_var_display: string;
+  secondary_var_display: string;
+  compliance_shortfall_label: string;
 }
 
 function getRegionalProfileForLocation(
@@ -529,7 +538,8 @@ function getRegionalProfileForLocation(
   const usdMillions = (varUsd / 1000000).toFixed(1);
   const inrCrores = (varInr / 10000000).toFixed(0);
 
-  if (loc.includes("singapore") || loc.includes("marina") || loc.includes("kallang")) {
+  const raw = (() => {
+    if (loc.includes("singapore") || loc.includes("marina") || loc.includes("kallang")) {
     return {
       regional_language: "Malay / Mandarin",
       regional_language_native: "Melayu / 华语",
@@ -858,6 +868,97 @@ function getRegionalProfileForLocation(
     regulatory_header: "Mandatory Mitigation Directives (UN Sendai & TCFD):",
     briefing_badge: "CONFIDENTIAL // C-SUITE & EMERGENCY BRIEFING"
   };
+  })();
+
+  const isIndia = loc.includes("mumbai") || loc.includes("maharashtra") || loc.includes("mithi") ||
+                  loc.includes("bengaluru") || loc.includes("karnataka") || loc.includes("assam") ||
+                  loc.includes("chennai") || loc.includes("tamil nadu") || loc.includes("gujarat") ||
+                  loc.includes("india") || loc.includes("delhi") || loc.includes("yamuna");
+
+  let framework_name = "UN Sendai Framework & TCFD / ISSB S2 Disclosures";
+  let framework_short = "UN Sendai / TCFD";
+  let rag_label = "UN Sendai & TCFD • ChromaDB Vector RAG";
+  let primary_var_display = `$${usdMillions}M USD`;
+  let secondary_var_display = "Statutory Enterprise Capital at Risk";
+  let compliance_shortfall_label = "Global ESG Compliance Shortfall";
+
+  if (loc.includes("singapore") || loc.includes("marina") || loc.includes("kallang")) {
+    framework_name = "MAS Guidelines on Environmental Risk Management (GFIT 2026)";
+    framework_short = "MAS Environmental Risk";
+    rag_label = "MAS Guidelines • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = `(S$${(Number(usdMillions) * 1.35).toFixed(1)}M SGD)`;
+    compliance_shortfall_label = "MAS Climate Compliance Shortfall";
+  } else if (loc.includes("jakarta") || loc.includes("indonesia") || loc.includes("ciliwung")) {
+    framework_name = "OJK Sustainable Finance POJK 51 & BNPB Directives";
+    framework_short = "OJK Sustainable Finance";
+    rag_label = "OJK POJK 51 & BNPB • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = `(Rp ${(Number(usdMillions) * 15.8).toFixed(0)}T IDR)`;
+    compliance_shortfall_label = "OJK Climate Compliance Shortfall";
+  } else if (loc.includes("rotterdam") || loc.includes("netherlands") || loc.includes("rhine") || loc.includes("amsterdam")) {
+    framework_name = "EU CSRD / ESRS E1 & Dutch Delta Programme";
+    framework_short = "EU CSRD & Delta";
+    rag_label = "EU CSRD & Rijkswaterstaat • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = `(€${(Number(usdMillions) * 0.92).toFixed(1)}M EUR)`;
+    compliance_shortfall_label = "EU CSRD Compliance Shortfall";
+  } else if (loc.includes("tokyo") || loc.includes("japan") || loc.includes("arakawa")) {
+    framework_name = "FSA Japan Mandatory Climate Disclosure & MLIT River Act";
+    framework_short = "FSA Japan TCFD";
+    rag_label = "FSA Japan TCFD & MLIT • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = `(¥${(Number(usdMillions) * 152).toFixed(0)}M JPY)`;
+    compliance_shortfall_label = "FSA Japan TCFD Compliance Shortfall";
+  } else if (loc.includes("new york") || loc.includes("manhattan") || loc.includes("jamaica bay") || loc.includes("united states") || loc.includes("usa")) {
+    framework_name = "SEC Climate Risk Rules & FEMA Flood Invariants";
+    framework_short = "SEC Climate Risk";
+    rag_label = "SEC Climate Disclosure & FEMA • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = "Statutory Enterprise VaR";
+    compliance_shortfall_label = "SEC Climate Compliance Shortfall";
+  } else if (loc.includes("accra") || loc.includes("ghana") || loc.includes("korle") || loc.includes("odaw")) {
+    framework_name = "EPA Ghana National Climate Policy & NADMO Protocols";
+    framework_short = "EPA Ghana / NADMO";
+    rag_label = "EPA Ghana & NADMO Guidelines • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = `(GH₵ ${(Number(usdMillions) * 15.4).toFixed(1)}M GHS)`;
+    compliance_shortfall_label = "EPA Ghana Compliance Shortfall";
+  } else if (loc.includes("sylhet") || loc.includes("bangladesh") || loc.includes("surma")) {
+    framework_name = "Bangladesh Bank Sustainable Finance Policy & BWDB Standards";
+    framework_short = "Bangladesh Bank SFP";
+    rag_label = "Bangladesh Bank SFP & BWDB • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = `(৳ ${(Number(usdMillions) * 118).toFixed(0)}M BDT)`;
+    compliance_shortfall_label = "Bangladesh Bank Compliance Shortfall";
+  } else if (loc.includes("sindh") || loc.includes("pakistan") || loc.includes("indus") || loc.includes("sukkur")) {
+    framework_name = "SECP ESG Regulatory Framework & NDMA Pakistan Guidelines";
+    framework_short = "SECP ESG Guidelines";
+    rag_label = "SECP ESG & NDMA Pakistan • ChromaDB Vector RAG";
+    primary_var_display = `$${usdMillions}M USD`;
+    secondary_var_display = `(Rs ${(Number(usdMillions) * 278).toFixed(0)}M PKR)`;
+    compliance_shortfall_label = "SECP ESG Compliance Shortfall";
+  } else if (isIndia) {
+    framework_name = "SEBI BRSR Core Mandate (Principle 6) & NDMA Guidelines";
+    framework_short = "SEBI BRSR Principle 6";
+    rag_label = "SEBI BRSR Principle 6 • ChromaDB Vector RAG";
+    primary_var_display = `₹${inrCrores} Cr`;
+    secondary_var_display = `($${usdMillions}M USD)`;
+    compliance_shortfall_label = "SEBI BRSR Compliance Shortfall";
+  }
+
+  return {
+    ...raw,
+    framework_name,
+    framework_short,
+    rag_label,
+    is_india: isIndia,
+    primary_currency_symbol: isIndia ? "₹" : "$",
+    primary_currency_code: isIndia ? "INR" : "USD",
+    primary_var_display,
+    secondary_var_display,
+    compliance_shortfall_label
+  };
 }
 
 function buildFallbackAnalysis(lat: number, lon: number, locName: string, rain: number, sat: number): AnalysisResult {
@@ -1133,6 +1234,14 @@ export function App() {
   // Analysis State
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<AnalysisResult | null>(() => buildFallbackAnalysis(1.2868, 103.8545, "Singapore — Marina Bay & Kallang Basin", 85, 90));
+  const currentProfile = useMemo(() => {
+    const depth = result?.agent2?.waterlogging_depth_cm || 80;
+    const sat = result?.agent1?.metrics?.soil_saturation_pct || simSat;
+    const tier = result?.agent1?.risk_tier || "HIGH";
+    const varUsd = result?.agent3?.var_estimate_usd || 142500000;
+    const varInr = result?.agent3?.var_estimate_inr || 11827500000;
+    return getRegionalProfileForLocation(locationName, depth, sat, tier, varUsd, varInr);
+  }, [locationName, result, simSat]);
   const [activeLangTab, setActiveLangTab] = useState<"english" | "regional">("english");
   const [wsConnected, setWsConnected] = useState<boolean>(false);
   const [liveSteps, setLiveSteps] = useState<ThoughtStep[]>([]);
@@ -1231,7 +1340,12 @@ export function App() {
   // Fetch Hotspots on Mount
   useEffect(() => {
     fetch(`${API_BASE}/hotspots`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const ct = res.headers.get("content-type") || "";
+        if (!ct.includes("json")) throw new Error("Non-JSON response");
+        return res.json();
+      })
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
           setHotspots(data);
@@ -1265,7 +1379,7 @@ export function App() {
           if (isMounted) {
             setWsConnected(false);
             reconnectTimer = setTimeout(connect, retryDelay);
-            retryDelay = Math.min(retryDelay * 1.5, 15000);
+            retryDelay = Math.min(retryDelay * 2, 60000);
           }
         };
         ws.onerror = () => {
@@ -1292,7 +1406,7 @@ export function App() {
         if (isMounted) {
           setWsConnected(false);
           reconnectTimer = setTimeout(connect, retryDelay);
-          retryDelay = Math.min(retryDelay * 1.5, 15000);
+          retryDelay = Math.min(retryDelay * 2, 60000);
         }
       }
     };
@@ -1356,52 +1470,25 @@ export function App() {
     }
 
     try {
-      let res: Response;
-      try {
-        res = await fetch(`${getBackendBase()}/api/v2/analyze`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            lat,
-            lon,
-            location_name: locName,
-            radius_km: 10.0,
-            simulated_additional_rain_mm: customRain,
-            simulated_saturation_pct_override: customSat
-          })
-        });
-      } catch {
-        res = await fetch(`${API_BASE}/analyze`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            lat,
-            lon,
-            location_name: locName,
-            radius_km: 10.0,
-            simulated_additional_rain_mm: customRain,
-            simulated_saturation_pct_override: customSat
-          })
-        });
-      }
-
-      if (!res.ok) {
-        res = await fetch(`${API_BASE}/analyze`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            lat,
-            lon,
-            location_name: locName,
-            radius_km: 10.0,
-            simulated_additional_rain_mm: customRain,
-            simulated_saturation_pct_override: customSat
-          })
-        });
-      }
+      const res = await fetch(`${getBackendBase()}/api/v2/analyze`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lat,
+          lon,
+          location_name: locName,
+          radius_km: 10.0,
+          simulated_additional_rain_mm: customRain,
+          simulated_saturation_pct_override: customSat
+        })
+      });
 
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
+      }
+      const ct = res.headers.get("content-type") || "";
+      if (!ct.includes("json")) {
+        throw new Error("Non-JSON response from API endpoint");
       }
 
       const data: AnalysisResult = await res.json();
@@ -1798,14 +1885,16 @@ export function App() {
             <button
               className={`sidebar-item ${activeView === "finance" ? "active" : ""}`}
               onClick={() => setActiveView("finance")}
-              title="Financial Value-at-Risk & BRSR Principle 6"
+              title={currentProfile.is_india ? "Financial Value-at-Risk & SEBI BRSR Principle 6" : `Financial Value-at-Risk & ${currentProfile.framework_short}`}
             >
               <div className="sidebar-item-icon">
                 <TrendingUp size={15} color={activeView === "finance" ? "#10B981" : "var(--color-text-secondary)"} />
               </div>
               {isNavExpanded && (
                 <>
-                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "finance" ? 700 : 500 }}>Financial & BRSR</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "finance" ? 700 : 500 }}>
+                    {currentProfile.is_india ? "Financial & BRSR" : "Financial & ESG VaR"}
+                  </span>
                   <span className="sidebar-item-badge">VAR</span>
                 </>
               )}
@@ -1977,7 +2066,7 @@ export function App() {
                 {activeView === "agents" && "Multi-Agent Swarm Intelligence"}
                 {activeView === "multihazard" && "Multi-Hazard Landslide & Ecological Radar"}
                 {activeView === "veda" && "NASA VEDA Earth Data & Raster Comparator"}
-                {activeView === "finance" && "Financial Value-at-Risk & BRSR Audit"}
+                {activeView === "finance" && (currentProfile.is_india ? "Financial Value-at-Risk & BRSR Audit" : `Financial Value-at-Risk & ${currentProfile.framework_short} Audit`)}
                 {activeView === "blockchain" && "Cryptographic Ledger & Audit Trail"}
                 {activeView === "humanitarian" && "Humanitarian Relief & Toucan Carbon Bridge"}
                 {activeView === "mcp" && "Model Context Protocol (MCP) Tool Hub"}
@@ -2873,8 +2962,8 @@ export function App() {
 
               <div style={{ background: "rgba(0,0,0,0.3)", padding: "10px", borderRadius: "8px", borderLeft: "3px solid var(--color-safe)" }}>
                 <div style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Stage 4 • Financial RAG</div>
-                <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#FFF" }}>Agent 3: SEBI BRSR Audit</div>
-                <div className="mono" style={{ fontSize: "0.7rem", color: "var(--color-safe)", marginTop: "2px" }}>VaR: ₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(0) : 1180} Cr</div>
+                <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#FFF" }}>Agent 3: {currentProfile.framework_short} Audit</div>
+                <div className="mono" style={{ fontSize: "0.7rem", color: "var(--color-safe)", marginTop: "2px" }}>VaR: {currentProfile.primary_var_display}</div>
               </div>
             </div>
           </div>
@@ -2999,7 +3088,7 @@ export function App() {
                     <span className="mono" style={{ fontSize: "0.7rem", color: "var(--color-primary)", fontWeight: 700 }}>AGENT 3</span>
                     <h3 style={{ fontSize: "1rem", color: "#FFF" }}>Financial & Policy RAG</h3>
                   </div>
-                  <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>SEBI BRSR Principle 6 • ChromaDB Retrieval</div>
+                  <div style={{ fontSize: "0.7rem", color: "var(--color-text-muted)" }}>{currentProfile.rag_label}</div>
                 </div>
                 <span className="badge" style={{ background: "rgba(255, 23, 68, 0.12)", color: "#FF4060", border: "1px solid rgba(255, 23, 68, 0.35)" }}>
                   {result?.agent3?.stranded_asset_risk || "HIGH"} STRANDED
@@ -3010,14 +3099,14 @@ export function App() {
                 <div style={{ fontSize: "0.68rem", color: "var(--color-text-secondary)", textTransform: "uppercase" }}>Total Enterprise Value at Risk (VaR)</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginTop: "2px" }}>
                   <span className="mono" style={{ fontSize: "1.45rem", fontWeight: 800, color: "#FFF" }}>
-                    ₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Cr
+                    {currentProfile.primary_var_display}
                   </span>
                   <span className="mono" style={{ fontSize: "0.82rem", color: "var(--color-primary)" }}>
-                    (${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M)
+                    {currentProfile.secondary_var_display}
                   </span>
                 </div>
                 <div style={{ fontSize: "0.7rem", color: "var(--color-watch)", marginTop: "4px" }}>
-                  Compliance Shortfall: <b>{result?.agent3?.compliance_gap_pct || 38}%</b>
+                  {currentProfile.compliance_shortfall_label}: <b>{result?.agent3?.compliance_gap_pct || 38}%</b>
                 </div>
               </div>
 
@@ -3238,7 +3327,7 @@ export function App() {
                   <option value="fetch_weather_vectors">fetch_weather_vectors (Open-Meteo Live Telemetry)</option>
                   <option value="run_flood_classifier">run_flood_classifier (Acute ML Flood Probability)</option>
                   <option value="compute_dem_exposure">compute_dem_exposure (30m DEM & Infrastructure HAZUS)</option>
-                  <option value="query_policy_rag">query_policy_rag (SEBI BRSR & Regulatory Vector RAG)</option>
+                  <option value="query_policy_rag">query_policy_rag ({currentProfile.framework_short} & Regulatory Vector RAG)</option>
                 </select>
               </div>
 
@@ -3325,7 +3414,7 @@ export function App() {
               <div style={{ background: "rgba(0,0,0,0.3)", padding: "12px", borderRadius: "8px", borderTop: "2px solid var(--color-safe)" }}>
                 <span className="mono" style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--color-safe)" }}>query_policy_rag</span>
                 <p style={{ fontSize: "0.7rem", color: "var(--color-text-secondary)", marginTop: "4px" }}>
-                  Queries SEBI BRSR and NDMA guidelines vector store to quantify corporate Value-at-Risk.
+                  Queries {currentProfile.framework_short} and regional guidelines vector store to quantify corporate Value-at-Risk.
                 </p>
                 <div style={{ fontSize: "0.65rem", color: "var(--color-text-muted)", marginTop: "6px" }}>Target: Agent 3 (Financial)</div>
               </div>
@@ -3349,7 +3438,7 @@ export function App() {
                     FINANCIAL RISK & COMPLIANCE
                   </span>
                   <span className="mono" style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)" }}>
-                    SEBI BRSR CORE MANDATE • PRINCIPLE 6
+                    {currentProfile.framework_name}
                   </span>
                 </div>
                 <h2 style={{ fontSize: "1.35rem", color: "#FFF", letterSpacing: "0.01em" }}>
@@ -3375,19 +3464,23 @@ export function App() {
             {/* 4 Executive KPI Metrics */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px", marginTop: "16px", paddingTop: "16px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
               <div style={{ background: "rgba(0,0,0,0.3)", padding: "12px", borderRadius: "8px", borderLeft: "3px solid var(--color-primary)" }}>
-                <div style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Total Enterprise VaR</div>
+                <div style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Primary Enterprise VaR</div>
                 <div className="mono" style={{ fontSize: "1.5rem", fontWeight: 800, color: "#FFF", marginTop: "2px" }}>
-                  ₹{result?.agent3 ? (result.agent3.var_estimate_inr / 10000000).toFixed(2) : "1,182.75"} Cr
+                  {currentProfile.primary_var_display}
                 </div>
                 <div style={{ fontSize: "0.7rem", color: "var(--color-primary)" }}>95% Confidence 1-Year Horizon</div>
               </div>
 
               <div style={{ background: "rgba(0,0,0,0.3)", padding: "12px", borderRadius: "8px", borderLeft: "3px solid var(--color-safe)" }}>
-                <div style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>Value-at-Risk (USD)</div>
-                <div className="mono" style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--color-safe)", marginTop: "2px" }}>
-                  ${result?.agent3 ? (result.agent3.var_estimate_usd / 1000000).toFixed(2) : "142.50"}M
+                <div style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>
+                  {currentProfile.is_india ? "Value-at-Risk (USD)" : "Regional Currency VaR"}
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "var(--color-text-secondary)" }}>Forex Reference: ₹83.2 / USD</div>
+                <div className="mono" style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--color-safe)", marginTop: "2px" }}>
+                  {currentProfile.secondary_var_display}
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "var(--color-text-secondary)" }}>
+                  {currentProfile.is_india ? "Forex Reference: ₹83.2 / USD" : "Statutory Normalized Capital"}
+                </div>
               </div>
 
               <div style={{ background: "rgba(0,0,0,0.3)", padding: "12px", borderRadius: "8px", borderLeft: "3px solid var(--color-danger)" }}>
@@ -3399,7 +3492,7 @@ export function App() {
               </div>
 
               <div style={{ background: "rgba(0,0,0,0.3)", padding: "12px", borderRadius: "8px", borderLeft: "3px solid var(--color-watch)" }}>
-                <div style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>BRSR Compliance Shortfall</div>
+                <div style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", textTransform: "uppercase" }}>{currentProfile.compliance_shortfall_label}</div>
                 <div className="mono" style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--color-watch)", marginTop: "2px" }}>
                   {result?.agent3?.compliance_gap_pct || 38}%
                 </div>
@@ -4017,7 +4110,7 @@ export function App() {
                   </span>
                 </div>
                 <p style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", lineHeight: 1.4 }}>
-                  Deep legal analysis and SEBI BRSR compliance clause breakdown across complex multi-page PDF documents.
+                  Deep legal analysis and statutory ESG / regulatory compliance clause breakdown across complex multi-page PDF documents.
                 </p>
               </div>
 
@@ -4255,7 +4348,7 @@ ANTHROPIC_API_KEY=`;
                     <option value="fetch_weather_vectors">fetch_weather_vectors (Open-Meteo Live Telemetry)</option>
                     <option value="run_flood_classifier">run_flood_classifier (Acute ML Flood Probability)</option>
                     <option value="compute_dem_exposure">compute_dem_exposure (30m DEM & Infrastructure HAZUS)</option>
-                    <option value="query_policy_rag">query_policy_rag (SEBI BRSR & Regulatory Vector RAG)</option>
+                    <option value="query_policy_rag">query_policy_rag ({currentProfile.framework_short} & Regulatory Vector RAG)</option>
                   </select>
                 </div>
 
