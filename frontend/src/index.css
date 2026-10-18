@@ -772,7 +772,7 @@ a:hover {
 }
 
 .app-sidebar-expanded {
-  width: 250px;
+  width: 266px;
 }
 
 .app-sidebar-collapsed {
@@ -891,15 +891,26 @@ a:hover {
   background: rgba(56, 189, 248, 0.15);
 }
 
+.sidebar-item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .sidebar-item-badge {
   margin-left: auto;
-  font-size: 0.6rem;
+  flex-shrink: 0;
+  font-size: 0.58rem;
   font-weight: 700;
-  padding: 1px 6px;
+  padding: 1.5px 6px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.06);
   color: #9CA3AF;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .sidebar-item.active .sidebar-item-badge {
@@ -925,6 +936,35 @@ a:hover {
   height: 100vh;
   overflow: hidden;
   position: relative;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  height: calc(100vh - 58px);
+  max-height: calc(100vh - 58px);
+  padding: 20px 24px 60px 24px !important;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.main-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .top-executive-bar {

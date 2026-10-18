@@ -1435,7 +1435,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "agents" ? 700 : 500 }}>Multi-Agent Swarm</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "agents" ? 700 : 500 }}>Multi-Agent Swarm</span>
                   <span className="sidebar-item-badge">AI</span>
                 </>
               )}
@@ -1451,7 +1451,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "multihazard" ? 700 : 500 }}>Multi-Hazard & Eco</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "multihazard" ? 700 : 500 }}>Multi-Hazard & Eco</span>
                   <span className="sidebar-item-badge">NEW</span>
                 </>
               )}
@@ -1467,7 +1467,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "veda" ? 700 : 500 }}>NASA VEDA Swipe</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "veda" ? 700 : 500 }}>NASA VEDA Swipe</span>
                   <span className="sidebar-item-badge">EARTH</span>
                 </>
               )}
@@ -1488,7 +1488,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "finance" ? 700 : 500 }}>Financial & BRSR</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "finance" ? 700 : 500 }}>Financial & BRSR</span>
                   <span className="sidebar-item-badge">VAR</span>
                 </>
               )}
@@ -1504,7 +1504,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "blockchain" ? 700 : 500 }}>Web3 & Ledger</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "blockchain" ? 700 : 500 }}>Web3 & Ledger</span>
                   <span className="sidebar-item-badge">ON-CHAIN</span>
                 </>
               )}
@@ -1520,7 +1520,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "humanitarian" ? 700 : 500 }}>Humanitarian & Carbon</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "humanitarian" ? 700 : 500 }}>Humanitarian & Carbon</span>
                   <span className="sidebar-item-badge">TOUCAN</span>
                 </>
               )}
@@ -1541,7 +1541,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "mcp" ? 700 : 500 }}>MCP Tool Hub</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "mcp" ? 700 : 500 }}>MCP Tool Hub</span>
                   <span className="sidebar-item-badge">RPC 2.0</span>
                 </>
               )}
@@ -1557,7 +1557,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "mesh" ? 700 : 500 }}>LoRa Mesh Radar</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "mesh" ? 700 : 500 }}>LoRa Mesh Radar</span>
                   <span className="sidebar-item-badge">OFF-GRID</span>
                 </>
               )}
@@ -1573,7 +1573,7 @@ export function App() {
               </div>
               {isNavExpanded && (
                 <>
-                  <span style={{ fontWeight: activeView === "evac" ? 700 : 500 }}>Evacuation & Fleet</span>
+                  <span className="sidebar-item-label" style={{ fontWeight: activeView === "evac" ? 700 : 500 }}>Evacuation & Fleet</span>
                   <span className="sidebar-item-badge">ROUTES</span>
                 </>
               )}
@@ -3194,7 +3194,7 @@ export function App() {
           VIEW 6: NASA VEDA DUAL-VIEW SWIPE COMPARATOR
           ======================================================== */}
       {activeView === "veda" && (
-        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+        <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 60px 24px" }}>
           <VedaRasterComparator
             lat={currentLat}
             lon={currentLon}
@@ -3207,7 +3207,7 @@ export function App() {
           VIEW 7: CLUSTERDUCK PROTOCOL LORA MESH RADAR
           ======================================================== */}
       {activeView === "mesh" && (
-        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+        <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 60px 24px" }}>
           <MeshTopologyRadar backendBase={getBackendBase()} />
         </main>
       )}
@@ -3216,7 +3216,7 @@ export function App() {
           VIEW 8: AUTONOMOUS EVACUATION & RESCUE FLEET COCKPIT
           ======================================================== */}
       {activeView === "evac" && (
-        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+        <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 60px 24px" }}>
           <EvacuationFleetCockpit backendBase={getBackendBase()} />
         </main>
       )}
@@ -3225,7 +3225,7 @@ export function App() {
           VIEW 9: HUMANITARIAN RELIEF & CARBON OPERATIONS COCKPIT
           ======================================================== */}
       {activeView === "humanitarian" && (
-        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+        <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 60px 24px" }}>
           <HumanitarianCarbonCockpit backendBase={getBackendBase()} />
         </main>
       )}
@@ -3234,7 +3234,7 @@ export function App() {
           VIEW 10: MULTI-HAZARD LANDSLIDE & ECOLOGICAL COCKPIT (PHASE 30)
           ======================================================== */}
       {activeView === "multihazard" && (
-        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+        <main className="main-content animate-fade-in" style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 24px 60px 24px" }}>
           <MultiHazardEcologicalCockpit backendBase={getBackendBase()} />
         </main>
       )}
