@@ -261,8 +261,8 @@ class EarthObservationEngine:
                 except Exception as e:
                     logger.debug(f"Gemini multimodal call to {model_id} skipped: {e}")
 
-        # Deterministic spatial fallback if offline or API key unconfigured
-        if not gemini_response:
+        # Deterministic spatial fallback if offline, API key unconfigured, or response too brief
+        if not gemini_response or len(gemini_response.strip()) < 40:
             gemini_response = (
                 f"• MULTIMODAL SPATIAL VERDICT: Sentinel-2 NDWI ({sentinel_meta['spectral_indices']['ndwi']}) confirms estuarine water intrusion across {sentinel_meta['spectral_indices']['estimated_surface_water_pct']}% of the basin footprint.\n"
                 f"• INFRASTRUCTURE HAZARD: GEE DEM slope of {gee_dem['slope_gradient_pct']}% indicates severe pooling at low elevation arteries; electrical substation and arterial bypass threatened by {depth_cm} cm inundation.\n"

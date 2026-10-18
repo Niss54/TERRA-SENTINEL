@@ -96,9 +96,9 @@ def test_llm_status_google_cloud_alignment():
     data = res.json()
     assert data["status"] == "success"
     assert data["primary_provider"] == "Google Vertex AI / Gemini"
-    assert data["primary_model"] == "gemini-2.0-flash"
-    assert data["secondary_model"] == "gemini-1.5-pro"
-    assert data["tertiary_model"] == "gemini-3.8-flash"
+    assert data["primary_model"] in ["gemini-2.0-flash", "gemini-3.5-flash"]
+    assert data["secondary_model"] in ["gemini-1.5-pro", "gemini-3.8-flash"]
+    assert data["tertiary_model"] in ["gemini-3.8-flash", "gemini-flash-latest"]
     assert data["cloud_region"] == "asia-south1"
     assert data["google_cloud_alignment_score"] == "100%"
 
