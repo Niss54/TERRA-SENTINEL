@@ -66,6 +66,11 @@ class GloFASForecastResponse(BaseModel):
     elevation_corrected_temp_c: float
     governing_invariant: str
     source_model: str
+    q_2yr_threshold: float = 0.0
+    q_5yr_threshold: float = 0.0
+    q_20yr_threshold: float = 0.0
+    elevation_m: float = 0.0
+    time_to_peak_hours: int = 48
     hydrograph: List[GloFASHydrographPoint]
 
 
@@ -282,6 +287,11 @@ class OpenMeteoGloFASEngine:
             elevation_corrected_temp_c=temp_corrected,
             governing_invariant="Q(t) = Q_base + integral(R(tau)*U(t-tau)) | Return Periods: [Q2, Q5, Q20]",
             source_model="Copernicus GloFAS v4.0 (LISFLOOD Channel Routing)",
+            q_2yr_threshold=basin.q_2yr_threshold,
+            q_5yr_threshold=basin.q_5yr_threshold,
+            q_20yr_threshold=basin.q_20yr_threshold,
+            elevation_m=basin.elevation_m,
+            time_to_peak_hours=36,
             hydrograph=hydrograph
         )
 

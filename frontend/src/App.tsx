@@ -28,12 +28,14 @@ import {
   Check,
   Play,
   Satellite,
-  Navigation
+  Navigation,
+  HeartHandshake
 } from "lucide-react";
 import { BlockchainPanel } from "./components/BlockchainPanel";
 import { VedaRasterComparator } from "./components/VedaRasterComparator";
 import { MeshTopologyRadar } from "./components/MeshTopologyRadar";
 import { EvacuationFleetCockpit } from "./components/EvacuationFleetCockpit";
+import { HumanitarianCarbonCockpit } from "./components/HumanitarianCarbonCockpit";
 
 const getBackendBase = (): string => {
   if (typeof window !== "undefined") {
@@ -532,8 +534,8 @@ export function App() {
   const [currentLon, setCurrentLon] = useState<number>(72.8797);
   const [locationName, setLocationName] = useState<string>("Mumbai — Mithi River & Kurla Basin");
 
-  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh' | 'evac'
-  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh" | "evac">("command");
+  // Executive Top Nav View Mode: 'command' | 'agents' | 'mcp' | 'finance' | 'blockchain' | 'veda' | 'mesh' | 'evac' | 'humanitarian'
+  const [activeView, setActiveView] = useState<"command" | "agents" | "mcp" | "finance" | "blockchain" | "veda" | "mesh" | "evac" | "humanitarian">("command");
 
   // MCP Hub Connection & Interactive Tester State
   const [showMcpModal, setShowMcpModal] = useState<boolean>(false);
@@ -1181,6 +1183,13 @@ export function App() {
           >
             <Navigation size={13} color={activeView === "evac" ? "#60A5FA" : "var(--color-text-secondary)"} />
             <span>Evacuation & Fleet</span>
+          </button>
+          <button
+            className={`nav-tab-btn ${activeView === "humanitarian" ? "active" : ""}`}
+            onClick={() => setActiveView("humanitarian")}
+          >
+            <HeartHandshake size={13} color={activeView === "humanitarian" ? "#34D399" : "var(--color-text-secondary)"} />
+            <span>Humanitarian & Carbon</span>
           </button>
         </nav>
 
@@ -2678,6 +2687,15 @@ export function App() {
       {activeView === "evac" && (
         <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
           <EvacuationFleetCockpit />
+        </main>
+      )}
+
+      {/* ========================================================
+          VIEW 9: HUMANITARIAN RELIEF & CARBON OPERATIONS COCKPIT
+          ======================================================== */}
+      {activeView === "humanitarian" && (
+        <main className="main-content container animate-fade-in" style={{ padding: "20px 0" }}>
+          <HumanitarianCarbonCockpit backendBase={getBackendBase()} />
         </main>
       )}
 
