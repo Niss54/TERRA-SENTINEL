@@ -6,11 +6,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install system dependencies (curl for healthchecks, ca-certificates, gcc, geos for C-extensions)
+# Install system dependencies (curl for healthchecks, ca-certificates, build-essential, geos for C-extensions)
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
     curl \
     ca-certificates \
-    gcc \
     libgeos-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -28,8 +28,9 @@ ENV PYTHONPATH=/app \
     ENVIRONMENT=production \
     DEBUG=false
 
-# Expose standard port for Railway and Cloud Run
+# Expose standard ports for Railway, Cloud Run, Render
 EXPOSE 8000
+EXPOSE 8080
 
-# Launch server with resilient port-binding runner
-CMD ["python3", "backend/run.py"]
+# Launch server with resilient port-binding runner using shell form for dynamic environment expansion
+CMD ["sh", "-c", "python3 backend/run.py"]

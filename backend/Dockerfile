@@ -22,5 +22,6 @@ ENV PYTHONPATH=/app \
     DEBUG=false
 
 EXPOSE 8000
+EXPOSE 8080
 
-CMD ["python3", "backend/run.py"]
+CMD ["sh", "-c", "python3 backend/run.py"]
